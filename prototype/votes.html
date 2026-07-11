@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voting Record Database — Lynn City Watch</title>
+  <link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+  <header class="site-header" id="site-header"></header>
+
+  <section class="block">
+    <div class="wrap">
+      <span class="eyebrow">Section 2</span>
+      <h2 class="h">Voting Record Database</h2>
+      <p class="sub">Search and filter every council vote by topic, type, money involved, and outcome. Each vote links to its source record and shows the plain-English summary and spending impact.</p>
+
+      <div class="banner warn" style="margin-bottom:22px">
+        <span class="ic">!</span>
+        <div><b>Preview with sample votes.</b> The rows below are illustrative placeholders showing how real votes will appear once ingested from official minutes. Filtering, search, and the data model are fully working.</div>
+      </div>
+
+      <div class="filters">
+        <input type="text" id="vote-search" placeholder="Search vote titles and summaries…">
+        <select id="cat-filter" aria-label="Filter by category"></select>
+      </div>
+      <p class="count" id="vote-count"></p>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th>Date</th><th>Item &amp; summary</th><th>Category</th><th>Type</th><th>Spending impact</th><th>Result</th></tr>
+          </thead>
+          <tbody id="votes-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="assets/data.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

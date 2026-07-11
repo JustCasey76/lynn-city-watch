@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lynn City Watch — Public records, made auditable</title>
+  <link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+  <header class="site-header" id="site-header"></header>
+
+  <div class="hero">
+    <div class="wrap">
+      <span class="pill">● Fact-based · Source-linked · Non-partisan</span>
+      <h1>See what Lynn City Hall is actually doing.</h1>
+      <p class="lede">Every council vote, every dollar, every document — organized, searchable, and traced back to the official public record. When the record is missing, we say so.</p>
+      <form class="searchbar" id="home-search">
+        <input type="text" placeholder="Search a councilor, a vote, a topic, or a dollar figure…" aria-label="Search">
+        <button type="submit">Search</button>
+      </form>
+      <div class="stats" id="council-facts"></div>
+    </div>
+  </div>
+
+  <section class="block" id="sections">
+    <div class="wrap">
+      <span class="eyebrow">The platform</span>
+      <h2 class="h">Ten ways to hold City Hall accountable</h2>
+      <p class="sub">Built in layers. Councilor profiles and the voting database are live in this prototype; the rest are planned and mapped in the build plan.</p>
+      <div class="grid cols-3" id="section-grid"></div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="card" style="padding:26px">
+        <div class="grid cols-2" style="align-items:center;gap:26px">
+          <div>
+            <span class="eyebrow">Our standard</span>
+            <h2 class="h">Aggressive on transparency. Disciplined on accuracy.</h2>
+            <p class="sub" style="margin-bottom:16px">We don't call anyone "corrupt." We show measurable, sourced facts: how someone voted, whether they showed up, where the money went — and let residents judge.</p>
+            <ul class="answers" style="padding-left:18px;margin:0">
+              <li>Official records first, with a link on every claim.</li>
+              <li>Facts kept separate from opinion; estimates clearly labeled.</li>
+              <li>Missing information is flagged, not filled with guesses.</li>
+              <li>Public archive of every correction.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="banner warn">
+              <span class="ic">!</span>
+              <div><b>Prototype notice.</b> The council roster, seats, meeting schedule, and source links here are real (from lynnma.gov). Vote rows and dollar figures marked <span class="flag-sample">Sample</span> are placeholders to show the interface — not real records.</div>
+            </div>
+            <a class="btn-ghost" style="margin-top:16px;display:inline-block" href="councilors.html">Explore councilor profiles →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="assets/data.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Councilor Profiles — Lynn City Watch</title>
+  <link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+  <header class="site-header" id="site-header"></header>
+
+  <section class="block">
+    <div class="wrap">
+      <span class="eyebrow">Section 1</span>
+      <div class="section-head">
+        <div>
+          <h2 class="h">Councilor Profiles</h2>
+          <p class="sub" style="margin-bottom:0">All 11 current members of the Lynn City Council. Click any member for their record. Roster and contact info are real, from the official city page.</p>
+        </div>
+        <select id="seat-filter" aria-label="Filter by seat">
+          <option value="all">All seats</option>
+          <option value="ward">Ward councilors</option>
+          <option value="atlarge">At-large councilors</option>
+        </select>
+      </div>
+      <div class="grid cols-3" id="councilor-grid" style="margin-top:22px"></div>
+
+      <div class="banner warn" style="margin-top:26px">
+        <span class="ic">!</span>
+        <div>Voting records, attendance, and sponsored items on each profile are shown with <span class="flag-sample">Sample</span> data for now. They'll be replaced with figures sourced from official council minutes.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="assets/data.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

@@ -50,8 +50,8 @@ const COUNCIL_FACTS = {
 /* ---- Vote issue categories (from the project spec) ---- */
 const CATEGORIES = [
   "Public Safety", "Police", "Fire", "Schools", "Taxes", "Budget & Spending",
-  "Housing", "Zoning & Development", "Immigration", "Legal Services", "Social Issues",
-  "LGBTQ / Pride", "Accessibility", "Infrastructure", "Public Works", "City Services",
+  "Housing", "Zoning & Development", "Immigration-related", "Legal Services", "Social policy",
+  "LGBTQ-related policy", "Accessibility-related policy", "Infrastructure", "Public Works", "City Services",
   "Transparency", "Ethics", "Appointments", "Grants",
 ];
 

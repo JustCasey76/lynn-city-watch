@@ -230,3 +230,19 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
     transition-duration:.001ms!important;scroll-behavior:auto!important}
   .card.link:hover{transform:none}
 }
+
+/* ---------- predictive search ---------- */
+.search-wrap{position:relative;max-width:560px}
+.suggestions{position:absolute;top:calc(100% + 8px);left:0;right:0;background:#fff;
+  border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 40px rgba(11,26,43,.18);
+  z-index:70;overflow-y:auto;max-height:min(66vh,430px);display:none;padding:6px 0}
+.suggestions.open{display:block}
+.sugg-group{padding:9px 15px 4px;font-size:11px;font-weight:700;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--muted)}
+.sugg{display:block;padding:9px 15px;color:var(--text);text-decoration:none;border:0;
+  background:none;width:100%;text-align:left;cursor:pointer;font:inherit}
+.sugg:hover,.sugg.active{background:#eef4ff;text-decoration:none}
+.sugg .s-label{font-weight:600;font-size:14px}
+.sugg .s-sub{display:block;font-size:12.5px;color:var(--muted)}
+.sugg mark{background:#fff2ab;color:inherit;border-radius:3px;padding:0 1px}
+.suggestions .empty{padding:16px 15px;color:var(--muted);font-size:14px}

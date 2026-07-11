@@ -77,14 +77,17 @@
             <ul>
               <li><a href="councilors.html">Councilor Profiles</a></li>
               <li><a href="votes.html">Voting Database</a></li>
-              <li><a href="index.html#sections">See all 10 →</a></li>
+              <li><a href="spending.html">Spending Dashboard</a></li>
+              <li><a href="corrections.html">Corrections &amp; Updates</a></li>
+              <li><a href="index.html#sections">See all sections</a></li>
             </ul>
           </div>
         </div>
         <p class="disclaimer">
-          <b>Prototype.</b> The councilor roster, seats, titles, meeting schedule, and source links are real, pulled from lynnma.gov on 2026-07-11.
-          Vote rows, attendance figures, and dollar amounts marked <span class="flag-sample">Sample</span> are illustrative placeholders shown only to demonstrate the interface — they are not real records and will be replaced with sourced data before launch.
-          This is an independent project and is not affiliated with the City of Lynn.
+          This website is an independent civic transparency project. It is not affiliated with, endorsed by, or operated by the City of Lynn, Lynn City Council, Lynn Public Schools, Lynn Police Department, Lynn Fire Department, or any city agency. Information is compiled from public records and other cited sources. Users should review the original source documents before relying on any summary or analysis.
+        </p>
+        <p class="disclaimer" style="margin-top:12px">
+          <b>Prototype note:</b> the councilor roster, seats, titles, meeting schedule, and source links are real (from lynnma.gov, 2026-07-11). Rows marked <span class="flag-sample">Sample</span> are illustrative placeholders shown only to demonstrate the interface — not real records — and will be replaced with sourced public records. Found an error or missing context? <a href="corrections.html">Submit a correction</a>.
         </p>
       </div>`;
   }
@@ -318,9 +321,103 @@
         </tr>`;
       }).join("");
     }
+    const preCat = new URLSearchParams(location.search).get("category");
+    if (preCat && Array.from(catSel.options).some(o => o.value === preCat)) catSel.value = preCat;
     catSel.addEventListener("change", draw);
     q.addEventListener("input", draw);
     draw();
+  }
+
+  /* ---------- predictive search (suggests after 3 characters) ---------- */
+  function highlight(text, q) {
+    const esc = s => s.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+    const i = text.toLowerCase().indexOf(q);
+    if (i < 0) return esc(text);
+    return esc(text.slice(0, i)) + "<mark>" + esc(text.slice(i, i + q.length)) + "</mark>" + esc(text.slice(i + q.length));
+  }
+
+  function buildSuggestions(qraw) {
+    const q = qraw.toLowerCase(), groups = [];
+    const people = COUNCILORS.filter(c => c.name.toLowerCase().includes(q)).slice(0, 5)
+      .map(c => ({ label: c.name, sub: c.seat + (c.title ? " · " + c.title : ""), href: "councilor.html?id=" + c.id }));
+    if (people.length) groups.push({ name: "Councilors", items: people });
+    const topics = CATEGORIES.filter(n => n.toLowerCase().includes(q)).slice(0, 5)
+      .map(n => ({ label: n, sub: "Filter votes by topic", href: "votes.html?category=" + encodeURIComponent(n) }));
+    if (topics.length) groups.push({ name: "Topics", items: topics });
+    const votes = VOTES.filter(v => v.title.toLowerCase().includes(q) || v.summary.toLowerCase().includes(q)).slice(0, 5)
+      .map(v => { const t = v.title.replace("SAMPLE — ", ""); return { label: t, sub: "Sample vote · " + v.category, href: "votes.html?q=" + encodeURIComponent(t.slice(0, 40)) }; });
+    if (votes.length) groups.push({ name: "Votes", items: votes });
+    const pages = SECTIONS.filter(s => s.ready && s.title.toLowerCase().includes(q)).slice(0, 4)
+      .map(s => ({ label: s.title, sub: s.blurb, href: s.href }));
+    if (pages.length) groups.push({ name: "Pages", items: pages });
+    return groups;
+  }
+
+  function setupSearch() {
+    const form = $("#home-search");
+    if (!form) return;
+    const input = form.querySelector("input");
+    const wrap = document.createElement("div");
+    wrap.className = "search-wrap";
+    form.parentNode.insertBefore(wrap, form);
+    wrap.appendChild(form);
+    const box = document.createElement("div");
+    box.className = "suggestions"; box.id = "search-suggestions"; box.setAttribute("role", "listbox");
+    wrap.appendChild(box);
+    input.setAttribute("role", "combobox");
+    input.setAttribute("aria-autocomplete", "list");
+    input.setAttribute("aria-expanded", "false");
+    input.setAttribute("aria-controls", "search-suggestions");
+    input.setAttribute("autocomplete", "off");
+
+    let items = [], active = -1, timer = null;
+    const close = () => { box.classList.remove("open"); input.setAttribute("aria-expanded", "false"); active = -1; };
+    const go = (href) => { if (href && href !== "#") location.href = href; };
+
+    function render(q) {
+      const groups = buildSuggestions(q); items = [];
+      if (!groups.length) {
+        box.innerHTML = `<div class="empty">No matches for “${q.replace(/[<>&]/g, "")}”. Try a councilor, a topic, or a keyword.</div>`;
+      } else {
+        let html = "";
+        groups.forEach(g => {
+          html += `<div class="sugg-group">${g.name}</div>`;
+          g.items.forEach(it => {
+            const idx = items.length; items.push(it);
+            html += `<a class="sugg" role="option" id="sugg-${idx}" href="${it.href}"><span class="s-label">${highlight(it.label, q.toLowerCase())}</span><span class="s-sub">${it.sub}</span></a>`;
+          });
+        });
+        box.innerHTML = html;
+      }
+      box.classList.add("open"); input.setAttribute("aria-expanded", "true"); active = -1;
+    }
+    function setActive(n) {
+      const nodes = box.querySelectorAll(".sugg"); if (!nodes.length) return;
+      active = (n + nodes.length) % nodes.length;
+      nodes.forEach((el, i) => el.classList.toggle("active", i === active));
+      input.setAttribute("aria-activedescendant", "sugg-" + active);
+      nodes[active].scrollIntoView({ block: "nearest" });
+    }
+    input.addEventListener("input", () => {
+      const v = input.value.trim(); clearTimeout(timer);
+      if (v.length < 3) { close(); return; }
+      timer = setTimeout(() => render(v), 130);
+    });
+    input.addEventListener("keydown", (e) => {
+      if (!box.classList.contains("open")) return;
+      if (e.key === "ArrowDown") { e.preventDefault(); setActive(active + 1); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); setActive(active - 1); }
+      else if (e.key === "Enter" && active >= 0 && items[active]) { e.preventDefault(); go(items[active].href); }
+      else if (e.key === "Escape") { close(); }
+    });
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (active >= 0 && items[active]) return go(items[active].href);
+      const term = input.value.trim();
+      location.href = "votes.html" + (term ? "?q=" + encodeURIComponent(term) : "");
+    });
+    document.addEventListener("click", (e) => { if (!wrap.contains(e.target)) close(); });
+    input.addEventListener("focus", () => { const v = input.value.trim(); if (v.length >= 3) render(v); });
   }
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -331,13 +428,7 @@
     renderProfile();
     renderSpending();
     renderVotes();
-    // route home search box to votes page
-    const hs = $("#home-search");
-    if (hs) hs.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const term = $("#home-search input").value.trim();
-      location.href = "votes.html" + (term ? "?q=" + encodeURIComponent(term) : "");
-    });
+    setupSearch();
     // prefill votes search from query
     const qparam = new URLSearchParams(location.search).get("q");
     if (qparam && $("#vote-search")) { $("#vote-search").value = qparam; $("#vote-search").dispatchEvent(new Event("input")); }

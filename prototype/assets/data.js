@@ -130,14 +130,26 @@ const SPENDING = [
   { dept: "Legal Services",           total: 4,   federal: 0,  state: 0,   category: "Legal Services", sample: true, note: "" },
 ];
 
-/* Citywide revenue mix — where ALL the money comes from (SAMPLE, millions). */
+/*
+ * Citywide General Fund revenue mix — REAL, from Lynn's audited financial
+ * statements, year ended June 30, 2025 (FY2025), General Fund budgetary
+ * comparison schedule, "Actual" column (audit p.83). Dollars are exact.
+ * This is a REVENUE mix, not a spending mix, and does not describe how any
+ * single department/program/vote is funded.
+ */
 const CITY_REVENUE = {
-  sample: true,
+  sample: false,
+  fiscalYear: 2025,
+  basis: "General Fund — audited actual revenues (year ended June 30, 2025)",
+  totalRevenue: 523450373,
+  sourceLabel: "City of Lynn audited financial statements, FY2025",
+  sourceUrl: "https://www.lynnma.gov/city_government/departments/comptrollers/financial_statements",
   sources: [
-    { source: "Local property tax levy", amount: 235, kind: "local", note: "Raised from Lynn property owners; capped by Proposition 2½." },
-    { source: "State aid (Cherry Sheet)", amount: 150, kind: "state", note: "Includes Chapter 70 school aid." },
-    { source: "Local receipts (excise, fees, permits)", amount: 42, kind: "local", note: "Motor-vehicle excise, fees, fines, permits." },
-    { source: "Federal funds & grants", amount: 30, kind: "federal", note: "Grants and reimbursements." },
+    { source: "Property taxes", amount: 165943910, kind: "localtax", note: "Real estate and personal property taxes raised locally; the levy is limited by Proposition 2½." },
+    { source: "Excise taxes", amount: 12209359, kind: "localtax", note: "Chiefly motor-vehicle excise; raised locally." },
+    { source: "Penalties, interest & other taxes", amount: 2061226, kind: "localtax", note: "Tax-related penalties and interest." },
+    { source: "Intergovernmental revenue", amount: 325066934, kind: "intergov", note: "Generally includes state and federal sources; the audit does not break this single line into state vs. federal." },
+    { source: "Other revenue (charges, departmental & local receipts)", amount: 18168944, kind: "other", note: "Remainder of General Fund revenue: charges for services, departmental receipts, investment income, and other local receipts." },
   ],
 };
 

@@ -12,33 +12,59 @@
   <main id="main" tabindex="-1">
   <div class="hero" style="padding:48px 0 40px">
     <div class="wrap">
-      <span class="pill">● What it actually costs you</span>
-      <h1 style="font-size:clamp(26px,4vw,40px)">Spending Dashboard</h1>
-      <p class="lede" style="margin-bottom:22px">City budgets show a sticker price. But state aid and federal grants pay for a big chunk of it. This dashboard removes that money to reveal the <b>net local cost</b> — the part your Lynn property taxes actually fund.</p>
+      <span class="pill">● What it actually costs local taxpayers</span>
+      <h1 style="font-size:clamp(26px,4vw,40px)">Spending &amp; Revenue</h1>
+      <p class="lede" style="margin-bottom:22px">This page separates gross spending from documented outside funding where the records allow. The goal is to show the estimated <b>net local taxpayer cost</b> of a spending decision, not just the sticker price. When the records do not identify the exact funding source, the page says so instead of guessing.</p>
       <div class="stats" id="spend-topline"></div>
     </div>
   </div>
 
   <section class="block" style="padding-top:36px">
     <div class="wrap">
-      <div class="banner warn" style="margin-bottom:24px">
-        <span class="ic">!</span>
-        <div><b>Preview with sample dollar figures.</b> The amounts below are illustrative placeholders (in millions) that demonstrate the calculation and interface. Real numbers come from the city's Mayor's Budget, the state "Cherry Sheet" (state aid, including Chapter 70 school aid), and federal grant records.</div>
-      </div>
-
       <div id="spend-headline" style="margin-bottom:32px"></div>
 
-      <span class="eyebrow">Net local cost by department</span>
-      <h2 class="h">Where your local tax dollars really go</h2>
-      <p class="sub">"Local" = total spending minus federal minus state — i.e. what's left for Lynn taxpayers to cover through the property tax levy and local fees. Sorted by biggest local cost.</p>
-      <div class="tablewrap" tabindex="0" role="region" aria-label="Spending by department table">
+      <span class="eyebrow">Real · FY2025 audited</span>
+      <h2 class="h">Where the money comes from</h2>
+      <p class="sub">Lynn's citywide General Fund revenue by source, from the city's audited financial statements for the year ended June 30, 2025. These are actual audited figures. This is a <b>revenue</b> mix — it shows where the city's money originates, not how any single department or vote is funded.</p>
+      <div class="card">
+        <div style="display:flex;height:26px;border-radius:8px;overflow:hidden;margin-bottom:18px;border:1px solid var(--line)" id="revenue-bar" role="img" aria-label="Revenue mix bar"></div>
+        <ul class="answers" id="revenue-legend" style="list-style:none;padding:0;margin:0"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="card" style="border-left:4px solid var(--accent-2)">
+        <span class="eyebrow">Methodology</span>
+        <h2 class="h" style="margin-top:6px">How we calculate net local cost</h2>
+        <p class="sub" style="margin-bottom:10px">For a specific spending item, <b>net local taxpayer cost = gross cost − documented outside funding</b> (grants, state aid, federal funds, enterprise funds, etc.). We calculate it only when a source document actually identifies that item's funding.</p>
+        <ul class="answers" style="padding-left:18px;margin:0">
+          <li>We do <b>not</b> subtract the citywide average from every expense — a specific program may be funded very differently from the city as a whole.</li>
+          <li>If the record doesn't show the funding source, we say "the net local taxpayer cost cannot be determined from the available records" rather than guess.</li>
+          <li>Estimates are labeled as estimates. Audited figures are labeled as audited.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <span class="eyebrow">Method illustration</span>
+      <h2 class="h">Net local cost by department</h2>
+      <p class="sub">The table below <b>demonstrates the method</b> — gross cost minus documented outside funding. The figures are illustrative placeholders, not Lynn's actual department funding, and will be replaced item-by-item as each department's documented funding sources are entered from the budget and grant records.</p>
+      <div class="banner warn" style="margin-bottom:16px">
+        <span class="ic">!</span>
+        <div><b>Sample figures.</b> These per-department amounts are placeholders showing how the calculation works. They are <b>not</b> derived by applying the citywide revenue percentage to each department, and should not be read as Lynn's real department costs.</div>
+      </div>
+      <div class="tablewrap" tabindex="0" role="region" aria-label="Net local cost by department (sample)">
         <table class="responsive">
           <thead>
             <tr>
               <th scope="col">Department</th>
-              <th scope="col">Total budget</th>
-              <th scope="col">Federal</th>
-              <th scope="col">State aid</th>
+              <th scope="col">Gross cost</th>
+              <th scope="col">Federal (documented)</th>
+              <th scope="col">State (documented)</th>
               <th scope="col">Net local cost</th>
               <th scope="col">Local share</th>
             </tr>
@@ -46,23 +72,11 @@
           <tbody id="spend-body"></tbody>
         </table>
       </div>
-      <p class="source-link" style="margin-top:10px">Sources (real): <a href="https://www.lynnma.gov/city_government/departments/cfo/mayor_s_budget" target="_blank" rel="noopener">Mayor's Budget</a> · <a href="https://www.lynnma.gov/city_government/departments/comptrollers/financial_statements" target="_blank" rel="noopener">Financial statements</a></p>
+      <p class="source-link" style="margin-top:10px">Real sources being entered from: <a href="https://www.lynnma.gov/city_government/departments/cfo/mayor_s_budget" target="_blank" rel="noopener">Mayor's Budget</a> · <a href="https://www.lynnma.gov/city_government/departments/comptrollers/financial_statements" target="_blank" rel="noopener">Audited financial statements</a>.</p>
     </div>
   </section>
-
-  <section class="block" style="padding-top:0">
-    <div class="wrap">
-      <div class="card">
-        <span class="eyebrow">Citywide revenue mix</span>
-        <h2 class="h">Where all the money comes from</h2>
-        <p class="sub">Every dollar the city spends starts as revenue from one of these sources. Only the <b style="color:var(--accent)">local</b> slices come from Lynn taxpayers directly.</p>
-        <div style="display:flex;height:26px;border-radius:8px;overflow:hidden;margin-bottom:18px;border:1px solid var(--line)" id="revenue-bar"></div>
-        <ul class="answers" id="revenue-legend" style="list-style:none;padding:0;margin:0"></ul>
-      </div>
-    </div>
-  </section>
-
   </main>
+
   <footer class="site-footer" id="site-footer"></footer>
   <script src="assets/data.js"></script>
   <script src="assets/app.js"></script>

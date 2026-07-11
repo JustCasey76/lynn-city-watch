@@ -222,36 +222,53 @@
   }
 
   /* ---------- Spending dashboard ---------- */
+  const usd = (n) => "$" + Math.round(n).toLocaleString("en-US");
+  const usdM = (n) => "$" + (n / 1e6).toLocaleString("en-US", { maximumFractionDigits: 1 }) + "M";
+
   function renderSpending() {
     if (!$("#spend-body")) return;
 
-    // department rows with computed net local cost
+    // ---- REAL: citywide General Fund revenue mix (audited FY2025) ----
+    const rev = CITY_REVENUE.sources;
+    const revTot = CITY_REVENUE.totalRevenue || rev.reduce((a, s) => a + s.amount, 0);
+    const sumKind = (k) => rev.filter(s => s.kind === k).reduce((a, s) => a + s.amount, 0);
+    const localTax = sumKind("localtax");
+    const intergov = sumKind("intergov");
+    const propTax = (rev.find(s => /property/i.test(s.source)) || {}).amount || 0;
+    const cents = (n) => Math.round((n / revTot) * 100);
+    const pct = (n) => (Math.round((n / revTot) * 1000) / 10).toFixed(1);
+
+    $("#spend-topline").innerHTML = `
+      <div class="s"><b>${usdM(revTot)}</b><span>FY25 General Fund revenue</span></div>
+      <div class="s" style="color:#ffd9a8"><b>${cents(localTax)}¢</b><span>of each $1 from local taxes</span></div>
+      <div class="s"><b>${cents(intergov)}¢</b><span>from intergovernmental</span></div>
+      <div class="s"><b>${pct(propTax)}%</b><span>from property tax</span></div>`;
+
+    $("#spend-headline").innerHTML = `
+      <div class="card" style="border-left:4px solid var(--accent)">
+        <h2 class="h" style="margin-top:0">In Lynn's FY2025 audited General Fund, about <span style="color:var(--accent)">${cents(localTax)}¢</span> of every $1 in revenue came from local taxes.</h2>
+        <p class="sub" style="margin-bottom:10px">About ${cents(intergov)}¢ came from intergovernmental revenue, which generally includes state and federal funding (the audit does not split that line into state vs. federal). Property taxes alone were about ${pct(propTax)}¢.</p>
+        <p class="sub" style="margin-bottom:0"><b>Important:</b> these figures describe the citywide <b>revenue mix</b> — not how any single department, program, or vote is funded. The net local cost of a specific item is calculated only where the records document that item's own funding sources; we never apply this citywide average to an individual expense.</p>
+        <p class="source-link" style="margin:12px 0 0">Source: <a href="${CITY_REVENUE.sourceUrl}" target="_blank" rel="noopener">${CITY_REVENUE.sourceLabel}</a> — ${CITY_REVENUE.basis}.</p>
+      </div>`;
+
+    // revenue mix bar + legend (REAL)
+    const kindColor = { localtax: "var(--accent)", intergov: "var(--accent-2)", other: "#94a3b8" };
+    $("#revenue-bar").innerHTML = rev.map(s =>
+      `<div title="${s.source}: ${usd(s.amount)}" style="width:${(s.amount / revTot) * 100}%;background:${kindColor[s.kind] || "#94a3b8"};height:100%"></div>`
+    ).join("");
+    $("#revenue-legend").innerHTML = rev.map(s => `
+      <li style="margin-bottom:10px">
+        <span style="display:inline-block;width:11px;height:11px;border-radius:3px;background:${kindColor[s.kind] || "#94a3b8"};margin-right:8px"></span>
+        <b>${usd(s.amount)}</b> — ${s.source} (${pct(s.amount)}%)
+        <span style="color:var(--muted);font-size:12.5px;display:block;margin-left:19px">${s.note || ""}</span>
+      </li>`).join("");
+
+    // ---- department table: SAMPLE, illustrating the METHOD only ----
     const rows = SPENDING.map(d => {
       const local = d.total - d.federal - d.state;
       return { ...d, local, localPct: Math.round((local / d.total) * 100) };
     });
-    const tot = rows.reduce((a, r) => a + r.total, 0);
-    const fed = rows.reduce((a, r) => a + r.federal, 0);
-    const st = rows.reduce((a, r) => a + r.state, 0);
-    const loc = tot - fed - st;
-    const localCents = Math.round((loc / tot) * 100);
-
-    // top-line hero numbers
-    $("#spend-topline").innerHTML = `
-      <div class="s"><b>${money(tot)}</b><span>Total dept. spending</span></div>
-      <div class="s" style="color:#ffd9a8"><b>${money(loc)}</b><span>Paid by local taxes</span></div>
-      <div class="s"><b>${money(st + fed)}</b><span>State + federal funds</span></div>
-      <div class="s"><b>${localCents}¢</b><span>of each $1 is local</span></div>`;
-
-    // the headline explainer
-    $("#spend-headline").innerHTML = `
-      <div class="card" style="border-left:4px solid var(--accent)">
-        <h2 class="h" style="margin-top:0">Of every $1 the city spends here, about <span style="color:var(--accent)">${localCents}¢</span> comes out of local Lynn taxes.</h2>
-        <p class="sub" style="margin-bottom:0">The rest is paid by state aid and federal funds. This page strips those out so you can see
-        the <b>net local cost</b> — what a spending choice actually costs Lynn property taxpayers, not the sticker price.</p>
-      </div>`;
-
-    // department table
     const maxLocal = Math.max(...rows.map(r => r.local));
     $("#spend-body").innerHTML = rows
       .sort((a, b) => b.local - a.local)
@@ -261,9 +278,9 @@
             <div style="font-weight:600">${d.dept} <span class="flag-sample">Sample</span></div>
             ${d.note ? `<div style="color:var(--muted);font-size:12.5px;margin-top:3px">${d.note}</div>` : ""}
           </td>
-          <td data-label="Total budget" style="white-space:nowrap">${money(d.total)}</td>
-          <td data-label="Federal" style="white-space:nowrap;color:var(--muted)">${money(d.federal)}</td>
-          <td data-label="State aid" style="white-space:nowrap;color:var(--muted)">${money(d.state)}</td>
+          <td data-label="Gross cost" style="white-space:nowrap">${money(d.total)}</td>
+          <td data-label="Federal (documented)" style="white-space:nowrap;color:var(--muted)">${money(d.federal)}</td>
+          <td data-label="State (documented)" style="white-space:nowrap;color:var(--muted)">${money(d.state)}</td>
           <td data-label="Net local cost" style="white-space:nowrap;font-weight:700;color:var(--ink-2)">${money(d.local)}</td>
           <td data-label="Local share" style="min-width:150px">
             <div style="display:flex;align-items:center;gap:8px;flex:1">
@@ -274,20 +291,6 @@
             </div>
           </td>
         </tr>`).join("");
-
-    // revenue mix
-    const rev = CITY_REVENUE.sources;
-    const revTot = rev.reduce((a, s) => a + s.amount, 0);
-    const kindColor = { local: "var(--accent)", state: "var(--accent-2)", federal: "var(--warn)" };
-    $("#revenue-bar").innerHTML = rev.map(s =>
-      `<div title="${s.source}: ${money(s.amount)}" style="width:${(s.amount / revTot) * 100}%;background:${kindColor[s.kind]};height:100%"></div>`
-    ).join("");
-    $("#revenue-legend").innerHTML = rev.map(s => `
-      <li>
-        <span style="display:inline-block;width:11px;height:11px;border-radius:3px;background:${kindColor[s.kind]};margin-right:8px"></span>
-        <b>${money(s.amount)}</b> — ${s.source}
-        <span style="color:var(--muted);font-size:12.5px;display:block;margin-left:19px">${s.note}</span>
-      </li>`).join("");
   }
 
   /* ---------- Votes table ---------- */

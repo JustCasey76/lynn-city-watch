@@ -43,6 +43,14 @@ ON CONFLICT (id) DO UPDATE SET
   ward_number = EXCLUDED.ward_number, title = EXCLUDED.title, phone = EXCLUDED.phone,
   source_url = EXCLUDED.source_url;
 
+-- ---------- historical councilors (prior 2024-2025 term; not on the current council) ----------
+-- Wards 5 and 7 changed hands for the 2026-2027 term (Chakoutis->Paez, Walsh->Avery).
+-- Kept for the 2024-2025 voting record; active=false so they do not appear in the current roster.
+INSERT INTO councilors (id, name, seat, seat_type, ward_number, active, term_start, term_end, source_url) VALUES
+  ('walsh',     'John M. Walsh, Jr.',    'Ward 7', 'ward', 7, FALSE, '2024-01-01', '2026-01-05', 'https://www.lynnma.gov/city_government/citycouncil/meeting'),
+  ('chakoutis', 'Dianna M. Chakoutis',   'Ward 5', 'ward', 5, FALSE, '2024-01-01', '2026-01-05', 'https://www.lynnma.gov/city_government/citycouncil/meeting')
+ON CONFLICT (id) DO UPDATE SET name = EXCLUDED.name, seat = EXCLUDED.seat, ward_number = EXCLUDED.ward_number, active = EXCLUDED.active;
+
 -- ---------- unaccounted / unclear funds: verified records-gap entries ----------
 INSERT INTO unaccounted_funds
   (fiscal_year, item, amount, what_records_show, what_records_do_not_show, records_reviewed, source_url, confidence, status)

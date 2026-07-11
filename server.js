@@ -163,13 +163,14 @@ async function handleApi(req, res, url) {
     if (q.get("category")) { params.push(q.get("category")); where.push(`cat.slug = $${params.length}`); }
     if (q.get("q")) { params.push(`%${q.get("q").toLowerCase()}%`); where.push(`(LOWER(v.title) LIKE $${params.length} OR LOWER(v.plain_summary) LIKE $${params.length})`); }
     if (q.get("councilor")) { params.push(q.get("councilor")); where.push(`v.id IN (SELECT vote_id FROM vote_positions WHERE councilor_id = $${params.length})`); }
+    if (/^\d{4}$/.test(q.get("year") || "")) { params.push(q.get("year")); where.push(`EXTRACT(YEAR FROM v.vote_date) = $${params.length}`); }
     const sql = `SELECT v.*, cat.name AS category_name, cat.slug AS category_slug,
                         m.minutes_url, m.meeting_date
                    FROM votes v
                    LEFT JOIN categories cat ON cat.id = v.category_id
                    LEFT JOIN meetings m ON m.id = v.meeting_id
                    ${where.length ? "WHERE " + where.join(" AND ") : ""}
-                   ORDER BY v.vote_date DESC LIMIT 500`;
+                   ORDER BY v.vote_date DESC LIMIT 3000`;
     const { rows } = await pool.query(sql, params);
     return send(res, 200, rows.map(withLocal));
   }

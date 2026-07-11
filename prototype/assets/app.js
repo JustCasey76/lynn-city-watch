@@ -327,6 +327,9 @@
 
     const cats = Array.from(new Set(all.map(v => v.category_name).filter(Boolean))).sort();
     catSel.innerHTML = `<option value="all">All categories</option>` + cats.map(c => `<option>${c}</option>`).join("");
+    const yearSel = $("#year-filter");
+    const years = Array.from(new Set(all.map(v => (v.vote_date || "").slice(0, 4)).filter(Boolean))).sort().reverse();
+    if (yearSel) yearSel.innerHTML = `<option value="all">All years</option>` + years.map(y => `<option>${y}</option>`).join("");
 
     const resultClass = (v) => (v.tally_no && v.tally_no > 0) ? "result-split" : "result-pass";
     function spendCell(v) {
@@ -354,11 +357,12 @@
         </tr>`;
     }
     function draw() {
-      const cv = catSel.value, qv = (q.value || "").toLowerCase();
+      const cv = catSel.value, qv = (q.value || "").toLowerCase(), yv = yearSel ? yearSel.value : "all";
       const rows = all.filter(v =>
         (cv === "all" || v.category_name === cv) &&
+        (yv === "all" || (v.vote_date || "").slice(0, 4) === yv) &&
         (!qv || (v.title + " " + (v.plain_summary || "")).toLowerCase().includes(qv)));
-      count.textContent = `${rows.length} of ${all.length} recorded votes (2026, from official minutes)`;
+      count.textContent = `${rows.length} of ${all.length} recorded votes, transcribed from official minutes`;
       body.innerHTML = rows.length ? rows.map(row).join("") : `<tr><td colspan="5" style="padding:16px;color:var(--muted)">No votes match your filters.</td></tr>`;
     }
     const preCat = new URLSearchParams(location.search).get("category");
@@ -366,6 +370,7 @@
     const qp = new URLSearchParams(location.search).get("q");
     if (qp) q.value = qp;
     catSel.addEventListener("change", draw);
+    if (yearSel) yearSel.addEventListener("change", draw);
     q.addEventListener("input", draw);
 
     // expand a row to show per-member positions (fetched on demand)

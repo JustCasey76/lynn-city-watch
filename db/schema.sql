@@ -44,6 +44,11 @@ CREATE TABLE IF NOT EXISTS meetings (
   is_sample    BOOLEAN DEFAULT FALSE,
   UNIQUE (meeting_date, body, title)
 );
+-- meeting video fields (Lynn Community TV recordings)
+ALTER TABLE meetings ADD COLUMN IF NOT EXISTS youtube_id    TEXT;
+ALTER TABLE meetings ADD COLUMN IF NOT EXISTS thumbnail_url TEXT;
+ALTER TABLE meetings ADD COLUMN IF NOT EXISTS published_at  TIMESTAMPTZ;
+CREATE UNIQUE INDEX IF NOT EXISTS meetings_youtube_id_key ON meetings (youtube_id);
 
 -- ---------- votes / agenda items ----------
 CREATE TABLE IF NOT EXISTS votes (

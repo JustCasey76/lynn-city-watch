@@ -45,10 +45,58 @@ async function initDb() {
     }
     dbReady = true;
     console.log("Database ready.");
+    refreshMeetings(true).catch(e => console.error("Meetings refresh failed:", e.message));
   } catch (err) {
     console.error("Database init failed (serving static only):", err.message);
     dbReady = false;
   }
+}
+
+/* ---------------- Lynn Community TV: council meeting videos ---------------- */
+const YT_CHANNEL_ID = "UCvTqaRye1kNWpfsuniCjPvg"; // Lynn Community TV
+const YT_RSS = `https://www.youtube.com/feeds/videos.xml?channel_id=${YT_CHANNEL_ID}`;
+const MONTHS = { january:1, february:2, march:3, april:4, may:5, june:6, july:7, august:8, september:9, october:10, november:11, december:12 };
+let lastMeetingsFetch = 0;
+
+function decodeXml(s) {
+  return s.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&apos;/g, "'");
+}
+function parseTitleDate(title) {
+  const m = title.match(/([A-Za-z]+)\s+(\d{1,2}),\s*(\d{4})/);
+  if (m && MONTHS[m[1].toLowerCase()]) {
+    const mm = String(MONTHS[m[1].toLowerCase()]).padStart(2, "0");
+    const dd = String(parseInt(m[2], 10)).padStart(2, "0");
+    return `${m[3]}-${mm}-${dd}`;
+  }
+  return null;
+}
+
+async function refreshMeetings(force) {
+  if (!dbReady) return;
+  if (!force && Date.now() - lastMeetingsFetch < 10 * 60 * 1000) return; // 10-min cache
+  lastMeetingsFetch = Date.now();
+  const resp = await fetch(YT_RSS, { headers: { "User-Agent": "LynnCityWatch/1.0" } });
+  if (!resp.ok) throw new Error("RSS HTTP " + resp.status);
+  const xml = await resp.text();
+  const entries = xml.split("<entry>").slice(1);
+  let added = 0;
+  for (const e of entries) {
+    const t = (e.match(/<title>([\s\S]*?)<\/title>/) || [])[1];
+    const vid = (e.match(/<yt:videoId>([\s\S]*?)<\/yt:videoId>/) || [])[1];
+    const pub = (e.match(/<published>([\s\S]*?)<\/published>/) || [])[1];
+    if (!t || !vid) continue;
+    const title = decodeXml(t).trim();
+    if (!/lynn city council/i.test(title)) continue;      // council meetings only
+    const mdate = parseTitleDate(title) || (pub ? pub.slice(0, 10) : null);
+    if (!mdate) continue;
+    await pool.query(
+      `INSERT INTO meetings (meeting_date, body, title, video_url, source_url, youtube_id, thumbnail_url, published_at)
+       VALUES ($1,'City Council',$2,$3,$3,$4,$5,$6)
+       ON CONFLICT (youtube_id) DO UPDATE SET title=EXCLUDED.title, meeting_date=EXCLUDED.meeting_date`,
+      [mdate, title, `https://www.youtube.com/watch?v=${vid}`, vid, `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`, pub || null]);
+    added++;
+  }
+  console.log(`Meetings refreshed: ${added} council videos processed.`);
 }
 
 const send = (res, code, obj) => {
@@ -71,6 +119,15 @@ async function handleApi(req, res, url) {
   const q = url.searchParams;
 
   if (p === "/api/health") return send(res, 200, { ok: true, db: dbReady });
+
+  if (p === "/api/meetings") {
+    refreshMeetings(false).catch(e => console.error("Meetings refresh:", e.message)); // fire-and-forget
+    const { rows } = await pool.query(
+      `SELECT meeting_date, body, title, video_url, source_url, youtube_id, thumbnail_url
+         FROM meetings WHERE youtube_id IS NOT NULL
+        ORDER BY meeting_date DESC, published_at DESC LIMIT 100`);
+    return send(res, 200, rows);
+  }
 
   if (p === "/api/categories") {
     const { rows } = await pool.query("SELECT id, slug, name FROM categories ORDER BY sort, name");

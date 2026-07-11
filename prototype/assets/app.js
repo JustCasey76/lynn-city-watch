@@ -22,6 +22,7 @@
     { href: "councilors.html", label: "Councilors" },
     { href: "votes.html", label: "Votes" },
     { href: "spending.html", label: "Spending" },
+    { href: "meetings.html", label: "Meetings" },
     { href: "index.html#sections", label: "All Sections" },
   ];
   const money = (m) => "$" + m.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 1 }) + "M";
@@ -328,6 +329,44 @@
     draw();
   }
 
+  /* ---------- meetings (real Lynn Community TV council videos) ---------- */
+  const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function fmtDate(s) {
+    const p = (s || "").slice(0, 10).split("-");
+    if (p.length !== 3) return s || "";
+    return `${MON[(+p[1]) - 1]} ${+p[2]}, ${p[0]}`;
+  }
+  async function renderMeetings() {
+    const host = $("#meetings-list");
+    if (!host) return;
+    try {
+      const res = await fetch("/api/meetings");
+      if (!res.ok) throw new Error("api " + res.status);
+      const data = await res.json();
+      if (!Array.isArray(data) || !data.length) {
+        host.innerHTML = `<div class="banner warn" style="grid-column:1/-1"><span class="ic">!</span><div>No meeting videos are loaded yet. You can watch all meetings directly on <a href="https://www.youtube.com/@LynnCommunityTV" target="_blank" rel="noopener">Lynn Community TV</a>.</div></div>`;
+        return;
+      }
+      host.innerHTML = data.map(m => {
+        const clean = m.title.replace(/\s*\|\s*[A-Za-z]+\s+\d{1,2},\s*\d{4}\s*$/, "").trim();
+        return `<a class="card link" style="padding:0;overflow:hidden" href="${m.video_url}" target="_blank" rel="noopener">
+          <div style="position:relative;aspect-ratio:16/9;background:#000">
+            <img src="${m.thumbnail_url}" alt="Video thumbnail" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block">
+            <span aria-hidden="true" style="position:absolute;inset:0;display:grid;place-items:center">
+              <span style="width:52px;height:52px;border-radius:50%;background:rgba(11,26,43,.72);color:#fff;display:grid;place-items:center;font-size:18px">▶</span>
+            </span>
+          </div>
+          <div style="padding:14px 15px">
+            <div style="font-weight:600;font-size:14px;line-height:1.35">${clean}</div>
+            <div style="color:var(--muted);font-size:13px;margin-top:5px">${fmtDate(m.meeting_date)} · City Council</div>
+          </div>
+        </a>`;
+      }).join("");
+    } catch (e) {
+      host.innerHTML = `<div class="banner warn" style="grid-column:1/-1"><span class="ic">!</span><div>The live meeting feed is temporarily unavailable. Watch all Lynn City Council meetings on <a href="https://www.youtube.com/@LynnCommunityTV" target="_blank" rel="noopener">Lynn Community TV</a>.</div></div>`;
+    }
+  }
+
   /* ---------- predictive search (suggests after 3 characters) ---------- */
   function highlight(text, q) {
     const esc = s => s.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
@@ -428,6 +467,7 @@
     renderProfile();
     renderSpending();
     renderVotes();
+    renderMeetings();
     setupSearch();
     // prefill votes search from query
     const qparam = new URLSearchParams(location.search).get("q");

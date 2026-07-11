@@ -149,6 +149,28 @@ CREATE TABLE IF NOT EXISTS records_requests (
   notes          TEXT DEFAULT ''
 );
 
+-- ---------- unaccounted / unclear funds tracker ----------
+-- Facts-only ledger of money whose source, use, or breakdown could NOT be
+-- determined from the public records reviewed. Listing an item here is a
+-- statement about the RECORDS (what they show and don't show), never an
+-- allegation of wrongdoing. Neutral wording is mandatory.
+CREATE TABLE IF NOT EXISTS unaccounted_funds (
+  id                       SERIAL PRIMARY KEY,
+  fiscal_year              INT,
+  item                     TEXT NOT NULL,        -- what money/line item is at issue
+  amount                   NUMERIC,              -- null when not determinable
+  amount_is_estimate       BOOLEAN DEFAULT FALSE,
+  what_records_show        TEXT DEFAULT '',      -- factual, with figures + page cites
+  what_records_do_not_show TEXT DEFAULT '',      -- the gap, in neutral language
+  records_reviewed         TEXT DEFAULT '',      -- which documents were checked
+  source_url               TEXT DEFAULT '',
+  confidence               TEXT DEFAULT '',      -- high / medium / low
+  status                   TEXT DEFAULT 'open',  -- open / clarified / corrected
+  logged_date              DATE DEFAULT CURRENT_DATE,
+  notes                    TEXT DEFAULT '',
+  UNIQUE (fiscal_year, item)
+);
+
 -- ---------- editorial corrections log ----------
 CREATE TABLE IF NOT EXISTS corrections (
   id           SERIAL PRIMARY KEY,

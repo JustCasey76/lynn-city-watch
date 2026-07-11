@@ -14,11 +14,11 @@
     <div class="wrap">
       <span class="eyebrow">Section 2</span>
       <h2 class="h">Voting Record Database</h2>
-      <p class="sub">Search and filter every council vote by topic, type, money involved, and outcome. Each vote links to its source record and shows the plain-English summary and spending impact.</p>
+      <p class="sub">Every recorded 2026 Lynn City Council vote, transcribed from the official meeting minutes. Search and filter by topic, money involved, and outcome. Each vote links to its source minutes, shows the spending and net local cost where documented, and can be expanded to show how each member voted.</p>
 
       <div class="banner warn" style="margin-bottom:22px">
-        <span class="ic">!</span>
-        <div><b>Preview with sample votes.</b> The rows below are illustrative placeholders showing how real votes will appear once ingested from official minutes. Filtering, search, and the data model are fully working.</div>
+        <span class="ic">§</span>
+        <div>Where the minutes record only a tally and attendance (not a member-by-member roll call), each member's position is <b>derived</b> from the tally and labeled as such on the vote. Members the minutes name individually (dissents, abstentions, "present") are shown exactly as recorded.</div>
       </div>
 
       <div class="filters">
@@ -30,7 +30,7 @@
       <div class="tablewrap" tabindex="0" role="region" aria-label="Council votes table">
         <table class="responsive">
           <thead>
-            <tr><th scope="col">Date</th><th scope="col">Item &amp; summary</th><th scope="col">Category</th><th scope="col">Type</th><th scope="col">Spending impact</th><th scope="col">Result</th></tr>
+            <tr><th scope="col">Date</th><th scope="col">Item &amp; summary</th><th scope="col">Category</th><th scope="col">Spending / net local</th><th scope="col">Result</th></tr>
           </thead>
           <tbody id="votes-body"></tbody>
         </table>

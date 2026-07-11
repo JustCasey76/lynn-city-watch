@@ -62,7 +62,7 @@
         <div class="cols">
           <div>
             <h4>Lynn City Watch</h4>
-            <p style="margin:0;max-width:42ch">A fact-based civic transparency project. Every claim links to an official public record. Where a record is missing, we say so.</p>
+            <p style="margin:0">A fact-based civic transparency project. Every claim links to an official public record. Where a record is missing, we say so.</p>
           </div>
           <div>
             <h4>Official Sources</h4>
@@ -79,6 +79,7 @@
               <li><a href="councilors.html">Councilor Profiles</a></li>
               <li><a href="votes.html">Voting Database</a></li>
               <li><a href="spending.html">Spending Dashboard</a></li>
+              <li><a href="unaccounted.html">Funds Not Fully Accounted For</a></li>
               <li><a href="corrections.html">Corrections &amp; Updates</a></li>
               <li><a href="index.html#sections">See all sections</a></li>
             </ul>
@@ -161,41 +162,21 @@
 
     host.innerHTML = `
       <div class="wrap">
-        <div class="kpis">
-          <div class="kpi"><b>—</b><span>Attendance</span></div>
-          <div class="kpi"><b>—</b><span>Votes recorded</span></div>
-          <div class="kpi"><b>—</b><span>Items sponsored</span></div>
-          <div class="kpi"><b>—</b><span>With administration</span></div>
-        </div>
-        <div class="banner warn" style="margin-bottom:28px">
-          <span class="ic">!</span>
-          <div><b>These metrics are not yet populated.</b> Attendance, voting, and sponsorship figures will be filled in from official minutes and vote records. Empty here means "not yet sourced," never estimated.</div>
+        <div class="kpis" id="pf-kpis">
+          <div class="kpi"><b>…</b><span>Attendance</span></div>
+          <div class="kpi"><b>…</b><span>Recorded votes</span></div>
+          <div class="kpi"><b>…</b><span>Voted yes</span></div>
+          <div class="kpi"><b>…</b><span>No / abstain / present</span></div>
         </div>
 
         <div class="two-col">
           <div>
-            <h2 class="h">This profile will answer</h2>
-            <ul class="answers" style="padding-left:18px;margin-top:6px">
-              <li><span class="callq">How does ${c.name.split(" ")[0]} vote?</span> — full sourced voting record.</li>
-              <li><span class="callq">What do they support or oppose?</span> — patterns by issue category.</li>
-              <li><span class="callq">Are they consistent?</span> — votes vs. public statements.</li>
-              <li><span class="callq">Do they attend?</span> — meeting attendance from minutes.</li>
-              <li><span class="callq">With or against the administration?</span> — alignment on key votes.</li>
-            </ul>
-
-            <h2 class="h" style="margin-top:32px">Voting record <span class="flag-sample">Sample data</span></h2>
-            <p class="sub">Illustrative rows below show the format. Real votes come from official minutes.</p>
+            <h2 class="h" style="margin-bottom:4px">Voting record</h2>
+            <p class="sub" id="pf-note">Loading this member's recorded votes from the 2026 council minutes…</p>
             <div class="tablewrap" tabindex="0" role="region" aria-label="Voting record for ${c.name}">
               <table class="responsive">
-                <thead><tr><th scope="col">Date</th><th scope="col">Item</th><th scope="col">Category</th><th scope="col">Result</th></tr></thead>
-                <tbody>${myVotes.map(v => `
-                  <tr>
-                    <td data-label="Date" style="white-space:nowrap">${v.date}</td>
-                    <td class="cell-primary">${v.title.replace("SAMPLE — ", "")}</td>
-                    <td data-label="Category"><span class="badge-cat">${v.category}</span></td>
-                    <td data-label="Result" class="${/–0\b/.test(v.result) || v.result.includes("10–1") ? "result-pass" : "result-split"}">${v.result}</td>
-                  </tr>`).join("")}
-                </tbody>
+                <thead><tr><th scope="col">Date</th><th scope="col">Item</th><th scope="col">Category</th><th scope="col">Their vote</th><th scope="col">Result</th></tr></thead>
+                <tbody id="pf-votes"><tr><td colspan="5" style="padding:16px;color:var(--muted)">Loading…</td></tr></tbody>
               </table>
             </div>
           </div>
@@ -213,12 +194,45 @@
             </div>
             <div class="card" style="margin-top:16px">
               <h3 style="margin:0 0 8px">Committee assignments</h3>
-              <p class="sub" style="margin:0">Not yet sourced. Will be pulled from council records.</p>
+              <p class="sub" style="margin:0">Not yet sourced. Will be added from council committee records.</p>
             </div>
           </aside>
         </div>
       </div>`;
     document.title = c.name + " — Lynn City Watch";
+
+    (async () => {
+      try {
+        const res = await fetch("/api/councilors/" + encodeURIComponent(c.id));
+        if (!res.ok) throw new Error("api");
+        const data = await res.json();
+        const votes = data.votes || [];
+        const tally = {}; (data.tally || []).forEach(t => tally[t.position] = t.n);
+        const total = Object.values(tally).reduce((a, b) => a + b, 0);
+        const absent = tally.absent || 0, yes = tally.yes || 0;
+        const other = total - yes - absent;
+        const attended = total - absent;
+        const attPct = total ? Math.round((attended / total) * 100) : null;
+        $("#pf-kpis").innerHTML = `
+          <div class="kpi"><b>${attPct == null ? "—" : attPct + "%"}</b><span>Attendance (${attended}/${total})</span></div>
+          <div class="kpi"><b>${total}</b><span>Recorded votes</span></div>
+          <div class="kpi"><b>${yes}</b><span>Voted yes</span></div>
+          <div class="kpi"><b>${other}</b><span>No / abstain / present</span></div>`;
+        $("#pf-note").innerHTML = `${total} recorded votes from official 2026 Lynn City Council minutes. Where the minutes do not list members individually, the position is derived from the recorded tally and attendance (noted on each vote). "No / abstain / present" counts any position other than yes or absent.`;
+        const posClass = { yes: "result-pass", no: "result-split", abstain: "result-split", present: "result-split" };
+        $("#pf-votes").innerHTML = votes.length ? votes.map(v => `
+          <tr>
+            <td data-label="Date" style="white-space:nowrap">${fmtDate(v.vote_date)}</td>
+            <td class="cell-primary"><a href="votes.html?q=${encodeURIComponent(v.title.slice(0, 40))}">${v.title}</a></td>
+            <td data-label="Category">${v.category ? `<span class="badge-cat">${v.category}</span>` : ""}</td>
+            <td data-label="Their vote" class="${posClass[v.position] || ""}" style="text-transform:capitalize;font-weight:600">${v.position}</td>
+            <td data-label="Result" style="white-space:nowrap">${v.result || ""}</td>
+          </tr>`).join("") : `<tr><td colspan="5" style="padding:16px;color:var(--muted)">No recorded votes found for this member yet.</td></tr>`;
+      } catch (e) {
+        $("#pf-note").textContent = "This member's voting record is temporarily unavailable. The underlying minutes remain available from the city's meeting page.";
+        $("#pf-votes").innerHTML = "";
+      }
+    })();
   }
 
   /* ---------- Spending dashboard ---------- */
@@ -293,42 +307,93 @@
         </tr>`).join("");
   }
 
-  /* ---------- Votes table ---------- */
-  function renderVotes() {
+  /* ---------- Votes table (real votes from the database) ---------- */
+  const usdShort = (n) => n == null ? "" : "$" + Number(n).toLocaleString("en-US");
+  async function renderVotes() {
     const body = $("#votes-body");
     if (!body) return;
     const catSel = $("#cat-filter"), q = $("#vote-search"), count = $("#vote-count");
-    // populate categories present in data
-    const cats = Array.from(new Set(VOTES.map(v => v.category))).sort();
+
+    let all = [];
+    try {
+      const res = await fetch("/api/votes");
+      if (!res.ok) throw new Error("api");
+      all = await res.json();
+    } catch (e) {
+      count.textContent = "The live vote database is temporarily unavailable.";
+      body.innerHTML = `<tr><td colspan="5" style="padding:16px;color:var(--muted)">You can read the source minutes on the <a href="https://www.lynnma.gov/city_government/citycouncil/meeting" target="_blank" rel="noopener">city's meeting page</a>.</td></tr>`;
+      return;
+    }
+
+    const cats = Array.from(new Set(all.map(v => v.category_name).filter(Boolean))).sort();
     catSel.innerHTML = `<option value="all">All categories</option>` + cats.map(c => `<option>${c}</option>`).join("");
 
+    const resultClass = (v) => (v.tally_no && v.tally_no > 0) ? "result-split" : "result-pass";
+    function spendCell(v) {
+      if (v.spending_amount == null) return "—";
+      let s = `<div style="font-weight:600">${usdShort(v.spending_amount)}</div>`;
+      if (v.funding_local === 0) s += `<div style="font-size:12px;color:var(--good)">Net local: $0</div>`;
+      else if (v.funding_local != null) s += `<div style="font-size:12px;color:var(--ink-2)">Net local: ${usdShort(v.funding_local)}</div>`;
+      else s += `<div style="font-size:12px;color:var(--muted)">Net local: not classified</div>`;
+      return s;
+    }
+    function row(v) {
+      return `
+        <tr data-vote="${v.id}">
+          <td data-label="Date" style="white-space:nowrap">${fmtDate(v.vote_date)}</td>
+          <td class="cell-primary">
+            <div style="font-weight:600">${v.title}</div>
+            ${v.plain_summary ? `<div style="color:var(--muted);font-size:13px;margin-top:3px">${v.plain_summary}</div>` : ""}
+            ${v.notes ? `<div style="color:var(--muted);font-size:12px;margin-top:4px;font-style:italic">${v.notes}</div>` : ""}
+            <div class="source-link" style="margin-top:5px">Source: <a href="${v.source_url}" target="_blank" rel="noopener">official minutes</a> · <button type="button" class="linkbtn" data-expand="${v.id}" aria-expanded="false">See how each member voted ▾</button></div>
+            <div class="positions" id="pos-${v.id}" hidden></div>
+          </td>
+          <td data-label="Category">${v.category_name ? `<span class="badge-cat">${v.category_name}</span>` : ""}</td>
+          <td data-label="Spending">${spendCell(v)}</td>
+          <td data-label="Result" class="${resultClass(v)}" style="white-space:nowrap">${v.result || ""}</td>
+        </tr>`;
+    }
     function draw() {
       const cv = catSel.value, qv = (q.value || "").toLowerCase();
-      const rows = VOTES.filter(v =>
-        (cv === "all" || v.category === cv) &&
-        (v.title.toLowerCase().includes(qv) || v.summary.toLowerCase().includes(qv)));
-      count.textContent = `${rows.length} of ${VOTES.length} sample votes shown`;
-      body.innerHTML = rows.map(v => {
-        const pass = /–0\b/.test(v.result) || v.result.includes("10–1") || v.result.includes("11–0");
-        return `
-        <tr>
-          <td data-label="Date" style="white-space:nowrap">${v.date}</td>
-          <td class="cell-primary">
-            <div style="font-weight:600">${v.title.replace("SAMPLE — ", "")} <span class="flag-sample">Sample</span></div>
-            <div style="color:var(--muted);font-size:13px;margin-top:3px">${v.summary}</div>
-            <div class="source-link" style="margin-top:5px">Source: <a href="${v.source}" target="_blank" rel="noopener">meeting record</a></div>
-          </td>
-          <td data-label="Category"><span class="badge-cat">${v.category}</span></td>
-          <td data-label="Type" style="white-space:nowrap">${v.type}</td>
-          <td data-label="Spending">${v.spending}</td>
-          <td data-label="Result" class="${pass ? "result-pass" : "result-split"}" style="white-space:nowrap">${v.result}</td>
-        </tr>`;
-      }).join("");
+      const rows = all.filter(v =>
+        (cv === "all" || v.category_name === cv) &&
+        (!qv || (v.title + " " + (v.plain_summary || "")).toLowerCase().includes(qv)));
+      count.textContent = `${rows.length} of ${all.length} recorded votes (2026, from official minutes)`;
+      body.innerHTML = rows.length ? rows.map(row).join("") : `<tr><td colspan="5" style="padding:16px;color:var(--muted)">No votes match your filters.</td></tr>`;
     }
     const preCat = new URLSearchParams(location.search).get("category");
-    if (preCat && Array.from(catSel.options).some(o => o.value === preCat)) catSel.value = preCat;
+    if (preCat && cats.includes(preCat)) catSel.value = preCat;
+    const qp = new URLSearchParams(location.search).get("q");
+    if (qp) q.value = qp;
     catSel.addEventListener("change", draw);
     q.addEventListener("input", draw);
+
+    // expand a row to show per-member positions (fetched on demand)
+    const POS_ORDER = { no: 0, abstain: 1, present: 2, recused: 3, absent: 4, yes: 5 };
+    const posColor = { yes: "var(--good)", no: "var(--bad)", abstain: "var(--warn)", present: "var(--warn)", recused: "var(--muted)", absent: "var(--muted)" };
+    body.addEventListener("click", async (e) => {
+      const btn = e.target.closest("[data-expand]");
+      if (!btn) return;
+      const id = btn.getAttribute("data-expand");
+      const box = $("#pos-" + id);
+      if (!box) return;
+      if (!box.hidden) { box.hidden = true; btn.setAttribute("aria-expanded", "false"); btn.textContent = "See how each member voted ▾"; return; }
+      btn.setAttribute("aria-expanded", "true"); btn.textContent = "Hide member votes ▴";
+      box.hidden = false;
+      if (box.dataset.loaded) return;
+      box.innerHTML = `<span style="color:var(--muted);font-size:13px">Loading…</span>`;
+      try {
+        const res = await fetch("/api/votes/" + id);
+        const data = await res.json();
+        const positions = (data.positions || []).slice().sort((a, b) => (POS_ORDER[a.position] ?? 9) - (POS_ORDER[b.position] ?? 9));
+        box.innerHTML = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">` + positions.map(p =>
+          `<span style="font-size:12.5px;border:1px solid var(--line);border-radius:999px;padding:3px 10px"><b style="color:${posColor[p.position] || "var(--text)"};text-transform:capitalize">${p.position}</b> · ${p.name.replace(/"[^"]*"\s*/g, "")} <span style="color:var(--muted)">(${p.seat})</span></span>`
+        ).join("") + `</div>`;
+        box.dataset.loaded = "1";
+      } catch (err) {
+        box.innerHTML = `<span style="color:var(--muted);font-size:13px">Member breakdown unavailable.</span>`;
+      }
+    });
     draw();
   }
 
@@ -370,6 +435,40 @@
     }
   }
 
+  /* ---------- unaccounted funds tracker (facts-only records-gap ledger) ---------- */
+  async function renderUnaccounted() {
+    const host = $("#unaccounted-list");
+    if (!host) return;
+    try {
+      const res = await fetch("/api/unaccounted");
+      if (!res.ok) throw new Error("api " + res.status);
+      const rows = await res.json();
+      if (!rows.length) {
+        host.innerHTML = `<div class="card"><p style="margin:0;color:var(--muted)">No items are currently logged. As budgets, audits, and meeting records are reviewed, any funds that cannot be traced in the public record will be listed here with full sourcing.</p></div>`;
+        return;
+      }
+      host.innerHTML = rows.map(r => `
+        <div class="card" style="margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:baseline">
+            <h3 style="margin:0;font-size:17px">${r.item}</h3>
+            <div style="white-space:nowrap;font-weight:700">${r.amount != null ? "$" + Number(r.amount).toLocaleString("en-US") + (r.amount_is_estimate ? " (estimate)" : "") : "Amount not determinable"}</div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px">
+            ${r.fiscal_year ? `<span class="badge-cat">FY${r.fiscal_year}</span>` : ""}
+            ${r.confidence ? `<span class="badge-cat">Confidence: ${r.confidence}</span>` : ""}
+            <span class="badge-cat">Status: ${r.status}</span>
+            <span class="badge-cat">Logged ${String(r.logged_date).slice(0, 10)}</span>
+          </div>
+          <p style="margin:0 0 8px"><b>What the records show:</b> ${r.what_records_show}</p>
+          <p style="margin:0 0 8px"><b>What the records do not show:</b> ${r.what_records_do_not_show}</p>
+          ${r.records_reviewed ? `<p style="margin:0 0 8px;color:var(--muted);font-size:13.5px"><b>Records reviewed:</b> ${r.records_reviewed}</p>` : ""}
+          ${r.source_url ? `<p class="source-link" style="margin:0">Source: <a href="${r.source_url}" target="_blank" rel="noopener">original document</a></p>` : ""}
+        </div>`).join("");
+    } catch (e) {
+      host.innerHTML = `<div class="banner warn"><span class="ic">!</span><div>The tracker is temporarily unavailable. All underlying documents remain available from the official sources linked below.</div></div>`;
+    }
+  }
+
   /* ---------- predictive search (suggests after 3 characters) ---------- */
   function highlight(text, q) {
     const esc = s => s.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
@@ -386,9 +485,8 @@
     const topics = CATEGORIES.filter(n => n.toLowerCase().includes(q)).slice(0, 5)
       .map(n => ({ label: n, sub: "Filter votes by topic", href: "votes.html?category=" + encodeURIComponent(n) }));
     if (topics.length) groups.push({ name: "Topics", items: topics });
-    const votes = VOTES.filter(v => v.title.toLowerCase().includes(q) || v.summary.toLowerCase().includes(q)).slice(0, 5)
-      .map(v => { const t = v.title.replace("SAMPLE — ", ""); return { label: t, sub: "Sample vote · " + v.category, href: "votes.html?q=" + encodeURIComponent(t.slice(0, 40)) }; });
-    if (votes.length) groups.push({ name: "Votes", items: votes });
+    // free-text vote search routes to the live votes database
+    if (q.length >= 3) groups.push({ name: "Search votes", items: [{ label: `Search votes for "${qraw}"`, sub: "Search the 2026 voting record", href: "votes.html?q=" + encodeURIComponent(qraw) }] });
     const pages = SECTIONS.filter(s => s.ready && s.title.toLowerCase().includes(q)).slice(0, 4)
       .map(s => ({ label: s.title, sub: s.blurb, href: s.href }));
     if (pages.length) groups.push({ name: "Pages", items: pages });
@@ -471,6 +569,7 @@
     renderSpending();
     renderVotes();
     renderMeetings();
+    renderUnaccounted();
     setupSearch();
     // prefill votes search from query
     const qparam = new URLSearchParams(location.search).get("q");

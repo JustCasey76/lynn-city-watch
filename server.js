@@ -187,6 +187,16 @@ async function handleApi(req, res, url) {
     return send(res, 200, { vote: withLocal(v.rows[0]), positions: pos.rows });
   }
 
+  if (p === "/api/unaccounted") {
+    const { rows } = await pool.query(
+      `SELECT fiscal_year, item, amount, amount_is_estimate, what_records_show,
+              what_records_do_not_show, records_reviewed, source_url, confidence,
+              status, logged_date, notes
+         FROM unaccounted_funds
+        ORDER BY fiscal_year DESC NULLS LAST, amount DESC NULLS LAST`);
+    return send(res, 200, rows);
+  }
+
   if (p === "/api/spending") {
     const fy = q.get("fy");
     const budget = await pool.query(

@@ -42,3 +42,17 @@ ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name, seat = EXCLUDED.seat, seat_type = EXCLUDED.seat_type,
   ward_number = EXCLUDED.ward_number, title = EXCLUDED.title, phone = EXCLUDED.phone,
   source_url = EXCLUDED.source_url;
+
+-- ---------- unaccounted / unclear funds: verified records-gap entries ----------
+INSERT INTO unaccounted_funds
+  (fiscal_year, item, amount, what_records_show, what_records_do_not_show, records_reviewed, source_url, confidence, status)
+VALUES
+  (2025,
+   'Intergovernmental revenue not itemized by source',
+   325066934,
+   'The FY2025 audited General Fund reports $325,066,934 in intergovernmental revenue (budgetary comparison schedule, p.83) — about 62% of total General Fund revenue of $523,450,373.',
+   'The audit presents intergovernmental revenue as a single line and does not break it into state versus federal sources or by program, so the exact state/federal split cannot be determined from this document.',
+   'City of Lynn audited financial statements, FY2025 (General Fund budgetary comparison schedule, p.83).',
+   'https://www.lynnma.gov/city_government/departments/comptrollers/financial_statements',
+   'high', 'open')
+ON CONFLICT (fiscal_year, item) DO NOTHING;

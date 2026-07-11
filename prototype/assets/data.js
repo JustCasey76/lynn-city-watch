@@ -158,6 +158,7 @@ const SECTIONS = [
   { n: 2,  title: "Voting Record Database",    blurb: "Every vote, searchable by member, date, topic, and money.", href: "votes.html", ready: true },
   { n: 3,  title: "Spending Dashboard",        blurb: "Where money goes — and what it really costs YOU after state & federal funds.", href: "spending.html", ready: true },
   { n: "▶", title: "Council Meetings",         blurb: "Watch every recorded Lynn City Council meeting (Lynn Community TV).", href: "meetings.html", ready: true },
+  { n: "§", title: "Funds Not Fully Accounted For", blurb: "Money the public records don't fully explain — facts only, no accusations.", href: "unaccounted.html", ready: true },
   { n: 4,  title: "Hot Topic Issue Pages",     blurb: "All the facts on one issue, in one place.", href: "#", ready: false },
   { n: 5,  title: "Transparency Scorecards",   blurb: "Measurable records — never name-calling.", href: "#", ready: false },
   { n: 6,  title: "Public Records Tracker",    blurb: "What we requested, and whether the city delivered.", href: "#", ready: false },

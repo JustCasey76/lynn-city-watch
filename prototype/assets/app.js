@@ -21,8 +21,10 @@
     { href: "index.html", label: "Home" },
     { href: "councilors.html", label: "Councilors" },
     { href: "votes.html", label: "Votes" },
+    { href: "spending.html", label: "Spending" },
     { href: "index.html#sections", label: "All Sections" },
   ];
+  const money = (m) => "$" + m.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 1 }) + "M";
 
   function renderHeader() {
     const here = (location.pathname.split("/").pop() || "index.html");
@@ -205,6 +207,75 @@
     document.title = c.name + " — Lynn City Watch";
   }
 
+  /* ---------- Spending dashboard ---------- */
+  function renderSpending() {
+    if (!$("#spend-body")) return;
+
+    // department rows with computed net local cost
+    const rows = SPENDING.map(d => {
+      const local = d.total - d.federal - d.state;
+      return { ...d, local, localPct: Math.round((local / d.total) * 100) };
+    });
+    const tot = rows.reduce((a, r) => a + r.total, 0);
+    const fed = rows.reduce((a, r) => a + r.federal, 0);
+    const st = rows.reduce((a, r) => a + r.state, 0);
+    const loc = tot - fed - st;
+    const localCents = Math.round((loc / tot) * 100);
+
+    // top-line hero numbers
+    $("#spend-topline").innerHTML = `
+      <div class="s"><b>${money(tot)}</b><span>Total dept. spending</span></div>
+      <div class="s" style="color:#ffd9a8"><b>${money(loc)}</b><span>Paid by local taxes</span></div>
+      <div class="s"><b>${money(st + fed)}</b><span>State + federal funds</span></div>
+      <div class="s"><b>${localCents}¢</b><span>of each $1 is local</span></div>`;
+
+    // the headline explainer
+    $("#spend-headline").innerHTML = `
+      <div class="card" style="border-left:4px solid var(--accent)">
+        <h2 class="h" style="margin-top:0">Of every $1 the city spends here, about <span style="color:var(--accent)">${localCents}¢</span> comes out of local Lynn taxes.</h2>
+        <p class="sub" style="margin-bottom:0">The rest is paid by state aid and federal funds. This page strips those out so you can see
+        the <b>net local cost</b> — what a spending choice actually costs Lynn property taxpayers, not the sticker price.</p>
+      </div>`;
+
+    // department table
+    const maxLocal = Math.max(...rows.map(r => r.local));
+    $("#spend-body").innerHTML = rows
+      .sort((a, b) => b.local - a.local)
+      .map(d => `
+        <tr>
+          <td>
+            <div style="font-weight:600">${d.dept} <span class="flag-sample">Sample</span></div>
+            ${d.note ? `<div style="color:var(--muted);font-size:12.5px;margin-top:3px">${d.note}</div>` : ""}
+          </td>
+          <td style="white-space:nowrap">${money(d.total)}</td>
+          <td style="white-space:nowrap;color:var(--muted)">${money(d.federal)}</td>
+          <td style="white-space:nowrap;color:var(--muted)">${money(d.state)}</td>
+          <td style="white-space:nowrap;font-weight:700;color:var(--ink-2)">${money(d.local)}</td>
+          <td style="min-width:150px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="flex:1;background:#eef2f6;border-radius:6px;height:8px;overflow:hidden">
+                <div style="width:${Math.round((d.local / maxLocal) * 100)}%;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2))"></div>
+              </div>
+              <span style="font-size:12px;color:var(--muted);white-space:nowrap">${d.localPct}% local</span>
+            </div>
+          </td>
+        </tr>`).join("");
+
+    // revenue mix
+    const rev = CITY_REVENUE.sources;
+    const revTot = rev.reduce((a, s) => a + s.amount, 0);
+    const kindColor = { local: "var(--accent)", state: "var(--accent-2)", federal: "var(--warn)" };
+    $("#revenue-bar").innerHTML = rev.map(s =>
+      `<div title="${s.source}: ${money(s.amount)}" style="width:${(s.amount / revTot) * 100}%;background:${kindColor[s.kind]};height:100%"></div>`
+    ).join("");
+    $("#revenue-legend").innerHTML = rev.map(s => `
+      <li>
+        <span style="display:inline-block;width:11px;height:11px;border-radius:3px;background:${kindColor[s.kind]};margin-right:8px"></span>
+        <b>${money(s.amount)}</b> — ${s.source}
+        <span style="color:var(--muted);font-size:12.5px;display:block;margin-left:19px">${s.note}</span>
+      </li>`).join("");
+  }
+
   /* ---------- Votes table ---------- */
   function renderVotes() {
     const body = $("#votes-body");
@@ -245,6 +316,7 @@
     renderHome();
     renderCouncilors();
     renderProfile();
+    renderSpending();
     renderVotes();
     // route home search box to votes page
     const hs = $("#home-search");

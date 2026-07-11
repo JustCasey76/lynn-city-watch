@@ -76,8 +76,14 @@ rows show how votes/spending will look before we ingest the real records.
 3. **Document Library** — the underlying records, organized and linked.
 
 **Phase 3 — Money & accountability:**
-4. **Spending Transparency Dashboard** — budget by department, over time.
-5. **Compare Priorities Tool** — side-by-side spending/voting comparisons.
+4. **Spending Transparency Dashboard** — budget by department, over time, **plus the net
+   local cost**: every spending area shows total dollars, then strips out state aid (the
+   MA "Cherry Sheet," including Chapter 70 school aid) and federal funds to reveal what
+   actually comes out of local Lynn property taxes. A $190M school budget may cost local
+   taxpayers far less than a $38M police budget once outside money is removed — that
+   comparison is the point.
+5. **Compare Priorities Tool** — side-by-side spending/voting comparisons, using net local
+   cost so the comparison reflects real taxpayer burden, not sticker prices.
 6. **Transparency Scorecards** — measurable, methodology-explained, never name-calling.
 
 **Phase 4 — Issues & access:**

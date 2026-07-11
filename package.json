@@ -1,0 +1,13 @@
+{
+  "name": "lynn-city-watch",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A fact-based civic transparency and accountability platform for Lynn, MA city government.",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "UNLICENSED"
+}

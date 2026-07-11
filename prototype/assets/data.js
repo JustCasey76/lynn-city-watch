@@ -103,19 +103,48 @@ const VOTES = [
   },
 ];
 
-/* ---- SAMPLE: illustrative spending snapshot (for home dashboard teaser) ---- */
-const SPENDING_TEASER = [
-  { dept: "Schools",       amount: 0.0, sample: true },
-  { dept: "Police",        amount: 0.0, sample: true },
-  { dept: "Fire",          amount: 0.0, sample: true },
-  { dept: "Public Works",  amount: 0.0, sample: true },
-  { dept: "Administration",amount: 0.0, sample: true },
+/*
+ * ---- SPENDING + FUNDING SOURCE MODEL ----
+ * The core "what does it actually cost ME" feature.
+ *
+ * For each department we track total spending and how it is paid for:
+ *   federal  = federal funds / grants
+ *   state    = state aid (in MA, largely the "Cherry Sheet", incl. Chapter 70 school aid)
+ *   local    = total - federal - state  =  what LOCAL taxpayers actually fund
+ *              (local property tax levy + local receipts like excise & fees)
+ *
+ * NET LOCAL COST is the headline: the slice left once state + federal money is removed.
+ * All dollar figures below are SAMPLE (illustrative, in millions) to demonstrate the
+ * calculation and interface. Real numbers come from the Mayor's Budget, the state
+ * Cherry Sheet, and federal grant records. Proportions are only rough placeholders.
+ */
+const SPENDING_UNIT = "millions";
+const SPENDING = [
+  { dept: "Schools",                  total: 190, federal: 18, state: 120, category: "Schools",        sample: true, note: "In MA, Chapter 70 state education aid typically funds a large share of school budgets." },
+  { dept: "Police",                   total: 38,  federal: 2,  state: 1,   category: "Police",         sample: true, note: "" },
+  { dept: "Fire",                     total: 28,  federal: 1,  state: 1,   category: "Fire",           sample: true, note: "" },
+  { dept: "Public Works & Streets",   total: 21,  federal: 2,  state: 4,   category: "Public Works",   sample: true, note: "Some road work is offset by state Chapter 90 funds." },
+  { dept: "Health & Human Services",  total: 10,  federal: 5,  state: 2,   category: "Social Issues",  sample: true, note: "Often heavily grant-funded." },
+  { dept: "General Government / Admin",total: 16, federal: 1,  state: 1,   category: "Appointments",   sample: true, note: "" },
+  { dept: "Debt Service",             total: 22,  federal: 0,  state: 2,   category: "Budget & Spending", sample: true, note: "" },
+  { dept: "Legal Services",           total: 4,   federal: 0,  state: 0,   category: "Legal Services", sample: true, note: "" },
 ];
+
+/* Citywide revenue mix — where ALL the money comes from (SAMPLE, millions). */
+const CITY_REVENUE = {
+  sample: true,
+  sources: [
+    { source: "Local property tax levy", amount: 235, kind: "local", note: "Raised from Lynn property owners; capped by Proposition 2½." },
+    { source: "State aid (Cherry Sheet)", amount: 150, kind: "state", note: "Includes Chapter 70 school aid." },
+    { source: "Local receipts (excise, fees, permits)", amount: 42, kind: "local", note: "Motor-vehicle excise, fees, fines, permits." },
+    { source: "Federal funds & grants", amount: 30, kind: "federal", note: "Grants and reimbursements." },
+  ],
+};
 
 const SECTIONS = [
   { n: 1,  title: "Councilor Profiles",        blurb: "How each of the 11 members votes, attends, and sponsors.", href: "councilors.html", ready: true },
   { n: 2,  title: "Voting Record Database",    blurb: "Every vote, searchable by member, date, topic, and money.", href: "votes.html", ready: true },
-  { n: 3,  title: "Spending Dashboard",        blurb: "Where taxpayer money goes, by department, over time.", href: "#", ready: false },
+  { n: 3,  title: "Spending Dashboard",        blurb: "Where money goes — and what it really costs YOU after state & federal funds.", href: "spending.html", ready: true },
   { n: 4,  title: "Hot Topic Issue Pages",     blurb: "All the facts on one issue, in one place.", href: "#", ready: false },
   { n: 5,  title: "Transparency Scorecards",   blurb: "Measurable records — never name-calling.", href: "#", ready: false },
   { n: 6,  title: "Public Records Tracker",    blurb: "What we requested, and whether the city delivered.", href: "#", ready: false },

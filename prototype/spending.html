@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spending Dashboard — Lynn City Watch</title>
+  <link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+  <header class="site-header" id="site-header"></header>
+
+  <div class="hero" style="padding:48px 0 40px">
+    <div class="wrap">
+      <span class="pill">● What it actually costs you</span>
+      <h1 style="font-size:clamp(26px,4vw,40px)">Spending Dashboard</h1>
+      <p class="lede" style="margin-bottom:22px">City budgets show a sticker price. But state aid and federal grants pay for a big chunk of it. This dashboard removes that money to reveal the <b>net local cost</b> — the part your Lynn property taxes actually fund.</p>
+      <div class="stats" id="spend-topline"></div>
+    </div>
+  </div>
+
+  <section class="block" style="padding-top:36px">
+    <div class="wrap">
+      <div class="banner warn" style="margin-bottom:24px">
+        <span class="ic">!</span>
+        <div><b>Preview with sample dollar figures.</b> The amounts below are illustrative placeholders (in millions) that demonstrate the calculation and interface. Real numbers come from the city's Mayor's Budget, the state "Cherry Sheet" (state aid, including Chapter 70 school aid), and federal grant records.</div>
+      </div>
+
+      <div id="spend-headline" style="margin-bottom:32px"></div>
+
+      <span class="eyebrow">Net local cost by department</span>
+      <h2 class="h">Where your local tax dollars really go</h2>
+      <p class="sub">"Local" = total spending minus federal minus state — i.e. what's left for Lynn taxpayers to cover through the property tax levy and local fees. Sorted by biggest local cost.</p>
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Department</th>
+              <th>Total budget</th>
+              <th>Federal</th>
+              <th>State aid</th>
+              <th>Net local cost</th>
+              <th>Local share</th>
+            </tr>
+          </thead>
+          <tbody id="spend-body"></tbody>
+        </table>
+      </div>
+      <p class="source-link" style="margin-top:10px">Sources (real): <a href="https://www.lynnma.gov/city_government/departments/cfo/mayor_s_budget" target="_blank" rel="noopener">Mayor's Budget</a> · <a href="https://www.lynnma.gov/city_government/departments/comptrollers/financial_statements" target="_blank" rel="noopener">Financial statements</a></p>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="card">
+        <span class="eyebrow">Citywide revenue mix</span>
+        <h2 class="h">Where all the money comes from</h2>
+        <p class="sub">Every dollar the city spends starts as revenue from one of these sources. Only the <b style="color:var(--accent)">local</b> slices come from Lynn taxpayers directly.</p>
+        <div style="display:flex;height:26px;border-radius:8px;overflow:hidden;margin-bottom:18px;border:1px solid var(--line)" id="revenue-bar"></div>
+        <ul class="answers" id="revenue-legend" style="list-style:none;padding:0;margin:0"></ul>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="assets/data.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

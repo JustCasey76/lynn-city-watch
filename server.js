@@ -1,7 +1,10 @@
 /*
- * Minimal zero-dependency static file server for Lynn City Watch.
- * Serves the prototype/ directory. Listens on process.env.PORT (Railway
- * injects this) or 3000 locally.
+ * Lynn City Watch server.
+ * - Always serves the static site in prototype/.
+ * - If DATABASE_URL is set, connects to Postgres, applies the schema + seed
+ *   (idempotently) on boot, and exposes a read-only JSON API under /api/*.
+ * - With no DATABASE_URL it degrades gracefully to a pure static server, so
+ *   the site keeps working before the database is provisioned.
  */
 const http = require("http");
 const fs = require("fs");
@@ -9,45 +12,168 @@ const path = require("path");
 
 const ROOT = path.join(__dirname, "prototype");
 const PORT = process.env.PORT || 3000;
+const DB_URL = process.env.DATABASE_URL;
 
 const TYPES = {
-  ".html": "text/html; charset=utf-8",
-  ".css": "text/css; charset=utf-8",
-  ".js": "text/javascript; charset=utf-8",
-  ".json": "application/json; charset=utf-8",
-  ".svg": "image/svg+xml",
-  ".png": "image/png",
-  ".jpg": "image/jpeg",
-  ".ico": "image/x-icon",
-  ".woff2": "font/woff2",
+  ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8",
+  ".js": "text/javascript; charset=utf-8", ".json": "application/json; charset=utf-8",
+  ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg",
+  ".ico": "image/x-icon", ".woff2": "font/woff2",
 };
 
-const server = http.createServer((req, res) => {
-  // strip query string, decode, and prevent directory traversal
-  let urlPath = decodeURIComponent((req.url || "/").split("?")[0]);
-  if (urlPath === "/") urlPath = "/index.html";
-  const safePath = path
-    .normalize(urlPath)
-    .replace(/^(\.\.[/\\])+/, "")
-    .replace(/^[/\\]+/, "");
-  let filePath = path.join(ROOT, safePath);
+/* ---------------- database ---------------- */
+let pool = null;
+let dbReady = false;
 
-  if (!filePath.startsWith(ROOT)) {
-    res.writeHead(403);
-    return res.end("Forbidden");
+async function initDb() {
+  if (!DB_URL) {
+    console.log("No DATABASE_URL set — running as static-only server.");
+    return;
+  }
+  const { Pool } = require("pg");
+  const useSsl = /sslmode=require/i.test(DB_URL) || process.env.PGSSL === "true";
+  pool = new Pool({
+    connectionString: DB_URL,
+    ssl: useSsl ? { rejectUnauthorized: false } : false,
+    max: 5,
+  });
+  try {
+    for (const f of ["schema.sql", "seed.sql"]) {
+      const sql = fs.readFileSync(path.join(__dirname, "db", f), "utf8");
+      await pool.query(sql);
+      console.log(`Applied db/${f}`);
+    }
+    dbReady = true;
+    console.log("Database ready.");
+  } catch (err) {
+    console.error("Database init failed (serving static only):", err.message);
+    dbReady = false;
+  }
+}
+
+const send = (res, code, obj) => {
+  res.writeHead(code, { "Content-Type": "application/json; charset=utf-8" });
+  res.end(JSON.stringify(obj));
+};
+
+// derive net local cost when explicit local funding isn't stored
+function withLocal(row) {
+  const t = row.spending_amount, f = row.funding_federal, s = row.funding_state;
+  let local = row.funding_local;
+  if (local == null && t != null) local = Number(t) - Number(f || 0) - Number(s || 0);
+  return { ...row, funding_local: local };
+}
+
+/* ---------------- API ---------------- */
+async function handleApi(req, res, url) {
+  if (!dbReady) return send(res, 503, { error: "database not connected yet" });
+  const p = url.pathname;
+  const q = url.searchParams;
+
+  if (p === "/api/health") return send(res, 200, { ok: true, db: dbReady });
+
+  if (p === "/api/categories") {
+    const { rows } = await pool.query("SELECT id, slug, name FROM categories ORDER BY sort, name");
+    return send(res, 200, rows);
   }
 
+  if (p === "/api/councilors") {
+    const { rows } = await pool.query(
+      "SELECT id,name,seat,seat_type,ward_number,title,phone,email,profile_url,source_url FROM councilors WHERE active ORDER BY ward_number NULLS LAST, name");
+    return send(res, 200, rows);
+  }
+
+  // /api/councilors/:id  -> profile + their recorded positions
+  let m = p.match(/^\/api\/councilors\/([\w-]+)$/);
+  if (m) {
+    const c = await pool.query("SELECT * FROM councilors WHERE id=$1", [m[1]]);
+    if (!c.rows.length) return send(res, 404, { error: "not found" });
+    const votes = await pool.query(
+      `SELECT v.id, v.vote_date, v.title, v.plain_summary, v.result, v.item_type,
+              cat.name AS category, vp.position
+         FROM vote_positions vp
+         JOIN votes v ON v.id = vp.vote_id
+         LEFT JOIN categories cat ON cat.id = v.category_id
+        WHERE vp.councilor_id = $1
+        ORDER BY v.vote_date DESC`, [m[1]]);
+    const tally = await pool.query(
+      "SELECT position, COUNT(*)::int AS n FROM vote_positions WHERE councilor_id=$1 GROUP BY position", [m[1]]);
+    return send(res, 200, { councilor: c.rows[0], votes: votes.rows, tally: tally.rows });
+  }
+
+  if (p === "/api/votes") {
+    const params = [], where = [];
+    if (q.get("category")) { params.push(q.get("category")); where.push(`cat.slug = $${params.length}`); }
+    if (q.get("q")) { params.push(`%${q.get("q").toLowerCase()}%`); where.push(`(LOWER(v.title) LIKE $${params.length} OR LOWER(v.plain_summary) LIKE $${params.length})`); }
+    if (q.get("councilor")) { params.push(q.get("councilor")); where.push(`v.id IN (SELECT vote_id FROM vote_positions WHERE councilor_id = $${params.length})`); }
+    const sql = `SELECT v.*, cat.name AS category_name, cat.slug AS category_slug,
+                        m.minutes_url, m.meeting_date
+                   FROM votes v
+                   LEFT JOIN categories cat ON cat.id = v.category_id
+                   LEFT JOIN meetings m ON m.id = v.meeting_id
+                   ${where.length ? "WHERE " + where.join(" AND ") : ""}
+                   ORDER BY v.vote_date DESC LIMIT 500`;
+    const { rows } = await pool.query(sql, params);
+    return send(res, 200, rows.map(withLocal));
+  }
+
+  m = p.match(/^\/api\/votes\/(\d+)$/);
+  if (m) {
+    const v = await pool.query(
+      `SELECT v.*, cat.name AS category_name FROM votes v
+         LEFT JOIN categories cat ON cat.id=v.category_id WHERE v.id=$1`, [m[1]]);
+    if (!v.rows.length) return send(res, 404, { error: "not found" });
+    const pos = await pool.query(
+      `SELECT vp.position, c.id AS councilor_id, c.name, c.seat
+         FROM vote_positions vp JOIN councilors c ON c.id=vp.councilor_id
+        WHERE vp.vote_id=$1 ORDER BY c.ward_number NULLS LAST, c.name`, [m[1]]);
+    return send(res, 200, { vote: withLocal(v.rows[0]), positions: pos.rows });
+  }
+
+  if (p === "/api/spending") {
+    const fy = q.get("fy");
+    const budget = await pool.query(
+      `SELECT b.*, cat.name AS category_name FROM budget_items b
+         LEFT JOIN categories cat ON cat.id=b.category_id
+        ${fy ? "WHERE b.fiscal_year=$1" : ""} ORDER BY b.total DESC`, fy ? [fy] : []);
+    const revenue = await pool.query(
+      `SELECT * FROM revenue_sources ${fy ? "WHERE fiscal_year=$1" : ""} ORDER BY amount DESC`, fy ? [fy] : []);
+    return send(res, 200, { budget: budget.rows, revenue: revenue.rows });
+  }
+
+  return send(res, 404, { error: "unknown endpoint" });
+}
+
+/* ---------------- static ---------------- */
+function serveStatic(req, res, url) {
+  let urlPath = decodeURIComponent(url.pathname);
+  if (urlPath === "/") urlPath = "/index.html";
+  const safe = path.normalize(urlPath).replace(/^(\.\.[/\\])+/, "").replace(/^[/\\]+/, "");
+  const filePath = path.join(ROOT, safe);
+  if (!filePath.startsWith(ROOT)) { res.writeHead(403); return res.end("Forbidden"); }
   fs.stat(filePath, (err, stat) => {
     if (err || !stat.isFile()) {
       res.writeHead(404, { "Content-Type": "text/html; charset=utf-8" });
-      return res.end("<h1>404 — Not found</h1><p><a href=\"/\">Back to home</a></p>");
+      return res.end('<h1>404 — Not found</h1><p><a href="/">Back to home</a></p>');
     }
     const ext = path.extname(filePath).toLowerCase();
     res.writeHead(200, { "Content-Type": TYPES[ext] || "application/octet-stream" });
     fs.createReadStream(filePath).pipe(res);
   });
+}
+
+const server = http.createServer((req, res) => {
+  const url = new URL(req.url, `http://${req.headers.host || "localhost"}`);
+  if (url.pathname.startsWith("/api/")) {
+    handleApi(req, res, url).catch(err => {
+      console.error("API error:", err.message);
+      send(res, 500, { error: "internal error" });
+    });
+    return;
+  }
+  serveStatic(req, res, url);
 });
 
-server.listen(PORT, () => {
-  console.log(`Lynn City Watch serving prototype/ on port ${PORT}`);
+initDb().finally(() => {
+  server.listen(PORT, () => console.log(`Lynn City Watch on port ${PORT} (db: ${dbReady ? "on" : "off"})`));
 });

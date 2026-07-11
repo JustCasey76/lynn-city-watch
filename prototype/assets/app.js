@@ -29,18 +29,28 @@
   function renderHeader() {
     const here = (location.pathname.split("/").pop() || "index.html");
     const links = NAV.map(n => {
-      const active = n.href.split("#")[0] === here ? " active" : "";
-      return `<a class="${active.trim()}" href="${n.href}">${n.label}</a>`;
+      const isActive = n.href.split("#")[0] === here;
+      return `<a class="${isActive ? "active" : ""}" href="${n.href}"${isActive ? ' aria-current="page"' : ""}>${n.label}</a>`;
     }).join("");
     const el = $("#site-header");
-    if (el) el.innerHTML = `
+    if (!el) return;
+    el.innerHTML = `
+      <a class="skip-link" href="#main">Skip to main content</a>
       <div class="wrap">
         <a class="brand" href="index.html">
-          <span class="mark">L</span>
+          <span class="mark" aria-hidden="true">L</span>
           <span>Lynn City Watch<small>Public records, made auditable</small></span>
         </a>
-        <nav class="nav">${links}</nav>
+        <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">☰</button>
+        <nav class="nav" id="primary-nav" aria-label="Primary">${links}</nav>
       </div>`;
+    const toggle = $(".nav-toggle", el);
+    toggle.addEventListener("click", () => {
+      const open = el.classList.toggle("nav-open");
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      toggle.textContent = open ? "✕" : "☰";
+    });
   }
 
   function renderFooter() {
@@ -171,15 +181,15 @@
 
             <h2 class="h" style="margin-top:32px">Voting record <span class="flag-sample">Sample data</span></h2>
             <p class="sub">Illustrative rows below show the format. Real votes come from official minutes.</p>
-            <div class="tablewrap">
-              <table>
-                <thead><tr><th>Date</th><th>Item</th><th>Category</th><th>Result</th></tr></thead>
+            <div class="tablewrap" tabindex="0" role="region" aria-label="Voting record for ${c.name}">
+              <table class="responsive">
+                <thead><tr><th scope="col">Date</th><th scope="col">Item</th><th scope="col">Category</th><th scope="col">Result</th></tr></thead>
                 <tbody>${myVotes.map(v => `
                   <tr>
-                    <td>${v.date}</td>
-                    <td>${v.title.replace("SAMPLE — ", "")}</td>
-                    <td><span class="badge-cat">${v.category}</span></td>
-                    <td class="${v.result.includes("11–0") || v.result.includes("10–1") ? "result-pass" : "result-split"}">${v.result}</td>
+                    <td data-label="Date" style="white-space:nowrap">${v.date}</td>
+                    <td class="cell-primary">${v.title.replace("SAMPLE — ", "")}</td>
+                    <td data-label="Category"><span class="badge-cat">${v.category}</span></td>
+                    <td data-label="Result" class="${/–0\b/.test(v.result) || v.result.includes("10–1") ? "result-pass" : "result-split"}">${v.result}</td>
                   </tr>`).join("")}
                 </tbody>
               </table>
@@ -243,16 +253,16 @@
       .sort((a, b) => b.local - a.local)
       .map(d => `
         <tr>
-          <td>
+          <td class="cell-primary">
             <div style="font-weight:600">${d.dept} <span class="flag-sample">Sample</span></div>
             ${d.note ? `<div style="color:var(--muted);font-size:12.5px;margin-top:3px">${d.note}</div>` : ""}
           </td>
-          <td style="white-space:nowrap">${money(d.total)}</td>
-          <td style="white-space:nowrap;color:var(--muted)">${money(d.federal)}</td>
-          <td style="white-space:nowrap;color:var(--muted)">${money(d.state)}</td>
-          <td style="white-space:nowrap;font-weight:700;color:var(--ink-2)">${money(d.local)}</td>
-          <td style="min-width:150px">
-            <div style="display:flex;align-items:center;gap:8px">
+          <td data-label="Total budget" style="white-space:nowrap">${money(d.total)}</td>
+          <td data-label="Federal" style="white-space:nowrap;color:var(--muted)">${money(d.federal)}</td>
+          <td data-label="State aid" style="white-space:nowrap;color:var(--muted)">${money(d.state)}</td>
+          <td data-label="Net local cost" style="white-space:nowrap;font-weight:700;color:var(--ink-2)">${money(d.local)}</td>
+          <td data-label="Local share" style="min-width:150px">
+            <div style="display:flex;align-items:center;gap:8px;flex:1">
               <div style="flex:1;background:#eef2f6;border-radius:6px;height:8px;overflow:hidden">
                 <div style="width:${Math.round((d.local / maxLocal) * 100)}%;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2))"></div>
               </div>
@@ -291,19 +301,22 @@
         (cv === "all" || v.category === cv) &&
         (v.title.toLowerCase().includes(qv) || v.summary.toLowerCase().includes(qv)));
       count.textContent = `${rows.length} of ${VOTES.length} sample votes shown`;
-      body.innerHTML = rows.map(v => `
+      body.innerHTML = rows.map(v => {
+        const pass = /–0\b/.test(v.result) || v.result.includes("10–1") || v.result.includes("11–0");
+        return `
         <tr>
-          <td style="white-space:nowrap">${v.date}</td>
-          <td>
+          <td data-label="Date" style="white-space:nowrap">${v.date}</td>
+          <td class="cell-primary">
             <div style="font-weight:600">${v.title.replace("SAMPLE — ", "")} <span class="flag-sample">Sample</span></div>
             <div style="color:var(--muted);font-size:13px;margin-top:3px">${v.summary}</div>
             <div class="source-link" style="margin-top:5px">Source: <a href="${v.source}" target="_blank" rel="noopener">meeting record</a></div>
           </td>
-          <td><span class="badge-cat">${v.category}</span></td>
-          <td style="white-space:nowrap">${v.type}</td>
-          <td>${v.spending}</td>
-          <td class="${v.result.includes("11–0") || v.result.includes("10–1") ? "result-pass" : "result-split"};white-space:nowrap">${v.result}</td>
-        </tr>`).join("");
+          <td data-label="Category"><span class="badge-cat">${v.category}</span></td>
+          <td data-label="Type" style="white-space:nowrap">${v.type}</td>
+          <td data-label="Spending">${v.spending}</td>
+          <td data-label="Result" class="${pass ? "result-pass" : "result-split"}" style="white-space:nowrap">${v.result}</td>
+        </tr>`;
+      }).join("");
     }
     catSel.addEventListener("change", draw);
     q.addEventListener("input", draw);

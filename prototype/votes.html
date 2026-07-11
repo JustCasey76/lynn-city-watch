@@ -9,6 +9,7 @@
 <body>
   <header class="site-header" id="site-header"></header>
 
+  <main id="main" tabindex="-1">
   <section class="block">
     <div class="wrap">
       <span class="eyebrow">Section 2</span>
@@ -26,10 +27,10 @@
       </div>
       <p class="count" id="vote-count"></p>
 
-      <div class="tablewrap">
-        <table>
+      <div class="tablewrap" tabindex="0" role="region" aria-label="Council votes table">
+        <table class="responsive">
           <thead>
-            <tr><th>Date</th><th>Item &amp; summary</th><th>Category</th><th>Type</th><th>Spending impact</th><th>Result</th></tr>
+            <tr><th scope="col">Date</th><th scope="col">Item &amp; summary</th><th scope="col">Category</th><th scope="col">Type</th><th scope="col">Spending impact</th><th scope="col">Result</th></tr>
           </thead>
           <tbody id="votes-body"></tbody>
         </table>
@@ -37,6 +38,7 @@
     </div>
   </section>
 
+  </main>
   <footer class="site-footer" id="site-footer"></footer>
   <script src="assets/data.js"></script>
   <script src="assets/app.js"></script>

@@ -161,3 +161,72 @@ tbody tr:hover{background:#fafbfc}
 .source-link{font-size:12.5px;color:var(--muted)}
 .source-link a{color:var(--accent)}
 .crumb{color:var(--muted);font-size:13px;margin:20px 0 0}
+
+/* =====================================================================
+   Accessibility + mobile
+   ===================================================================== */
+
+/* screen-reader-only utility */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* skip-to-content link */
+.skip-link{position:absolute;left:-9999px;top:0;background:#fff;color:var(--ink);
+  padding:11px 18px;border-radius:0 0 10px 0;z-index:100;font-weight:700;box-shadow:var(--shadow)}
+.skip-link:focus{left:0}
+
+/* visible keyboard focus (only when navigating by keyboard) */
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
+[tabindex]:focus-visible{outline:3px solid #7fb0ff;outline-offset:2px;border-radius:8px}
+.site-header a:focus-visible,.nav-toggle:focus-visible,.site-footer a:focus-visible{outline-color:#ffd9a8}
+
+/* hamburger toggle (hidden on desktop) */
+.nav-toggle{display:none;background:transparent;border:1px solid rgba(255,255,255,.28);
+  color:#fff;width:44px;height:44px;border-radius:10px;font-size:19px;cursor:pointer;
+  align-items:center;justify-content:center;margin-left:auto;line-height:1}
+.nav-toggle:hover{background:rgba(255,255,255,.1)}
+
+@media(max-width:760px){
+  .site-header .wrap{height:auto;min-height:60px;flex-wrap:wrap;gap:12px;padding-top:11px;padding-bottom:11px}
+  .nav-toggle{display:inline-flex}
+  .nav{display:none;order:3;flex-basis:100%;flex-direction:column;gap:3px;margin-left:0;
+    padding-top:6px;border-top:1px solid rgba(255,255,255,.1)}
+  .site-header.nav-open .nav{display:flex}
+  .nav a{padding:13px 14px;font-size:15px;border-radius:9px}   /* larger touch targets */
+}
+
+/* generous touch targets for controls on small screens */
+@media(max-width:640px){
+  .filters input,.filters select,.searchbar button,.searchbar input,.btn-ghost{min-height:46px}
+  .filters input,.filters select{width:100%}
+  .filters{flex-direction:column}
+}
+
+/* responsive data tables -> stacked cards on phones */
+@media(max-width:640px){
+  table.responsive{min-width:0;width:100%}
+  table.responsive thead{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  table.responsive tbody tr{display:block;border:1px solid var(--line);border-radius:12px;
+    margin-bottom:14px;padding:6px 6px;background:#fff;box-shadow:var(--shadow)}
+  table.responsive tbody tr:hover{background:#fff}
+  table.responsive tbody td{display:flex;justify-content:space-between;gap:16px;
+    border:0;border-bottom:1px solid var(--line);padding:11px 12px;text-align:right;align-items:baseline}
+  table.responsive tbody tr td:last-child{border-bottom:0}
+  table.responsive tbody td::before{content:attr(data-label);font-weight:700;color:var(--muted);
+    text-align:left;flex:0 0 38%;font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+  table.responsive tbody td.cell-primary{display:block;text-align:left}
+  table.responsive tbody td.cell-primary::before{display:none}
+  .tablewrap{overflow:visible;border:0;box-shadow:none;background:transparent}
+}
+
+/* horizontal-scroll tables: focusable + hint on tablet widths */
+.tablewrap{scrollbar-width:thin}
+@media(max-width:640px){ .tablewrap:focus-visible{outline:3px solid #7fb0ff} }
+
+/* respect reduced-motion preference */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;scroll-behavior:auto!important}
+  .card.link:hover{transform:none}
+}

@@ -89,7 +89,7 @@
           This website is an independent civic transparency project. It is not affiliated with, endorsed by, or operated by the City of Lynn, Lynn City Council, Lynn Public Schools, Lynn Police Department, Lynn Fire Department, or any city agency. Information is compiled from public records and other cited sources. Users should review the original source documents before relying on any summary or analysis.
         </p>
         <p class="disclaimer" style="margin-top:12px">
-          <b>Prototype note:</b> the councilor roster, seats, titles, meeting schedule, and source links are real (from lynnma.gov, 2026-07-11). Rows marked <span class="flag-sample">Sample</span> are illustrative placeholders shown only to demonstrate the interface — not real records — and will be replaced with sourced public records. Found an error or missing context? <a href="corrections.html">Submit a correction</a>.
+          Data shown is compiled from official public records: the councilor roster and meeting schedule from lynnma.gov; the 2024–2026 voting record from the official council minutes; spending and revenue figures from the city's audited financial statements; and meeting videos from Lynn Community TV. Each item links to its source. Found an error or missing context? <a href="corrections.html">Submit a correction</a>.
         </p>
       </div>`;
   }
@@ -146,7 +146,6 @@
     if (!host) return;
     const id = new URLSearchParams(location.search).get("id");
     const c = COUNCILORS.find(x => x.id === id) || COUNCILORS[0];
-    const myVotes = VOTES; // in prototype, all sample votes shown for illustration
 
     $("#profile-head").innerHTML = `
       <div class="wrap">
@@ -278,33 +277,29 @@
         <span style="color:var(--muted);font-size:12.5px;display:block;margin-left:19px">${s.note || ""}</span>
       </li>`).join("");
 
-    // ---- department table: SAMPLE, illustrating the METHOD only ----
-    const rows = SPENDING.map(d => {
-      const local = d.total - d.federal - d.state;
-      return { ...d, local, localPct: Math.round((local / d.total) * 100) };
-    });
-    const maxLocal = Math.max(...rows.map(r => r.local));
-    $("#spend-body").innerHTML = rows
-      .sort((a, b) => b.local - a.local)
-      .map(d => `
+    // ---- REAL: General Fund spending by function (audited FY2025) ----
+    const fns = GF_EXPENDITURES.functions.slice().sort((a, b) => b.actual - a.actual);
+    const maxA = Math.max(...fns.map(f => f.actual));
+    const totalActual = fns.reduce((a, f) => a + f.actual, 0);
+    $("#spend-body").innerHTML = fns.map(f => {
+      const varr = f.final - f.actual;                       // positive = spent under budget
+      const share = Math.round((f.actual / totalActual) * 100);
+      return `
         <tr>
-          <td class="cell-primary">
-            <div style="font-weight:600">${d.dept} <span class="flag-sample">Sample</span></div>
-            ${d.note ? `<div style="color:var(--muted);font-size:12.5px;margin-top:3px">${d.note}</div>` : ""}
-          </td>
-          <td data-label="Gross cost" style="white-space:nowrap">${money(d.total)}</td>
-          <td data-label="Federal (documented)" style="white-space:nowrap;color:var(--muted)">${money(d.federal)}</td>
-          <td data-label="State (documented)" style="white-space:nowrap;color:var(--muted)">${money(d.state)}</td>
-          <td data-label="Net local cost" style="white-space:nowrap;font-weight:700;color:var(--ink-2)">${money(d.local)}</td>
-          <td data-label="Local share" style="min-width:150px">
+          <td class="cell-primary" style="font-weight:600">${f.name}</td>
+          <td data-label="Final budget" style="white-space:nowrap;color:var(--muted)">${usd(f.final)}</td>
+          <td data-label="Actual spent" style="white-space:nowrap;font-weight:700;color:var(--ink-2)">${usd(f.actual)}</td>
+          <td data-label="Vs budget" style="white-space:nowrap;color:${varr >= 0 ? "var(--good)" : "var(--bad)"}">${usd(Math.abs(varr))} ${varr >= 0 ? "under" : "over"}</td>
+          <td data-label="Share" style="min-width:150px">
             <div style="display:flex;align-items:center;gap:8px;flex:1">
               <div style="flex:1;background:#eef2f6;border-radius:6px;height:8px;overflow:hidden">
-                <div style="width:${Math.round((d.local / maxLocal) * 100)}%;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2))"></div>
+                <div style="width:${Math.round((f.actual / maxA) * 100)}%;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2))"></div>
               </div>
-              <span style="font-size:12px;color:var(--muted);white-space:nowrap">${d.localPct}% local</span>
+              <span style="font-size:12px;color:var(--muted);white-space:nowrap">${share}%</span>
             </div>
           </td>
-        </tr>`).join("");
+        </tr>`;
+    }).join("");
   }
 
   /* ---------- Votes table (real votes from the database) ---------- */

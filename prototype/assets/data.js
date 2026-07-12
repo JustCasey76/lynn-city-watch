@@ -1,15 +1,13 @@
 /*
- * Lynn Transparency Platform — prototype data
+ * Lynn Transparency Platform — client data (roster, categories, revenue,
+ * spending-by-function, sources).
  * -------------------------------------------------------------
- * REAL DATA: the councilor roster, seats, titles, and the record
- * source locations below were pulled from the City of Lynn's own
- * website (lynnma.gov) on 2026-07-11.
- *
- * SAMPLE DATA: vote rows, attendance %, and spending figures marked
- * with `sample: true` are ILLUSTRATIVE placeholders so you can see how
- * the interface behaves. They are clearly labeled everywhere in the UI
- * and must be replaced with sourced records before launch. Nothing
- * fabricated is ever shown as if it were real.
+ * ALL figures here are REAL and sourced:
+ *   - councilor roster, seats, titles, source links: City of Lynn (lynnma.gov)
+ *   - citywide revenue mix + General Fund spending by function: Lynn audited
+ *     financial statements, FY2025 (budgetary comparison schedule, p.83)
+ * The voting record, per-member positions, attendance, and meeting videos are
+ * served live from the database (see /api), not from this file.
  * -------------------------------------------------------------
  */
 
@@ -56,79 +54,31 @@ const CATEGORIES = [
 ];
 
 /*
- * ---- SAMPLE: illustrative vote rows ----
- * These demonstrate the data model + interface ONLY. Replace with
- * sourced records from official minutes before launch.
+ * REAL: General Fund expenditures by function — Lynn audited financial
+ * statements, year ended June 30, 2025 (budgetary comparison schedule, p.83).
+ * "final" = final budget, "actual" = actual expenditures. Exact dollars.
+ * The audit reports spending by function, not the state/federal funding split
+ * per function, so a per-function "net local cost" is NOT derivable from this
+ * document — see the citywide revenue mix and the per-vote net local figures.
  */
-const VOTES = [
-  {
-    id: "s1", sample: true, date: "2026-05-12",
-    title: "SAMPLE — Order to appropriate funds for police department overtime",
-    category: "Police", type: "Budget item", result: "Passed 8–3",
-    summary: "Illustrative example of how a spending vote will be summarized in plain English, with the dollar impact and department shown.",
-    spending: "$1,200,000 (sample)", department: "Police",
-    effect: "Expanded", source: SOURCES.municipalMeetings,
-  },
-  {
-    id: "s2", sample: true, date: "2026-04-28",
-    title: "SAMPLE — Ordinance amending zoning for downtown mixed-use district",
-    category: "Zoning & Development", type: "Ordinance", result: "Passed 7–4",
-    summary: "Illustrative example of a split vote on a development/zoning change.",
-    spending: "None", department: "Inspectional Services",
-    effect: "Redirected", source: SOURCES.municipalMeetings,
-  },
-  {
-    id: "s3", sample: true, date: "2026-04-14",
-    title: "SAMPLE — Resolution supporting expanded public-records posting online",
-    category: "Transparency", type: "Resolution", result: "Passed 11–0",
-    summary: "Illustrative example of a unanimous transparency-related resolution.",
-    spending: "None", department: "City Clerk",
-    effect: "Expanded", source: SOURCES.municipalMeetings,
-  },
-  {
-    id: "s4", sample: true, date: "2026-03-24",
-    title: "SAMPLE — Appropriation for fire apparatus replacement",
-    category: "Fire", type: "Budget item", result: "Passed 10–1",
-    summary: "Illustrative example of a public-safety capital spending vote.",
-    spending: "$850,000 (sample)", department: "Fire",
-    effect: "Expanded", source: SOURCES.municipalMeetings,
-  },
-  {
-    id: "s5", sample: true, date: "2026-03-10",
-    title: "SAMPLE — Appointment to the Zoning Board of Appeals",
-    category: "Appointments", type: "Appointment", result: "Passed 6–5",
-    summary: "Illustrative example of a closely-divided appointment vote.",
-    spending: "None", department: "Boards & Commissions",
-    effect: "Delayed", source: SOURCES.municipalMeetings,
-  },
-];
-
-/*
- * ---- SPENDING + FUNDING SOURCE MODEL ----
- * The core "what does it actually cost ME" feature.
- *
- * For each department we track total spending and how it is paid for:
- *   federal  = federal funds / grants
- *   state    = state aid (in MA, largely the "Cherry Sheet", incl. Chapter 70 school aid)
- *   local    = total - federal - state  =  what LOCAL taxpayers actually fund
- *              (local property tax levy + local receipts like excise & fees)
- *
- * NET LOCAL COST is the headline: the slice left once state + federal money is removed.
- * All dollar figures below are SAMPLE (illustrative, in millions) to demonstrate the
- * calculation and interface. Real numbers come from the Mayor's Budget, the state
- * Cherry Sheet, and federal grant records. Proportions are only rough placeholders.
- */
-const SPENDING_UNIT = "millions";
-const SPENDING = [
-  { dept: "Schools",                  total: 190, federal: 18, state: 120, category: "Schools",        sample: true, note: "In MA, Chapter 70 state education aid typically funds a large share of school budgets." },
-  { dept: "Police",                   total: 38,  federal: 2,  state: 1,   category: "Police",         sample: true, note: "" },
-  { dept: "Fire",                     total: 28,  federal: 1,  state: 1,   category: "Fire",           sample: true, note: "" },
-  { dept: "Public Works & Streets",   total: 21,  federal: 2,  state: 4,   category: "Public Works",   sample: true, note: "Some road work is offset by state Chapter 90 funds." },
-  { dept: "Health & Human Services",  total: 10,  federal: 5,  state: 2,   category: "Social Issues",  sample: true, note: "Often heavily grant-funded." },
-  { dept: "General Government / Admin",total: 16, federal: 1,  state: 1,   category: "Appointments",   sample: true, note: "" },
-  { dept: "Debt Service",             total: 22,  federal: 0,  state: 2,   category: "Budget & Spending", sample: true, note: "" },
-  { dept: "Legal Services",           total: 4,   federal: 0,  state: 0,   category: "Legal Services", sample: true, note: "" },
-];
+const GF_EXPENDITURES = {
+  sample: false,
+  fiscalYear: 2025,
+  basis: "General Fund — audited actual expenditures (year ended June 30, 2025)",
+  sourceLabel: "City of Lynn audited financial statements, FY2025 (budgetary comparison schedule, p.83)",
+  sourceUrl: "https://www.lynnma.gov/city_government/departments/comptrollers/financial_statements",
+  functions: [
+    { name: "Education (Lynn Public Schools)", final: 291073391, actual: 290202340 },
+    { name: "Employee benefits (pensions, insurance)", final: 96696083, actual: 96635879 },
+    { name: "Public safety (police, fire, inspections)", final: 61903826, actual: 58717482 },
+    { name: "Intergovernmental assessments", final: 41872578, actual: 41738796 },
+    { name: "Public works", final: 22257804, actual: 20772075 },
+    { name: "General government", final: 13963604, actual: 13229788 },
+    { name: "Debt service", final: 7445503, actual: 5927814 },
+    { name: "Culture and recreation", final: 1391615, actual: 1381486 },
+    { name: "Health and human services", final: 1047364, actual: 980151 },
+  ],
+};
 
 /*
  * Citywide General Fund revenue mix — REAL, from Lynn's audited financial
@@ -149,7 +99,11 @@ const CITY_REVENUE = {
     { source: "Excise taxes", amount: 12209359, kind: "localtax", note: "Chiefly motor-vehicle excise; raised locally." },
     { source: "Penalties, interest & other taxes", amount: 2061226, kind: "localtax", note: "Tax-related penalties and interest." },
     { source: "Intergovernmental revenue", amount: 325066934, kind: "intergov", note: "Generally includes state and federal sources; the audit does not break this single line into state vs. federal." },
-    { source: "Other revenue (charges, departmental & local receipts)", amount: 18168944, kind: "other", note: "Remainder of General Fund revenue: charges for services, departmental receipts, investment income, and other local receipts." },
+    { source: "Charges for services", amount: 5378270, kind: "other", note: "Local departmental charges for city services." },
+    { source: "Licenses and permits", amount: 5027846, kind: "other", note: "Local licensing and permitting fees." },
+    { source: "Fines and forfeitures", amount: 3934350, kind: "other", note: "Local fines and forfeitures." },
+    { source: "Investment income", amount: 3598462, kind: "other", note: "Interest and investment earnings." },
+    { source: "Miscellaneous", amount: 230016, kind: "other", note: "Other miscellaneous General Fund revenue." },
   ],
 };
 

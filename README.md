@@ -39,18 +39,37 @@ transparency finding, not a blank to fill with a guess.
 - [`prototype/`](prototype/) — clickable static prototype (home, councilor profiles,
   voting database)
 
-## Running the prototype locally
+## Running locally
 
 ```bash
-cd prototype
-python -m http.server 8747
-# then open http://localhost:8747/index.html
+npm install
+node server.js                       # static site only, no database
+DATABASE_URL=postgres://... node server.js   # full site with the vote database
 ```
 
-## Status
+Then open http://localhost:3000.
 
-Early prototype. The councilor roster, seats, titles, meeting schedule, and source links
-are real. Vote rows and dollar figures marked **Sample** are placeholders demonstrating the
-interface and will be replaced with sourced records before launch.
+## How the data gets updated
+
+- **Council votes** live in `db/data/votes_YYYY.json`, one entry per meeting,
+  transcribed from the official minutes (each meeting carries its city file key,
+  so every vote links to its source PDF).
+- On every boot the server runs `db/sync.js`, which reloads any vote file whose
+  contents changed since the last load (all-or-nothing, in one transaction).
+  **To publish new votes: add or fix the JSON, commit, deploy.** No manual
+  database step. To force a full reload: `DATABASE_URL=... node db/sync.js --force`.
+- **Budget, committees, and the records tracker** live in
+  `prototype/assets/data.js`, each with its source link and the date it was checked.
+- `GET /api/status` shows how current the vote data is.
+
+## Status (as of November 26, 2026)
+
+- Voting record: January 2024 through the October 13, 2026 meeting
+  (1,369 recorded votes from 57 meetings). Minutes for Oct 27, Nov 10 and
+  Nov 24, 2026 were not yet posted by the city; June 9, 2026 minutes were
+  approved but never posted (see the Records Tracker page).
+- Spending: FY2027 Mayor's submitted budget ($577,017,037) and FY2025 audited
+  financial statements (the latest audit the city has posted).
+- Councilor profiles include committee assignments from lynnma.gov.
 
 This is an independent project and is not affiliated with the City of Lynn.

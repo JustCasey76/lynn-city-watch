@@ -123,7 +123,8 @@ async function loadFile(client, file, data) {
       let note = fund.note ? fund.note + " " : "";
       if (hasTally) {
         if (isRollCall) note += "Each member's position is recorded individually in the minutes (roll call).";
-        else if (Object.keys(named).length) note += "The minutes name the members who broke from the majority; the remaining present members' positions are derived from the recorded tally.";
+        else if (Object.keys(named).length && Object.values(named).every(p => p === "absent")) note += "The minutes name the members absent for this vote; the remaining present members' positions are derived from the recorded tally.";
+        else if (Object.keys(named).length) note += "The minutes name the members who broke from the majority or were absent; the remaining present members' positions are derived from the recorded tally.";
         else note += "The minutes record the tally and attendance but do not list each member individually; positions shown are derived from the tally and attendance.";
       }
       const result = v.result || "";

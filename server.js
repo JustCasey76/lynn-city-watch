@@ -20,6 +20,7 @@ const TYPES = {
   ".js": "text/javascript; charset=utf-8", ".json": "application/json; charset=utf-8",
   ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg",
   ".ico": "image/x-icon", ".woff2": "font/woff2",
+  ".xml": "application/xml; charset=utf-8", ".txt": "text/plain; charset=utf-8",
 };
 
 /* ---------------- database ---------------- */
@@ -44,10 +45,12 @@ async function initDb() {
       await pool.query(sql);
       console.log(`Applied db/${f}`);
     }
-    // Load any new or corrected vote files from db/data (only files that changed).
-    await syncVotes(pool, { log: (m) => console.log(m) });
     dbReady = true;
     console.log("Database ready.");
+    // Load any new or corrected vote files from db/data (only files that changed).
+    // Runs in the background; each file loads in one transaction, so visitors keep
+    // seeing the previous data until the new data is complete.
+    syncVotes(pool, { log: (m) => console.log(m) }).catch(e => console.error("Vote sync failed:", e.message));
     refreshMeetings(true).catch(e => console.error("Meetings refresh failed:", e.message));
   } catch (err) {
     console.error("Database init failed (serving static only):", err.message);
@@ -107,12 +110,15 @@ const send = (res, code, obj) => {
   res.end(JSON.stringify(obj));
 };
 
-// derive net local cost when explicit local funding isn't stored
+// Derive net local cost only when the outside (state/federal) share is actually
+// recorded. If nothing about the funding is known, leave it unknown (null) —
+// never assume an item is 100% locally funded.
 function withLocal(row) {
   const t = row.spending_amount, f = row.funding_federal, s = row.funding_state;
   let local = row.funding_local;
-  if (local == null && t != null) local = Number(t) - Number(f || 0) - Number(s || 0);
-  return { ...row, funding_local: local };
+  if (local == null && t != null && (f != null || s != null)) local = Number(t) - Number(f || 0) - Number(s || 0);
+  const num = (x) => (x == null ? null : Number(x)); // Postgres NUMERIC arrives as text
+  return { ...row, spending_amount: num(t), funding_local: num(local) };
 }
 
 /* ---------------- API ---------------- */

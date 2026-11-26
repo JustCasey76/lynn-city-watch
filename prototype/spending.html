@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Spending Dashboard — Lynn City Watch</title>
+  <meta name="description" content="Lynn's FY2027 budget and FY2025 audited spending: where the money comes from, where it goes, and what local taxpayers pay.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/app.css">
 </head>
 <body>
@@ -19,7 +21,52 @@
     </div>
   </div>
 
-  <section class="block" style="padding-top:36px">
+  <section class="block" style="padding-top:36px" id="fy27">
+    <div class="wrap">
+      <span class="eyebrow">Current year · FY2027 budget</span>
+      <h2 class="h">This year's budget: $577 million</h2>
+      <p class="sub" id="fy27-intro"></p>
+
+      <div class="grid cols-2" style="gap:18px;align-items:start">
+        <div class="card">
+          <h3 style="margin:0 0 4px">Where FY2027 money comes from</h3>
+          <p class="sub" style="font-size:13.5px;margin:0 0 14px">Planned revenue, by source.</p>
+          <div class="mixbar" id="fy27-bar" role="img" aria-label="FY2027 planned revenue by source"></div>
+          <ul class="legend" id="fy27-rev"></ul>
+        </div>
+        <div class="card" style="border-left:4px solid var(--accent)">
+          <h3 style="margin:0 0 4px">Schools: who pays?</h3>
+          <p class="sub" style="font-size:13.5px;margin:0 0 14px">The state's school-funding formula, as stated in the budget's school section.</p>
+          <div id="fy27-schools"></div>
+        </div>
+      </div>
+
+      <h3 style="margin:30px 0 6px">Where FY2027 money goes</h3>
+      <p class="sub" style="font-size:14px">Each spending group in the budget summary, compared with last year's final budget.</p>
+      <div class="tablewrap" tabindex="0" role="region" aria-label="FY2027 budget by spending group">
+        <table class="responsive">
+          <thead><tr><th scope="col">Spending group</th><th scope="col">FY2026 final</th><th scope="col">FY2027 submitted</th><th scope="col">Change</th><th scope="col">Share</th></tr></thead>
+          <tbody id="fy27-body"></tbody>
+        </table>
+      </div>
+
+      <div class="grid cols-2" style="gap:18px;margin-top:22px;align-items:start">
+        <div class="card">
+          <h3 style="margin:0 0 4px">Largest single lines</h3>
+          <p class="sub" style="font-size:13.5px;margin:0 0 12px">Selected department and benefit lines, FY2026 → FY2027.</p>
+          <ul class="legend" id="fy27-depts"></ul>
+        </div>
+        <div class="card">
+          <h3 style="margin:0 0 4px">One-time purchases from Free Cash: $2.9M</h3>
+          <p class="sub" style="font-size:13.5px;margin:0 0 12px">Last year's surplus, paid for by local revenue, spent on one-time items.</p>
+          <ul class="legend" id="fy27-capital"></ul>
+        </div>
+      </div>
+      <p class="source-link" id="fy27-source" style="margin-top:12px"></p>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:12px">
     <div class="wrap">
       <div id="spend-headline" style="margin-bottom:32px"></div>
 

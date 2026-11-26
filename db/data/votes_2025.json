@@ -4709,9 +4709,9 @@
     "item_type": "set down public hearing",
     "category": "schools",
     "department": "City of Lynn",
-    "funding_source": "Bond Order",
-    "spending_amount": 9000000,
-    "summary": "The Council voted to set down a public hearing for a $9,000,000.00 New Pickering Middle School Bond Order. Motion made by Councilor Chakoutis and seconded by Councilor Hogan; 11 YES 0 NO.",
+    "funding_source": "",
+    "spending_amount": null,
+    "summary": "The Council voted to set down a public hearing for a $9,000,000.00 New Pickering Middle School Bond Order. Motion made by Councilor Chakoutis and seconded by Councilor Hogan; 11 YES 0 NO. This motion only scheduled the public hearing; it did not approve any spending, so the bond amount is not counted as spending on this vote.",
     "named_positions": []
    },
    {

@@ -23,6 +23,7 @@
     { href: "votes.html", label: "Votes" },
     { href: "spending.html", label: "Spending" },
     { href: "meetings.html", label: "Meetings" },
+    { href: "records.html", label: "Records Tracker" },
     { href: "index.html#sections", label: "All Sections" },
   ];
   const money = (m) => "$" + m.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 1 }) + "M";
@@ -80,6 +81,7 @@
               <li><a href="votes.html">Voting Database</a></li>
               <li><a href="spending.html">Spending Dashboard</a></li>
               <li><a href="immigration.html">Immigration-Related Spending</a></li>
+              <li><a href="records.html">Public Records Tracker</a></li>
               <li><a href="unaccounted.html">Funds Not Fully Accounted For</a></li>
               <li><a href="corrections.html">Corrections &amp; Updates</a></li>
               <li><a href="index.html#sections">See all sections</a></li>
@@ -90,7 +92,7 @@
           This website is an independent civic transparency project. It is not affiliated with, endorsed by, or operated by the City of Lynn, Lynn City Council, Lynn Public Schools, Lynn Police Department, Lynn Fire Department, or any city agency. Information is compiled from public records and other cited sources. Users should review the original source documents before relying on any summary or analysis.
         </p>
         <p class="disclaimer" style="margin-top:12px">
-          Data shown is compiled from official public records: the councilor roster and meeting schedule from lynnma.gov; the 2024–2026 voting record from the official council minutes; spending and revenue figures from the city's audited financial statements; and meeting videos from Lynn Community TV. Each item links to its source. Found an error or missing context? <a href="corrections.html">Submit a correction</a>.
+          Data shown is compiled from official public records: the councilor roster and meeting schedule from lynnma.gov; the 2024–2026 voting record from the official council minutes; spending and revenue figures from the city's budget and audited financial statements; committee assignments from lynnma.gov; and meeting videos from Lynn Community TV. Each item links to its source. Found an error or missing context? <a href="corrections.html">Submit a correction</a>.
         </p>
       </div>`;
   }
@@ -103,7 +105,7 @@
         <div class="n">${x.n}</div>
         <h3>${x.title}</h3>
         <p>${x.blurb}</p>
-        <span class="soon ${x.ready ? "ready" : ""}">${x.ready ? "In prototype" : "Planned"}</span>
+        <span class="soon ${x.ready ? "ready" : ""}">${x.ready ? "Live" : "Planned"}</span>
       </a>`).join("");
 
     const cf = $("#council-facts");
@@ -112,6 +114,21 @@
       <div class="s"><b>${COUNCIL_FACTS.ward}</b><span>Ward seats</span></div>
       <div class="s"><b>${COUNCIL_FACTS.atLarge}</b><span>At-large seats</span></div>
       <div class="s"><b>2&amp;4</b><span>Tuesdays / month</span></div>`;
+
+    const fresh = $("#data-fresh");
+    if (fresh) (async () => {
+      try {
+        const r = await fetch("/api/status");
+        if (!r.ok) throw new Error("api");
+        const st = await r.json();
+        const missing = MINUTES_2026.filter(m => !m.key).length;
+        fresh.innerHTML = `
+          <span><b>${Number(st.votes).toLocaleString("en-US")}</b> recorded votes from <b>${st.meetings}</b> meetings</span>
+          <span>Votes current through <b>${fmtDate(String(st.latest_date))}</b></span>
+          <span>Budget: <b>FY${BUDGET_FY27.fiscalYear}</b></span>
+          <span><a href="records.html" style="color:#ffd9a8">${missing} council minutes not yet posted by the city →</a></span>`;
+      } catch (e) { fresh.remove(); }
+    })();
   }
 
   /* ---------- Councilor grid ---------- */
@@ -139,6 +156,17 @@
       const v = filter.value;
       draw(v === "all" ? COUNCILORS : COUNCILORS.filter(c => c.type === v));
     });
+  }
+
+  /* ---------- committee assignments (real, from lynnma.gov) ---------- */
+  function committeeHtml(id) {
+    if (typeof COMMITTEES === "undefined") return "";
+    const mine = COMMITTEES.filter(k => k.chairs.includes(id) || k.members.includes(id))
+      .sort((a, b) => (b.chairs.includes(id) - a.chairs.includes(id)) || a.name.localeCompare(b.name));
+    const list = mine.length
+      ? `<ul class="committee-list">${mine.map(k => `<li><span>${k.name}</span>${k.chairs.includes(id) ? `<span class="chip info">${k.chairs.length > 1 ? "Co-chair" : "Chair"}</span>` : ""}</li>`).join("")}</ul>`
+      : `<p class="sub" style="margin:0">Not listed on any committee on the city's page.</p>`;
+    return list + `<p class="source-link" style="margin-top:12px">${mine.length} committees · Source: <a href="${COMMITTEES_SOURCE}" target="_blank" rel="noopener">City Council committees page</a> (checked ${RECORDS_CHECKED})</p>`;
   }
 
   /* ---------- Single profile ---------- */
@@ -172,7 +200,7 @@
         <div class="two-col">
           <div>
             <h2 class="h" style="margin-bottom:4px">Voting record</h2>
-            <p class="sub" id="pf-note">Loading this member's recorded votes from the 2026 council minutes…</p>
+            <p class="sub" id="pf-note">Loading this member's recorded votes from the official council minutes…</p>
             <div class="tablewrap" tabindex="0" role="region" aria-label="Voting record for ${c.name}">
               <table class="responsive">
                 <thead><tr><th scope="col">Date</th><th scope="col">Item</th><th scope="col">Category</th><th scope="col">Their vote</th><th scope="col">Result</th></tr></thead>
@@ -194,7 +222,7 @@
             </div>
             <div class="card" style="margin-top:16px">
               <h3 style="margin:0 0 8px">Committee assignments</h3>
-              <p class="sub" style="margin:0">Not yet sourced. Will be added from council committee records.</p>
+              ${committeeHtml(c.id)}
             </div>
           </aside>
         </div>
@@ -213,21 +241,42 @@
         const other = total - yes - absent;
         const attended = total - absent;
         const attPct = total ? Math.round((attended / total) * 100) : null;
+        // meeting-level view: a meeting counts as attended if the member is recorded on any vote that night
+        const byDate = {};
+        votes.forEach(v => { const d = String(v.vote_date).slice(0, 10); byDate[d] = byDate[d] || v.position !== "absent"; });
+        const mtgAll = Object.keys(byDate).length, mtgPresent = Object.values(byDate).filter(Boolean).length;
         $("#pf-kpis").innerHTML = `
-          <div class="kpi"><b>${attPct == null ? "—" : attPct + "%"}</b><span>Attendance (${attended}/${total})</span></div>
+          <div class="kpi"><b>${attPct == null ? "—" : attPct + "%"}</b><span>Present for ${attended} of ${total} votes · ${mtgPresent} of ${mtgAll} meetings</span></div>
           <div class="kpi"><b>${total}</b><span>Recorded votes</span></div>
           <div class="kpi"><b>${yes}</b><span>Voted yes</span></div>
           <div class="kpi"><b>${other}</b><span>No / abstain / present</span></div>`;
-        $("#pf-note").innerHTML = `${total} recorded votes from official 2026 Lynn City Council minutes. Where the minutes do not list members individually, the position is derived from the recorded tally and attendance (noted on each vote). "No / abstain / present" counts any position other than yes or absent.`;
+        const yrs = votes.map(v => String(v.vote_date).slice(0, 4)).sort();
+        const span = yrs.length ? (yrs[0] === yrs[yrs.length - 1] ? yrs[0] : yrs[0] + "–" + yrs[yrs.length - 1]) : "";
+        $("#pf-note").innerHTML = `${total} recorded votes from official Lynn City Council minutes${span ? " (" + span + ")" : ""}. Where the minutes do not list members individually, the position is derived from the recorded tally and attendance (noted on each vote). "No / abstain / present" counts any position other than yes or absent.`;
         const posClass = { yes: "result-pass", no: "result-split", abstain: "result-split", present: "result-split" };
-        $("#pf-votes").innerHTML = votes.length ? votes.map(v => `
+        const rowHtml = (v) => `
           <tr>
             <td data-label="Date" style="white-space:nowrap">${fmtDate(v.vote_date)}</td>
             <td class="cell-primary"><a href="votes.html?q=${encodeURIComponent(v.title.slice(0, 40))}">${v.title}</a></td>
             <td data-label="Category">${v.category ? `<span class="badge-cat">${v.category}</span>` : ""}</td>
             <td data-label="Their vote" class="${posClass[v.position] || ""}" style="text-transform:capitalize;font-weight:600">${v.position}</td>
-            <td data-label="Result" style="white-space:nowrap">${v.result || ""}</td>
-          </tr>`).join("") : `<tr><td colspan="5" style="padding:16px;color:var(--muted)">No recorded votes found for this member yet.</td></tr>`;
+            <td data-label="Result">${v.result || ""}</td>
+          </tr>`;
+        const PAGE = 50;
+        let shown = 0;
+        const more = () => {
+          const next = votes.slice(shown, shown + PAGE);
+          $("#pf-votes").insertAdjacentHTML("beforeend", next.map(rowHtml).join(""));
+          shown += next.length;
+          const btn = $("#pf-more");
+          if (btn) { btn.hidden = shown >= votes.length; btn.textContent = `Show ${Math.min(PAGE, votes.length - shown)} more (${shown} of ${votes.length} shown)`; }
+        };
+        $("#pf-votes").innerHTML = votes.length ? "" : `<tr><td colspan="5" style="padding:16px;color:var(--muted)">No recorded votes found for this member yet.</td></tr>`;
+        if (votes.length) {
+          $("#pf-votes").closest(".tablewrap").insertAdjacentHTML("afterend", `<button type="button" class="btn-ghost" id="pf-more" style="margin-top:12px"></button>`);
+          $("#pf-more").addEventListener("click", more);
+          more();
+        }
       } catch (e) {
         $("#pf-note").textContent = "This member's voting record is temporarily unavailable. The underlying minutes remain available from the city's meeting page.";
         $("#pf-votes").innerHTML = "";
@@ -252,11 +301,7 @@
     const cents = (n) => Math.round((n / revTot) * 100);
     const pct = (n) => (Math.round((n / revTot) * 1000) / 10).toFixed(1);
 
-    $("#spend-topline").innerHTML = `
-      <div class="s"><b>${usdM(revTot)}</b><span>FY25 General Fund revenue</span></div>
-      <div class="s" style="color:#ffd9a8"><b>${cents(localTax)}¢</b><span>of each $1 from local taxes</span></div>
-      <div class="s"><b>${cents(intergov)}¢</b><span>from intergovernmental</span></div>
-      <div class="s"><b>${pct(propTax)}%</b><span>from property tax</span></div>`;
+    renderFY27();
 
     $("#spend-headline").innerHTML = `
       <div class="card" style="border-left:4px solid var(--accent)">
@@ -303,8 +348,110 @@
     }).join("");
   }
 
+  /* ---------- FY2027 budget (Mayor's submitted budget, real) ---------- */
+  function renderFY27() {
+    const B = typeof BUDGET_FY27 !== "undefined" ? BUDGET_FY27 : null;
+    if (!B || !$("#fy27-body")) return;
+    const rev = B.revenue, tot = B.total;
+    const by = (k) => rev.filter(r => r.kind === k).reduce((a, r) => a + r.fy27, 0);
+    const state = by("state"), prop = by("localtax"), local = prop + by("local");
+    const c = (n) => Math.round((n / tot) * 100);
+    const chg = B.total - B.totalPrior;
+    $("#spend-topline").innerHTML = `
+      <div class="s"><b>${usdM(tot)}</b><span>FY2027 city budget</span></div>
+      <div class="s"><b>${c(state)}¢</b><span>of each $1 from state aid</span></div>
+      <div class="s" style="color:#ffd9a8"><b>${c(prop)}¢</b><span>from local property tax</span></div>
+      <div class="s"><b>+${usdM(chg)}</b><span>vs. FY2026 (+${(chg / B.totalPrior * 100).toFixed(1)}%)</span></div>`;
+    $("#fy27-intro").innerHTML = `The ${B.status} totals <b>${usd(tot)}</b> for July 1, 2026 – June 30, 2027, up ${usd(chg)} from FY2026. About <b>${c(state)}¢ of every $1</b> is state aid and about <b>${c(local)}¢</b> is raised locally (property tax, excise, fees, and last year's surplus). <b>Note:</b> this is the budget the Mayor submitted. The Council's hearing on it was set for June 9, 2026, and the minutes of that meeting <a href="records.html">have not been posted</a>, so we can't yet show the final adopted version.`;
+
+    const col = { state: "var(--accent-2)", localtax: "var(--accent)", local: "#7aa7f5" };
+    $("#fy27-bar").innerHTML = rev.map(r => `<div title="${r.source}: ${usd(r.fy27)}" style="width:${(r.fy27 / tot) * 100}%;background:${col[r.kind]}"></div>`).join("");
+    $("#fy27-rev").innerHTML = rev.map(r => `
+      <li><span class="sw" style="background:${col[r.kind]}"></span>
+        <span class="lbl">${r.source}<small>${r.note}</small></span>
+        <span class="amt">${usdM(r.fy27)}<small>${(r.fy27 / tot * 100).toFixed(1)}%</small></span></li>`).join("");
+
+    const S = B.schools;
+    const share = (n) => (n / S.requiredNSS * 100).toFixed(1);
+    $("#fy27-schools").innerHTML = `
+      <p style="margin:0 0 10px">State law sets a minimum Lynn must spend on schools (<b>required net school spending</b>): <b>${usd(S.requiredNSS)}</b> for FY2027, for ${S.enrollment.toLocaleString("en-US")} students.</p>
+      <div class="split" role="img" aria-label="State pays ${share(S.chapter70)} percent, Lynn pays ${share(S.requiredLocal)} percent">
+        <div style="width:${share(S.chapter70)}%;background:var(--accent-2)">State ${share(S.chapter70)}%</div>
+        <div style="width:${share(S.requiredLocal)}%;background:var(--accent)">Local</div>
+      </div>
+      <ul class="legend">
+        <li><span class="sw" style="background:var(--accent-2)"></span><span class="lbl">Chapter 70 state school aid</span><span class="amt">${usdM(S.chapter70)}</span></li>
+        <li><span class="sw" style="background:var(--accent)"></span><span class="lbl">Required local contribution<small>The minimum Lynn taxpayers must put in.</small></span><span class="amt">${usdM(S.requiredLocal)}</span></li>
+      </ul>
+      <p class="sub" style="font-size:13px;margin:10px 0 0">So the required local share is about <b>${share(S.requiredLocal)}¢ of each school dollar</b>. Required school spending also counts costs outside the ${usdM(S.schoolDeptBudget)} school department line, such as employee benefits and school building upkeep. Enrollment fell from ${S.enrollmentPrior.toLocaleString("en-US")} to ${S.enrollment.toLocaleString("en-US")}. The school section states a ${usd(S.schoolAllocationStated)} allocation; the budget summary shows ${usd(S.schoolDeptBudget)}.</p>`;
+
+    const sp = B.spending.slice().sort((a, b) => b.fy27 - a.fy27);
+    const max = sp[0].fy27;
+    $("#fy27-body").innerHTML = sp.map(r => {
+      const d = r.fy27 - r.fy26;
+      return `<tr>
+        <td class="cell-primary" style="font-weight:600">${r.name}</td>
+        <td data-label="FY2026 final" style="white-space:nowrap;color:var(--muted)">${usd(r.fy26)}</td>
+        <td data-label="FY2027 submitted" style="white-space:nowrap;font-weight:700;color:var(--ink-2)">${usd(r.fy27)}</td>
+        <td data-label="Change" style="white-space:nowrap;color:${d > 0 ? "var(--bad)" : d < 0 ? "var(--good)" : "var(--muted)"}">${d === 0 ? "no change" : (d > 0 ? "+" : "−") + usd(Math.abs(d))}</td>
+        <td data-label="Share" style="min-width:140px"><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;background:#eef2f6;border-radius:6px;height:8px;overflow:hidden"><div style="width:${Math.round(r.fy27 / max * 100)}%;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2))"></div></div><span style="font-size:12px;color:var(--muted)">${(r.fy27 / tot * 100).toFixed(1)}%</span></div></td>
+      </tr>`;
+    }).join("");
+
+    $("#fy27-depts").innerHTML = B.departments.slice().sort((a, b) => b.fy27 - a.fy27).map(r => {
+      const pc = ((r.fy27 - r.fy26) / r.fy26 * 100);
+      return `<li><span class="lbl">${r.name}</span><span class="amt">${usdM(r.fy27)}<small style="color:${pc > 0 ? "var(--bad)" : "var(--good)"}">${pc > 0 ? "+" : ""}${pc.toFixed(1)}%</small></span></li>`;
+    }).join("");
+    $("#fy27-capital").innerHTML = B.freeCashCapital.map(r =>
+      `<li><span class="lbl">${r.use}<small>${r.dept}</small></span><span class="amt">${usd(r.amount)}</span></li>`).join("");
+    $("#fy27-source").innerHTML = `Source: <a href="${B.sourceUrl}" target="_blank" rel="noopener">${B.sourceLabel}</a> — budget summary (pp. 7–9), revenue and capital (pp. 22–25), Lynn Public Schools (p. 73). Figures are as printed; the FY2026 column is the "Final" column in the same document.`;
+  }
+
+  /* ---------- Public records tracker ---------- */
+  function renderRecords() {
+    const host = $("#minutes-body");
+    if (!host) return;
+    const today = new Date(RECORDS_CHECKED + "T00:00:00Z");
+    const days = (a, b) => Math.round((new Date(b + "T00:00:00Z") - new Date(a + "T00:00:00Z")) / 864e5);
+    const posted = MINUTES_2026.filter(m => m.key).length;
+    const missing = MINUTES_2026.filter(m => !m.key);
+    $("#rec-topline").innerHTML = `
+      <div class="s"><b>${MINUTES_2026.length}</b><span>2026 council meetings held so far</span></div>
+      <div class="s"><b>${posted}</b><span>with minutes posted</span></div>
+      <div class="s" style="color:#ffd9a8"><b>${missing.length}</b><span>minutes not posted</span></div>
+      <div class="s"><b>${RECORDS_FINDINGS.filter(f => f.status === "missing").length}</b><span>key documents missing</span></div>`;
+    host.innerHTML = MINUTES_2026.map(m => {
+      const since = days(m.date, RECORDS_CHECKED);
+      let status;
+      if (m.key) status = `<span class="chip ok">Posted</span>`;
+      else if (m.approved) status = `<span class="chip miss">Approved, not posted</span>`;
+      else if (since <= 30) status = `<span class="chip wait">Not yet posted</span>`;
+      else status = `<span class="chip miss">Not posted</span>`;
+      return `<tr>
+        <td data-label="Meeting" style="white-space:nowrap;font-weight:600">${fmtDate(m.date)}${m.label ? `<div style="font-weight:400;font-size:12.5px;color:var(--muted)">${m.label}</div>` : ""}</td>
+        <td data-label="Status">${status}</td>
+        <td data-label="On city list">${m.listed ? fmtDate(m.listed) : (m.key ? "—" : `${since} days since meeting`)}</td>
+        <td data-label="Approved by Council">${m.approved ? fmtDate(m.approved) : "—"}</td>
+        <td class="cell-primary" data-label="Notes" style="font-size:13.5px">${m.key ? `<a href="https://www.lynnma.gov/common/pages/GetFile.ashx?key=${m.key}" target="_blank" rel="noopener">Open minutes</a> · <a href="votes.html?date=${m.date}">See votes</a>` : ""}${m.note ? `<div style="color:var(--muted);margin-top:3px">${m.note}</div>` : ""}</td>
+      </tr>`;
+    }).join("");
+    const chip = { missing: `<span class="chip miss">Missing</span>`, access: `<span class="chip wait">Access problem</span>`, pending: `<span class="chip info">Promised, not yet posted</span>` };
+    $("#rec-findings").innerHTML = RECORDS_FINDINGS.map(f => `
+      <div class="card" style="margin-bottom:14px">
+        <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline">
+          <h3 style="margin:0;font-size:17px">${f.title}</h3>${chip[f.status] || ""}
+        </div>
+        <p style="margin:8px 0 8px">${f.detail}</p>
+        <p class="source-link" style="margin:0">Where we looked: <a href="${f.url}" target="_blank" rel="noopener">${f.url.replace("https://www.", "")}</a> · checked ${fmtDate(RECORDS_CHECKED)}</p>
+      </div>`).join("");
+  }
+
   /* ---------- Votes table (real votes from the database) ---------- */
-  const usdShort = (n) => n == null ? "" : "$" + Number(n).toLocaleString("en-US");
+  const usdShort = (n) => {
+    if (n == null) return "";
+    const x = Number(n), cents = Math.round(x * 100) % 100 !== 0;
+    return "$" + x.toLocaleString("en-US", { minimumFractionDigits: cents ? 2 : 0, maximumFractionDigits: 2 });
+  };
   async function renderVotes() {
     const body = $("#votes-body");
     if (!body) return;
@@ -344,7 +491,7 @@
             <div style="font-weight:600">${v.title}</div>
             ${v.plain_summary ? `<div style="color:var(--muted);font-size:13px;margin-top:3px">${v.plain_summary}</div>` : ""}
             ${v.notes ? `<div style="color:var(--muted);font-size:12px;margin-top:4px;font-style:italic">${v.notes}</div>` : ""}
-            <div class="source-link" style="margin-top:5px">Source: <a href="${v.source_url}" target="_blank" rel="noopener">official minutes</a> · <button type="button" class="linkbtn" data-expand="${v.id}" aria-expanded="false">See how each member voted ▾</button></div>
+            <div class="source-link" style="margin-top:5px">Source: <a href="${v.source_url}" target="_blank" rel="noopener">official minutes</a>${v.tally_yes != null ? ` · <button type="button" class="linkbtn" data-expand="${v.id}" aria-expanded="false">See how each member voted ▾</button>` : ` · <span style="color:var(--muted)">no vote count recorded</span>`}</div>
             <div class="positions" id="pos-${v.id}" hidden></div>
           </td>
           <td data-label="Category">${v.category_name ? `<span class="badge-cat">${v.category_name}</span>` : ""}</td>
@@ -357,10 +504,13 @@
       const rows = all.filter(v =>
         (cv === "all" || v.category_name === cv) &&
         (yv === "all" || (v.vote_date || "").slice(0, 4) === yv) &&
+        (!dateParam || (v.vote_date || "").slice(0, 10) === dateParam) &&
         (!qv || (v.title + " " + (v.plain_summary || "")).toLowerCase().includes(qv)));
-      count.textContent = `${rows.length} of ${all.length} recorded votes, transcribed from official minutes`;
+      count.innerHTML = `${rows.length} of ${all.length} recorded votes, transcribed from official minutes` +
+        (dateParam ? ` · showing the ${fmtDate(dateParam)} meeting only · <a href="votes.html">show all</a>` : "");
       body.innerHTML = rows.length ? rows.map(row).join("") : `<tr><td colspan="5" style="padding:16px;color:var(--muted)">No votes match your filters.</td></tr>`;
     }
+    const dateParam = /^\d{4}-\d{2}-\d{2}$/.test(new URLSearchParams(location.search).get("date") || "") ? new URLSearchParams(location.search).get("date") : null;
     const preCat = new URLSearchParams(location.search).get("category");
     if (preCat && cats.includes(preCat)) catSel.value = preCat;
     const qp = new URLSearchParams(location.search).get("q");
@@ -562,7 +712,7 @@
       .map(n => ({ label: n, sub: "Filter votes by topic", href: "votes.html?category=" + encodeURIComponent(n) }));
     if (topics.length) groups.push({ name: "Topics", items: topics });
     // free-text vote search routes to the live votes database
-    if (q.length >= 3) groups.push({ name: "Search votes", items: [{ label: `Search votes for "${qraw}"`, sub: "Search the 2026 voting record", href: "votes.html?q=" + encodeURIComponent(qraw) }] });
+    if (q.length >= 3) groups.push({ name: "Search votes", items: [{ label: `Search votes for "${qraw}"`, sub: "Search the 2024–2026 voting record", href: "votes.html?q=" + encodeURIComponent(qraw) }] });
     const pages = SECTIONS.filter(s => s.ready && s.title.toLowerCase().includes(q)).slice(0, 4)
       .map(s => ({ label: s.title, sub: s.blurb, href: s.href }));
     if (pages.length) groups.push({ name: "Pages", items: pages });
@@ -647,6 +797,7 @@
     renderMeetings();
     renderUnaccounted();
     renderImmigration();
+    renderRecords();
     setupSearch();
     // prefill votes search from query
     const qparam = new URLSearchParams(location.search).get("q");

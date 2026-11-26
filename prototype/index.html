@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Lynn City Watch — Public records, made auditable</title>
+  <meta name="description" content="Lynn City Watch: every Lynn, MA City Council vote, the city budget, and missing public records, sourced to official documents.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/app.css">
 </head>
 <body>
@@ -20,6 +22,7 @@
         <button type="submit">Search</button>
       </form>
       <div class="stats" id="council-facts"></div>
+      <div class="fresh" id="data-fresh" aria-live="polite"></div>
     </div>
   </div>
 
@@ -27,7 +30,7 @@
     <div class="wrap">
       <span class="eyebrow">The platform</span>
       <h2 class="h">Ten ways to hold City Hall accountable</h2>
-      <p class="sub">Built in layers. Councilor profiles and the voting database are live in this prototype; the rest are planned and mapped in the build plan.</p>
+      <p class="sub">Built in layers. Sections marked "Live" use real, sourced records today; the rest are planned.</p>
       <div class="grid cols-3" id="section-grid"></div>
     </div>
   </section>
@@ -50,7 +53,7 @@
           <div>
             <div class="banner warn">
               <span class="ic">!</span>
-              <div><b>Every figure is sourced.</b> The roster and meeting schedule come from lynnma.gov; the 2024–2026 voting record from official council minutes; spending and revenue from the city's audited financial statements; meeting videos from Lynn Community TV. Each item links to its original record.</div>
+              <div><b>Every figure is sourced.</b> The roster and meeting schedule come from lynnma.gov; the 2024–2026 voting record from official council minutes; the FY2027 budget and FY2025 audited financial statements; committee assignments from lynnma.gov; meeting videos from Lynn Community TV. Each item links to its original record.</div>
             </div>
             <a class="btn-ghost" style="margin-top:16px;display:inline-block" href="councilors.html">Explore councilor profiles →</a>
           </div>

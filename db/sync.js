@@ -68,7 +68,7 @@ function normPos(p) {
   return s || "yes";
 }
 
-const OUTSIDE = /grant|earmark|dese|dfa|massworks|mass cultural|cultural council|executive office|eopss|\beps\b|\bdvs\b|msba|school building|district attorney|health officers|gift|donation|finance agency|reimburs|federal|state of massachusetts|commonwealth/;
+const OUTSIDE = /grant|earmark|dese|dfa|massworks|mass cultural|cultural council|executive office|eopss|\beps\b|\bdvs\b|msba|school building|district attorney|health officers|gift|donation|finance agency|reimburs|federal|state of massachusetts|commonwealth|mass ?dot|department of transportation|chapter 90|mass ?save|eversource|national grid|energy resource|homeland security|massachusetts department|gaming commission|foundation/;
 const LOCAL = /free.?cash|transfer|stabiliz|reserve|wage stab|available balance|overlay|retained earning/;
 function fundingOf(spending, src) {
   if (spending == null) return { local: null, note: "" };

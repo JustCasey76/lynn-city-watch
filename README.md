@@ -65,7 +65,7 @@ Then open http://localhost:3000.
 ## Status (as of November 26, 2026)
 
 - Voting record: January 2024 through the October 13, 2026 meeting
-  (1,369 recorded votes from 57 meetings). Minutes for Oct 27, Nov 10 and
+  (1,306 recorded votes from 57 meetings). Minutes for Oct 27, Nov 10 and
   Nov 24, 2026 were not yet posted by the city; June 9, 2026 minutes were
   approved but never posted (see the Records Tracker page).
 - Spending: FY2027 Mayor's submitted budget ($577,017,037) and FY2025 audited

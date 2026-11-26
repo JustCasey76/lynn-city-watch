@@ -82,7 +82,7 @@
               <li><a href="spending.html">Spending Dashboard</a></li>
               <li><a href="immigration.html">Immigration-Related Spending</a></li>
               <li><a href="records.html">Public Records Tracker</a></li>
-              <li><a href="unaccounted.html">Funds Not Fully Accounted For</a></li>
+              <li><a href="unaccounted.html">Amounts Not Fully Explained</a></li>
               <li><a href="corrections.html">Corrections &amp; Updates</a></li>
               <li><a href="index.html#sections">See all sections</a></li>
             </ul>

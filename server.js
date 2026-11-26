@@ -9,6 +9,7 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const { syncVotes } = require("./db/sync");
 
 const ROOT = path.join(__dirname, "prototype");
 const PORT = process.env.PORT || 3000;
@@ -43,6 +44,8 @@ async function initDb() {
       await pool.query(sql);
       console.log(`Applied db/${f}`);
     }
+    // Load any new or corrected vote files from db/data (only files that changed).
+    await syncVotes(pool, { log: (m) => console.log(m) });
     dbReady = true;
     console.log("Database ready.");
     refreshMeetings(true).catch(e => console.error("Meetings refresh failed:", e.message));
@@ -119,6 +122,18 @@ async function handleApi(req, res, url) {
   const q = url.searchParams;
 
   if (p === "/api/health") return send(res, 200, { ok: true, db: dbReady });
+
+  // How current the data is: latest meeting with recorded votes, totals, last loads.
+  if (p === "/api/status") {
+    const v = await pool.query(
+      `SELECT COUNT(*)::int AS votes, COUNT(DISTINCT vote_date)::int AS meetings,
+              MIN(vote_date) AS first_date, MAX(vote_date) AS latest_date,
+              COALESCE(SUM(spending_amount),0)::float AS spending
+         FROM votes WHERE NOT is_sample`);
+    const loads = await pool.query("SELECT file, summary, loaded_at FROM data_loads ORDER BY file")
+      .catch(() => ({ rows: [] }));
+    return send(res, 200, { ...v.rows[0], loads: loads.rows });
+  }
 
   if (p === "/api/meetings") {
     refreshMeetings(false).catch(e => console.error("Meetings refresh:", e.message)); // fire-and-forget

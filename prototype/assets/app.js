@@ -131,6 +131,89 @@
     })();
   }
 
+  /* ---------- Home: "2026 at City Hall" (hand-checked highlights + live counts) ---------- */
+  function renderWatch() {
+    const list = $("#watch-list");
+    if (!list || typeof HIGHLIGHTS === "undefined") return;
+    const KIND = { closer: "Worth a closer look", good: "Good news", decision: "Key decision" };
+    const ruleById = {};
+    HIGHLIGHT_RULES.closer.concat(HIGHLIGHT_RULES.good).forEach(r => (ruleById[r.id] = r));
+    const isoish = (d) => /^\d{4}-\d{2}-\d{2}$/.test(d);
+    const srcHtml = (x) => {
+      const url = x.k ? "https://www.lynnma.gov/common/pages/GetFile.ashx?key=" + x.k : x.u;
+      const label = isoish(x.d) ? fmtDate(x.d) + " minutes" : x.d;
+      return `<a href="${url}" target="_blank" rel="noopener">${label}</a>`;
+    };
+    const topicSel = $("#watch-topic");
+    topicSel.innerHTML = `<option value="all">All topics</option>` + HIGHLIGHT_TOPICS.map(t => `<option>${t}</option>`).join("");
+    let kind = "all", showAll = false;
+    function draw() {
+      const t = topicSel.value;
+      const items = HIGHLIGHTS
+        .filter(h => (kind === "all" || h.kind === kind) && (t === "all" || h.topic === t))
+        .sort((a, b) => b.date.localeCompare(a.date));
+      const LIMIT = 9;
+      const shown = showAll ? items : items.slice(0, LIMIT);
+      list.innerHTML = items.length ? shown.map(h => {
+        const rule = h.rule && ruleById[h.rule];
+        return `<article class="wcard ${h.kind}">
+          <div class="meta"><span class="kind">${KIND[h.kind]}</span><span>·</span><span>${h.topic}</span>${isoish(h.date) ? `<span>·</span><span>${fmtDate(h.date)}</span>` : ""}</div>
+          <h3>${h.title}</h3>
+          <p>${h.facts}</p>
+          ${h.reason ? `<div class="why"><b>Why, according to the record:</b> ${h.reason}</div>` : ""}
+          ${rule && h.kind !== "decision" ? `<div class="rule">Flag: <b>${rule.label}</b> — ${rule.text}</div>` : ""}
+          <div class="src">Source: ${h.src.map(srcHtml).join(" · ")}${h.link ? ` · <a href="${h.link}">More on this →</a>` : ""}</div>
+        </article>`;
+      }).join("") : `<p class="sub">Nothing in this view yet.</p>`;
+      if (items.length > shown.length) {
+        list.insertAdjacentHTML("beforeend", `<div style="grid-column:1/-1"><button type="button" class="btn-ghost" id="watch-more">Show all ${items.length} items</button></div>`);
+        $("#watch-more").addEventListener("click", () => { showAll = true; draw(); });
+      }
+    }
+    $$(".seg button").forEach(b => b.addEventListener("click", () => {
+      kind = b.dataset.kind;
+      $$(".seg button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+      draw();
+    }));
+    topicSel.addEventListener("change", draw);
+    draw();
+
+    $("#watch-rules").innerHTML = `
+      <p class="sub" style="margin:10px 0 0">"Worth a closer look" means the official record shows one of the patterns below. It is <b>not</b> a finding that anything was improper, and we never guess at anyone's motives. "Good news" also follows fixed rules. Items were last checked ${fmtDate(HIGHLIGHTS_CHECKED)}.</p>
+      <h4><span class="dot closer"></span>Worth a closer look</h4>
+      <ul>${HIGHLIGHT_RULES.closer.map(r => `<li><b>${r.label}:</b> ${r.text}</li>`).join("")}</ul>
+      <h4><span class="dot good"></span>Good news</h4>
+      <ul>${HIGHLIGHT_RULES.good.map(r => `<li><b>${r.label}:</b> ${r.text}</li>`).join("")}</ul>
+      <h4><span class="dot decision"></span>Key decisions</h4>
+      <ul><li>Major actions by the Mayor or Council, shown without a label of good or bad.</li></ul>
+      <p class="sub" style="margin:12px 0 0">Spot something wrong or missing? <a href="corrections.html">Send a correction</a>.</p>`;
+
+    // Live counts for 2026, computed from every recorded vote by the same written rules.
+    (async () => {
+      const box = $("#watch-stats");
+      try {
+        const r = await fetch("/api/votes?year=2026");
+        if (!r.ok) throw new Error("api");
+        const v = await r.json();
+        const money = v.filter(x => x.spending_amount != null);
+        const sum = (a) => a.reduce((t, x) => t + Number(x.spending_amount), 0);
+        const split = v.filter(x => (x.tally_no || 0) > 0 || (x.dissent_count || 0) > 0 || /\babstain\w*|\bvot\w* present\b/i.test((x.result || "") + " " + (x.plain_summary || "")));
+        const pastYear = money.filter(x => /prior year|bills? of prior|\bPY\b/i.test(x.title || ""));
+        const emergency = money.filter(x => /emergency/i.test((x.plain_summary || "") + " " + (x.result || "")));
+        const noOutcome = v.filter(x => /no outcome|no result/i.test(x.result || ""));
+        const outside = money.filter(x => x.funding_local === 0);
+        const latest = v.map(x => String(x.vote_date).slice(0, 10)).sort().pop();
+        box.innerHTML = `
+          <div class="wstat good"><b>${usdM(sum(outside))}</b><span>outside money accepted in ${outside.length} votes, $0 local cost</span></div>
+          <div class="wstat closer"><b>${split.length}</b><span>votes where the Council split (a no, abstain, or present)</span></div>
+          <div class="wstat closer"><b>${pastYear.length} · ${usd(sum(pastYear))}</b><span>payments of bills from a past fiscal year</span></div>
+          <div class="wstat closer"><b>${emergency.length} of ${money.length}</b><span>money votes passed as “special emergency” orders</span></div>
+          <div class="wstat closer"><b>${noOutcome.length}</b><span>motions with no outcome written in the minutes</span></div>
+          <p class="source-link" style="grid-column:1/-1;margin:0">Counted from all ${v.length} recorded 2026 votes through ${fmtDate(latest)}. "Special emergency" is the minutes' own wording for these orders. <a href="votes.html">Browse the votes →</a></p>`;
+      } catch (e) { box.hidden = true; }
+    })();
+  }
+
   /* ---------- Councilor grid ---------- */
   function renderCouncilors() {
     const grid = $("#councilor-grid");
@@ -790,6 +873,7 @@
     renderHeader();
     renderFooter();
     renderHome();
+    renderWatch();
     renderCouncilors();
     renderProfile();
     renderSpending();

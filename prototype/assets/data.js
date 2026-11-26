@@ -275,6 +275,179 @@ const RECORDS_FINDINGS = [
     url: "https://www.lynnma.gov/city_government/departments/cfo/mayor_s_budget" },
 ];
 
+/*
+ * REAL: "What happened at City Hall" — hand-checked highlights from the 2026
+ * official records, shown on the home page. Every statement below is taken
+ * from the cited record. Nothing is inferred: where the record gives no reason,
+ * the item says so.
+ *
+ * kind:  "closer"   = Worth a closer look (meets one of HIGHLIGHT_RULES.closer)
+ *        "good"     = Good news (meets one of HIGHLIGHT_RULES.good)
+ *        "decision" = Key decision (a major action, shown without a judgment)
+ * src:   minutes file keys (lynnma.gov GetFile) or full URLs, with the date.
+ */
+const HIGHLIGHTS_CHECKED = "2026-11-26";
+const HIGHLIGHT_RULES = {
+  closer: [
+    { id: "split", label: "The Council split", text: "At least one councilor voted no, abstained, or voted present." },
+    { id: "overrun", label: "Over budget or over cost", text: "The record itself says a cost ran over, or spending went well past its budget line." },
+    { id: "nopurpose", label: "Purpose not stated", text: "A large transfer where the minutes do not say what the money is for." },
+    { id: "repeat", label: "Repeated item", text: "The same amount for the same kind of bill was approved more than once." },
+    { id: "removal", label: "Removal or non-reappointment", text: "The Council acted to remove someone from, or not reappoint someone to, a public board." },
+    { id: "record", label: "Record problem", text: "The official minutes are missing, have no recorded outcome, or contain a printing error." },
+    { id: "pastyear", label: "Bills from a past year", text: "Paying invoices from a fiscal year that has already closed." },
+  ],
+  good: [
+    { id: "outside", label: "Outside money", text: "State, federal, or private money came in, with $0 cost to local taxpayers on that vote." },
+    { id: "underbudget", label: "Under budget", text: "Audited spending came in below the approved budget." },
+    { id: "reserves", label: "Stronger finances", text: "An official finance document reports reserves or long-term liabilities improving." },
+  ],
+};
+const HIGHLIGHT_TOPICS = ["Mayor's decisions", "Staff & appointments", "DPW & streets", "Money & budget", "Public safety", "Immigration", "Schools", "Records & process"];
+const KEY = (k) => "https://www.lynnma.gov/common/pages/GetFile.ashx?key=" + k;
+const HIGHLIGHTS = [
+  /* ---------- Mayor's decisions ---------- */
+  { date: "2026-09-08", topic: "Mayor's decisions", kind: "decision", rule: "split",
+    title: "Council rejected the Mayor's Administrative Code, then approved a revised version",
+    facts: "On July 7 the Council voted 9-2 to deny the Mayor's proposed Administrative Code dated June 5, 2026 (Councilors Field and Net voted no). A motion under Charter Section 6-1 asked the Mayor to prepare a revised code addressing the Council's concerns with two councilors chosen by the Council President. On September 8 the Council approved the amended code (dated July 8, as amended through August 28) 9-1, with Councilor Meaney voting no.",
+    reason: "The minutes record the motions and votes but do not list the Council's specific concerns.",
+    src: [{ d: "2026-07-07", k: "WA0FAKLy" }, { d: "2026-09-08", k: "SiEFALDe" }] },
+  { date: "2026-05-12", topic: "Mayor's decisions", kind: "decision",
+    title: "Mayor submitted a $577,017,037 budget for FY2027",
+    facts: "The Mayor's letter (May 9, 2026) says the budget \"adds no new positions,\" moves the language access program into permanent positions in the Mayor's Office, and uses opioid settlement funds and $100,000 in surplus ARPA funds for summer youth jobs. The Council set the public hearing for June 9, 2026.",
+    reason: null,
+    src: [{ d: "2026-05-12", k: "iu8EAHEQ" }, { d: "FY2027 budget", u: KEY("iukEAHEW") }], link: "spending.html#fy27" },
+  { date: "2026-10-13", topic: "Mayor's decisions", kind: "decision",
+    title: "Two department heads given second titles under the new Administrative Code",
+    facts: "The Mayor appointed Human Resources Director Drew Russo to also serve as Chief Administrative Officer (Section A-502) and Director of Public Health Lisa Tobin to also serve as Chief of Health and Human Services (Section A-506). Both were approved 11-0 by roll call.",
+    reason: "The minutes cite the code sections; they do not state other reasons.",
+    src: [{ d: "2026-10-13", k: "ySsFADPU" }] },
+
+  /* ---------- Staff & appointments ---------- */
+  { date: "2026-09-22", topic: "Staff & appointments", kind: "decision",
+    title: "Department heads confirmed in 2026",
+    facts: "City Solicitor John P. Slattery (Apr 14, 11-0) · Commissioner of Public Works Michael J. Donovan (Jul 7, 11-0) · Parking Director Jessica Chiappini, reappointed (Sep 8, 10-0) · Director of Public Health Lisa Tobin, reappointed (Sep 8, 10-0) · Parks and Recreation Commissioner Lisa Nerich (Sep 22, 9-0) · Director of Capital Projects Brendon Duffy, effective Sep 23 (Sep 22, 9-0).",
+    reason: "The minutes do not say why any of these positions changed hands or were up for appointment.",
+    src: [{ d: "2026-04-14", k: "BeUEAP4a" }, { d: "2026-07-07", k: "WA0FAKLy" }, { d: "2026-09-08", k: "SiEFALDe" }, { d: "2026-09-22", k: "NCcFAM7Y" }] },
+  { date: "2026-09-08", topic: "Staff & appointments", kind: "closer", rule: "record",
+    title: "Planning Director post filled on a temporary basis",
+    facts: "The Mayor designated Lauren Drago to perform the duties of Principal Planning Director, effective August 24, 2026, \"on a temporary basis until the position is permanently filled\" (Charter Section 3-4). The motion was to accept the letter for the files; no result is recorded.",
+    reason: "The minutes do not say why the position became vacant.",
+    src: [{ d: "2026-09-08", k: "SiEFALDe" }] },
+  { date: "2026-02-24", topic: "Staff & appointments", kind: "decision",
+    title: "New City Clerk / Chief of Elections",
+    facts: "The Council's Personnel Committee referred Attorney James P. Lamanna for City Clerk / Chief of Election to the full Council for a vote. Later 2026 minutes address the clerk as Mr. Lamanna and refer to \"Chief of Elections Jim Lamanna.\"",
+    reason: "The minutes reviewed do not state why the position was open, and we did not find the full Council's confirmation vote in the 2026 minutes we transcribed.",
+    src: [{ d: "2026-02-24", k: "QOUEALsa" }, { d: "2026-07-07", k: "WA0FAKLy" }] },
+  { date: "2026-09-08", topic: "Staff & appointments", kind: "closer", rule: "removal",
+    title: "Council voted not to reappoint a Human Rights Commission member",
+    facts: "After an interview, Councilors Avery and Matul moved not to reappoint Cristian Recinos to the Lynn Human Rights Commission; the motion carried (no tally recorded). The reappointment had been tabled on August 4.",
+    reason: "The minutes do not state a reason.",
+    src: [{ d: "2026-08-04", k: "GxsFAOHk" }, { d: "2026-09-08", k: "SiEFALDe" }] },
+  { date: "2026-01-27", topic: "Staff & appointments", kind: "closer", rule: "removal",
+    title: "Council moved to remove two Water and Sewer Commissioners",
+    facts: "After a January 12 Commission vote to rescind the appointment of Chairman Michael Celona, the Council voted 9-2 (Field and LaPierre no) to have the Law Department draft Preliminary Notices of Removal for cause for Commissioners Richard Colucci and Vincent Lozzi, Jr. On Feb 24, motions were made to accept Mr. Colucci's letter declining a hearing, and to rescind Mr. Lozzi's notice after he wrote that he would not seek reappointment when his term ends June 30 — but no result is recorded for either motion. The Council then filled its Commission seat three times in 2026: Councilor Matul (Jan 27, after Councilor Meaney resigned the role), Thomas O'Shea (Apr 28, 7-3 with 1 present), and John M. Walsh (Jul 7, 8-2).",
+    reason: "The minutes record statements by the Council President and Vice President about the January 12 vote but do not spell out the grounds for removal.",
+    src: [{ d: "2026-01-27", k: "KOUEANMa" }, { d: "2026-02-24", k: "QOUEALsa" }, { d: "2026-04-28", k: "rekEAFYW" }, { d: "2026-07-07", k: "WA0FAKLy" }] },
+
+  /* ---------- DPW & streets ---------- */
+  { date: "2026-05-26", topic: "DPW & streets", kind: "closer", rule: "overrun",
+    title: "$4.92 million moved to snow and ice — three times the budget line",
+    facts: "The Council transferred $4,921,640 from Free Cash to DPW Snow and Ice (10-0, emergency order). The FY2026 Snow & Ice budget line was $1,650,000.",
+    reason: "The CFO's letter in the FY2027 budget says the 2025–26 winter brought 63.4 inches of snow and a record number of salt and sanding events, costing more than $6 million, and that Free Cash \"supported the snow deficit.\"",
+    src: [{ d: "2026-05-26", k: "xPQEAD8L" }, { d: "FY2027 budget", u: KEY("iukEAHEW") }] },
+  { date: "2026-09-08", topic: "DPW & streets", kind: "closer", rule: "nopurpose",
+    title: "$2.3 million moved to \"Essex Street\" with no description of the work",
+    facts: "May 26: $390,000 from the Cannabis Fund to Essex Street Expense (9-0; Councilor Avery abstained). Sep 8: $1,912,000 from Capital Stabilization to Essex Street Expense (10-0). Both passed as emergency orders. The FY2027 budget separately lists $226,000 in Free Cash for \"Essex Street Title work.\"",
+    reason: "The minutes name only the account, not the project or what the money buys.",
+    src: [{ d: "2026-05-26", k: "xPQEAD8L" }, { d: "2026-09-08", k: "SiEFALDe" }] },
+  { date: "2026-05-12", topic: "DPW & streets", kind: "closer", rule: "nopurpose",
+    title: "$792,913 from the reserve to DPW Sanitation",
+    facts: "Transferred from Reserve to DPW Sanitation as an emergency order, 11-0. The FY2026 DPW Sanitation budget was $8,760,388.",
+    reason: "The minutes do not state what the extra money was needed for.",
+    src: [{ d: "2026-05-12", k: "iu8EAHEQ" }] },
+  { date: "2026-10-13", topic: "DPW & streets", kind: "closer", rule: "repeat",
+    title: "Same $4,094.75 DPW prior-year bill amount approved twice",
+    facts: "Sep 22: \"$4,094.75 From DPW Expense to DPW Bills of Prior Year\" (9-0). Oct 13: \"$4,094.75 – From DPW Expense to fund a DPW Bill of Prior Year\" (10-0). We checked both original pages.",
+    reason: "The minutes do not identify the bill or vendor, so they do not show whether these are two different bills.",
+    src: [{ d: "2026-09-22", k: "NCcFAM7Y" }, { d: "2026-10-13", k: "ySsFADPU" }] },
+  { date: "2026-08-04", topic: "DPW & streets", kind: "good", rule: "outside",
+    title: "$2.2 million in state road money",
+    facts: "MassDOT Chapter 90 road funding of $2,051,861.17 and a MassDOT Complete Streets construction grant of $160,806.78, both accepted Aug 4 (10-0).",
+    reason: null,
+    src: [{ d: "2026-08-04", k: "GxsFAOHk" }] },
+
+  /* ---------- Public safety ---------- */
+  { date: "2026-10-13", topic: "Public safety", kind: "decision",
+    title: "Flock license-plate cameras: 12 people spoke against, Council ordered oversight",
+    facts: "At an Oct 13 public hearing the Police Chief spoke in favor and 12 people spoke in opposition (10 from Lynn, 2 from Salem). The Council approved a motion requiring regular Police updates on how the system is used and any misuse, a Law Department report within 45 days on options including an ordinance with privacy protections and \"our authority to prohibit\" the system, and a decision on next steps within 90 days.",
+    reason: "The September 8 committee report says the discussion covered \"the ongoing investigation, uses of the Flock System, and public concerns\"; the minutes do not describe the investigation.",
+    src: [{ d: "2026-09-08", k: "SiEFALDe" }, { d: "2026-10-13", k: "ySsFADPU" }] },
+  { date: "2026-01-27", topic: "Public safety", kind: "closer", rule: "overrun",
+    title: "Fayette Fire Station construction overage",
+    facts: "Jan 27: $400,000 from Free Cash \"to fund overage on ongoing construction\" and $238,000 from ER Stabilization for the station's build-out (both 11-0). May 26: a further $335,000 from Free Cash to \"Fayette Street Expense\" (10-0).",
+    reason: "The minutes do not say what caused the overage, or whether the May 26 transfer is for the same project.",
+    src: [{ d: "2026-01-27", k: "KOUEANMa" }, { d: "2026-05-26", k: "xPQEAD8L" }] },
+  { date: "2026-10-13", topic: "Public safety", kind: "good", rule: "outside",
+    title: "$854,055 federal grant replaces 81 firefighter air packs",
+    facts: "A Department of Homeland Security grant (printed as the \"Assistant to Firefighters Grant\") funds replacement of 81 SCBA (breathing apparatus) units and facepieces (10-0). Also in 2026: a $50,000 state earmark (Executive Office of Public Safety and Security) to combat gun violence (Jan 13) and $410,000 from \"the Department of Health and Human Services\" for the Calm Team program (Sep 22).",
+    reason: null,
+    src: [{ d: "2026-01-13", k: "JuUEAN0a" }, { d: "2026-09-22", k: "NCcFAM7Y" }, { d: "2026-10-13", k: "ySsFADPU" }] },
+
+  /* ---------- Immigration ---------- */
+  { date: "2026-05-12", topic: "Immigration", kind: "decision",
+    title: "Council passed a resolution on ICE enforcement, 11-0",
+    facts: "Sponsored by Councilor LaPierre, the resolution says certain federal immigration enforcement actions should be condemned, urges city officials to enforce laws protecting residents, and directs the Mayor to send it to the state's federal delegation, the Governor, and the Attorney General. It carried no spending.",
+    reason: null,
+    src: [{ d: "2026-05-12", k: "iu8EAHEQ" }], link: "immigration.html" },
+  { date: "2026-05-09", topic: "Immigration", kind: "decision",
+    title: "Language access program made permanent in the FY2027 budget",
+    facts: "The Mayor's budget letter says ARPA funding for language access is ending, so those duties were moved into permanent positions in the Mayor's Office, and departments that asked were given two-way \"pocket talk\" translation devices. See the Immigration-Related Spending page for every council vote on the topic since 2024.",
+    reason: "Stated in the Mayor's letter: \"This is the last budget year we have to expend American Rescue Plan Act (ARPA) funds,\" and it names summer youth jobs and language access as the \"two major exceptions\" to avoiding fiscal cliffs when ARPA ends.",
+    src: [{ d: "FY2027 budget", u: KEY("iukEAHEW") }], link: "immigration.html" },
+
+  /* ---------- Schools ---------- */
+  { date: "2026-09-22", topic: "Schools", kind: "good", rule: "outside",
+    title: "$16.7 million in state and federal school grants in one night",
+    facts: "On Sep 22 the Council accepted seven Department of Elementary and Secondary Education grants for Lynn Public Schools totaling $16,696,758, including $8,557,898 for Title I and $5,267,571 for special education (IDEA), each 9-0.",
+    reason: null,
+    src: [{ d: "2026-09-22", k: "NCcFAM7Y" }] },
+  { date: "2026-01-27", topic: "Schools", kind: "decision",
+    title: "$7.25 million from Free Cash for 195 Market Street",
+    facts: "Appropriated for the Phase II build-out of 195 Market Street (11-0). The FY2027 budget says the building will become the schools' central office and expand Frederick Douglass Academy, letting the school system \"redirect about $800,000 in operating leases.\"",
+    reason: "Stated in the FY2027 budget (Capital Projects section).",
+    src: [{ d: "2026-01-27", k: "KOUEANMa" }, { d: "FY2027 budget", u: KEY("iukEAHEW") }] },
+
+  /* ---------- Money & budget ---------- */
+  { date: "2025-06-30", topic: "Money & budget", kind: "good", rule: "underbudget",
+    title: "FY2025: every spending area came in under budget",
+    facts: "The audited FY2025 General Fund shows actual spending below the final budget in all nine spending functions — $8,065,957 under in total ($529,585,811 spent against $537,651,768 budgeted).",
+    reason: null,
+    src: [{ d: "FY2025 audit, p.83", u: "https://www.lynnma.gov/city_government/departments/comptrollers/financial_statements" }], link: "spending.html" },
+  { date: "2026-05-09", topic: "Money & budget", kind: "good", rule: "reserves",
+    title: "Free Cash certified at $23.7 million; retiree health fund paid into again",
+    facts: "The FY2027 budget's finance section reports Free Cash certified at $23.7 million (4.3% of the annual budget, up from 4.1%) and the OPEB (retiree health) trust funded for the fourth year in a row.",
+    reason: null,
+    src: [{ d: "FY2027 budget, p.36", u: KEY("iukEAHEW") }] },
+  { date: "2026-05-09", topic: "Money & budget", kind: "closer", rule: "record",
+    title: "FY2026 budget tables don't add up in two places",
+    facts: "In the FY2027 budget's FY2026 column, the Non-Departmental total is $799,650 more than its listed lines, and the Reserve Fund is shown as $1,644,500 in the summary but $1,444,500 in the detail.",
+    reason: "The document does not explain either difference.",
+    src: [{ d: "FY2027 budget, pp.8–10", u: KEY("iukEAHEW") }], link: "unaccounted.html" },
+
+  /* ---------- Records & process ---------- */
+  { date: "2026-06-09", topic: "Records & process", kind: "closer", rule: "record",
+    title: "No public minutes for the FY2027 budget hearing",
+    facts: "The FY2027 budget hearing was set for June 9, 2026. The Council accepted the June 9 minutes on June 23, but the file is not on the city's 2026 minutes list. Minutes for Oct 27, Nov 10 and Nov 24 are also not posted yet.",
+    reason: null,
+    src: [{ d: "2026-06-23", k: "Bv0EAP0C" }, { d: "City minutes list", u: "https://www.lynnma.gov/city_government/citycouncil/meeting" }], link: "records.html" },
+  { date: "2026-09-22", topic: "Records & process", kind: "closer", rule: "record",
+    title: "Printing errors in the official minutes",
+    facts: "Sep 22: the Diamond District historic study motion is printed as \"made by Councilor Paez and seconded by Councilor Paez.\" Sep 8: a Gaming Commission grant is printed as \"$51,3000.00.\" Mar 10: a school grant is printed as \"$213.875.\" Jun 23: a health grant is printed as \"$125.000.00.\"",
+    reason: null,
+    src: [{ d: "2026-03-10", k: "ydkEADIm" }, { d: "2026-06-23", k: "Bv0EAP0C" }, { d: "2026-09-08", k: "SiEFALDe" }, { d: "2026-09-22", k: "NCcFAM7Y" }] },
+];
+
 const SECTIONS = [
   { n: 1,  title: "Councilor Profiles",        blurb: "How each of the 11 members votes, attends, and sponsors.", href: "councilors.html", ready: true },
   { n: 2,  title: "Voting Record Database",    blurb: "Every vote, searchable by member, date, topic, and money.", href: "votes.html", ready: true },

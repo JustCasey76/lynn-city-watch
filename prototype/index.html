@@ -26,7 +26,34 @@
     </div>
   </div>
 
-  <section class="block" id="sections">
+  <section class="block" id="watch">
+    <div class="wrap">
+      <span class="eyebrow">2026 at City Hall</span>
+      <h2 class="h">What happened — the good and what's worth a closer look</h2>
+      <p class="sub">Notable actions from the 2026 council minutes, the FY2027 budget and the FY2025 audit. Every line is taken from an official record, with a link. When the record doesn't give a reason, we say so. We don't guess.</p>
+
+      <div class="watch-stats" id="watch-stats" aria-live="polite"></div>
+
+      <div class="watch-bar">
+        <div class="seg" role="group" aria-label="Show">
+          <button type="button" data-kind="all" aria-pressed="true">All</button>
+          <button type="button" data-kind="closer" aria-pressed="false"><span class="dot closer"></span>Worth a closer look</button>
+          <button type="button" data-kind="good" aria-pressed="false"><span class="dot good"></span>Good news</button>
+          <button type="button" data-kind="decision" aria-pressed="false"><span class="dot decision"></span>Key decisions</button>
+        </div>
+        <select id="watch-topic" aria-label="Topic"><option value="all">All topics</option></select>
+      </div>
+
+      <div class="watch-list" id="watch-list"></div>
+
+      <details class="card watch-rules">
+        <summary>How we decide what to flag</summary>
+        <div id="watch-rules"></div>
+      </details>
+    </div>
+  </section>
+
+  <section class="block" id="sections" style="padding-top:0">
     <div class="wrap">
       <span class="eyebrow">The platform</span>
       <h2 class="h">Ten ways to hold City Hall accountable</h2>

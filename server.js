@@ -186,7 +186,9 @@ async function handleApi(req, res, url) {
     if (q.get("councilor")) { params.push(q.get("councilor")); where.push(`v.id IN (SELECT vote_id FROM vote_positions WHERE councilor_id = $${params.length})`); }
     if (/^\d{4}$/.test(q.get("year") || "")) { params.push(q.get("year")); where.push(`EXTRACT(YEAR FROM v.vote_date) = $${params.length}`); }
     const sql = `SELECT v.*, cat.name AS category_name, cat.slug AS category_slug,
-                        m.minutes_url, m.meeting_date
+                        m.minutes_url, m.meeting_date,
+                        (SELECT COUNT(*) FROM vote_positions vp
+                          WHERE vp.vote_id = v.id AND vp.position IN ('no','abstain','present'))::int AS dissent_count
                    FROM votes v
                    LEFT JOIN categories cat ON cat.id = v.category_id
                    LEFT JOIN meetings m ON m.id = v.meeting_id

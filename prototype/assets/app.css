@@ -114,7 +114,7 @@ tbody tr:last-child td{border-bottom:0}
 tbody tr:hover{background:#fafbfc}
 .result-pass{color:var(--good);font-weight:600}
 .result-split{color:var(--warn);font-weight:600}
-.badge-cat{font-size:12px;background:#eef2f6;color:var(--ink-2);padding:2px 8px;border-radius:6px;white-space:nowrap}
+.badge-cat{display:inline-block;font-size:12px;background:#eef2f6;color:var(--ink-2);padding:2px 8px;border-radius:6px}
 
 /* filters */
 .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
@@ -198,22 +198,37 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
 }
 
 /* generous touch targets for controls on small screens */
-@media(max-width:640px){
+@media(max-width:860px){
   .filters input,.filters select,.searchbar button,.searchbar input,.btn-ghost{min-height:46px}
   .filters input,.filters select{width:100%}
   .filters{flex-direction:column}
 }
 
-/* responsive data tables -> stacked cards on phones */
-@media(max-width:640px){
-  table.responsive{min-width:0;width:100%}
+/* votes table: fixed column proportions on desktop so the rich "item"
+   column gets the room and long result/category text wraps instead of
+   pushing the table off-screen */
+@media(min-width:861px){
+  .votes-table{table-layout:fixed;width:100%;min-width:0}
+  .votes-table col.c-date{width:10%}
+  .votes-table col.c-item{width:42%}
+  .votes-table col.c-cat{width:15%}
+  .votes-table col.c-spend{width:15%}
+  .votes-table col.c-result{width:18%}
+  .votes-table th,.votes-table td{overflow-wrap:anywhere;white-space:normal}
+}
+
+/* responsive data tables -> stacked cards on phones and tablets */
+@media(max-width:860px){
+  table.responsive{display:block;min-width:0;width:100%}
+  table.responsive tbody{display:block}
   table.responsive thead{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
     overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
   table.responsive tbody tr{display:block;border:1px solid var(--line);border-radius:12px;
     margin-bottom:14px;padding:6px 6px;background:#fff;box-shadow:var(--shadow)}
   table.responsive tbody tr:hover{background:#fff}
   table.responsive tbody td{display:flex;justify-content:space-between;gap:16px;
-    border:0;border-bottom:1px solid var(--line);padding:11px 12px;text-align:right;align-items:baseline}
+    border:0;border-bottom:1px solid var(--line);padding:11px 12px;text-align:right;align-items:baseline;
+    white-space:normal!important;overflow-wrap:anywhere;min-width:0}
   table.responsive tbody tr td:last-child{border-bottom:0}
   table.responsive tbody td::before{content:attr(data-label);font-weight:700;color:var(--muted);
     text-align:left;flex:0 0 38%;font-size:11px;text-transform:uppercase;letter-spacing:.04em}
@@ -224,7 +239,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
 
 /* horizontal-scroll tables: focusable + hint on tablet widths */
 .tablewrap{scrollbar-width:thin}
-@media(max-width:640px){ .tablewrap:focus-visible{outline:3px solid #7fb0ff} }
+@media(max-width:860px){ .tablewrap:focus-visible{outline:3px solid #7fb0ff} }
 
 /* respect reduced-motion preference */
 @media(prefers-reduced-motion:reduce){

@@ -79,6 +79,7 @@
               <li><a href="councilors.html">Councilor Profiles</a></li>
               <li><a href="votes.html">Voting Database</a></li>
               <li><a href="spending.html">Spending Dashboard</a></li>
+              <li><a href="immigration.html">Immigration-Related Spending</a></li>
               <li><a href="unaccounted.html">Funds Not Fully Accounted For</a></li>
               <li><a href="corrections.html">Corrections &amp; Updates</a></li>
               <li><a href="index.html#sections">See all sections</a></li>
@@ -338,7 +339,7 @@
     function row(v) {
       return `
         <tr data-vote="${v.id}">
-          <td data-label="Date" style="white-space:nowrap">${fmtDate(v.vote_date)}</td>
+          <td data-label="Date">${fmtDate(v.vote_date)}</td>
           <td class="cell-primary">
             <div style="font-weight:600">${v.title}</div>
             ${v.plain_summary ? `<div style="color:var(--muted);font-size:13px;margin-top:3px">${v.plain_summary}</div>` : ""}
@@ -348,7 +349,7 @@
           </td>
           <td data-label="Category">${v.category_name ? `<span class="badge-cat">${v.category_name}</span>` : ""}</td>
           <td data-label="Spending">${spendCell(v)}</td>
-          <td data-label="Result" class="${resultClass(v)}" style="white-space:nowrap">${v.result || ""}</td>
+          <td data-label="Result" class="${resultClass(v)}">${v.result || ""}</td>
         </tr>`;
     }
     function draw() {
@@ -469,6 +470,81 @@
     }
   }
 
+  /* ---------- immigration-related spending (curated, sourced view) ---------- */
+  async function renderImmigration() {
+    const host = $("#immigration-list");
+    if (!host) return;
+    // Precise match: genuine immigration / newcomer / refugee / asylum items only.
+    // Word boundaries avoid false positives (e.g. "attorney appeared in favor").
+    const RX = /\b(immigrant|immigration|newcomer|refugee|asylum|undocumented|migrant|sanctuary)\b/i;
+    const AID = /\b(legal aid|legal defense|legal representation|legal services|deportation defense|removal defense)\b/i;
+    try {
+      const res = await fetch("/api/votes");
+      if (!res.ok) throw new Error("api " + res.status);
+      const all = await res.json();
+      const items = all
+        .filter(v => RX.test((v.title || "") + " " + (v.plain_summary || "") + " " + (v.notes || "")))
+        .sort((a, b) => (b.vote_date || "").localeCompare(a.vote_date || ""));
+
+      const funded = items.filter(v => v.spending_amount != null);
+      const gross = funded.reduce((a, v) => a + Number(v.spending_amount), 0);
+      // net local = sum of documented local funding; only counts where classified
+      const localItems = items.filter(v => v.funding_local != null);
+      const netLocal = localItems.reduce((a, v) => a + Number(v.funding_local), 0);
+      // legal-aid-for-immigrants items: match BOTH immigration and legal-aid terms
+      const legalAid = items.filter(v => AID.test((v.title || "") + " " + (v.plain_summary || "")));
+      const years = items.map(v => (v.vote_date || "").slice(0, 4)).filter(Boolean).sort();
+      const span = years.length ? (years[0] === years[years.length - 1] ? years[0] : years[0] + "–" + years[years.length - 1]) : "—";
+
+      const topline = $("#imm-topline");
+      if (topline) topline.innerHTML = `
+        <div class="s"><b>${usd(gross)}</b><span>gross moved through Council (${span})</span></div>
+        <div class="s" style="color:#bff0c6"><b>${usd(netLocal)}</b><span>documented local taxpayer cost</span></div>
+        <div class="s"><b>${items.length}</b><span>immigration-related items</span></div>
+        <div class="s"><b>${legalAid.length}</b><span>items funding immigrant legal aid</span></div>`;
+
+      const headline = $("#imm-headline");
+      if (headline) headline.innerHTML = `
+        <div class="card" style="border-left:4px solid var(--accent)">
+          <h2 class="h" style="margin-top:0">In the recorded 2024&ndash;2026 council votes, immigration-related items totaled <span style="color:var(--accent)">${usd(gross)}</span> gross &mdash; with <span style="color:var(--accent)">${usd(netLocal)}</span> in documented local taxpayer cost.</h2>
+          <p class="sub" style="margin-bottom:10px">Every funded item was an <b>outside grant passed through to the Lynn School Department</b> for multilingual, newcomer, or refugee <b>education</b> support (state/federal money, recorded as $0 local cost). ${legalAid.length === 0 ? "The council records reviewed show <b>no</b> appropriation for immigrant legal aid, legal defense, or deportation representation &mdash; documented local cost for that purpose: <b>$0</b>." : ""}</p>
+          <p class="sub" style="margin-bottom:0">These are the specific items the records identify. See the caveat below on what council votes do and do not capture.</p>
+        </div>`;
+
+      if (!items.length) {
+        host.innerHTML = `<div class="card"><p style="margin:0;color:var(--muted)">No immigration-related items were found in the recorded votes currently loaded.</p></div>`;
+        return;
+      }
+
+      const spend = (v) => {
+        if (v.spending_amount == null) return `<span class="badge-cat">No city funds — policy / resolution</span>`;
+        let s = `<b>${usdShort(v.spending_amount)}</b> gross`;
+        if (v.funding_local === 0) s += ` &middot; <span style="color:var(--good)">net local taxpayer cost $0 (outside-funded)</span>`;
+        else if (v.funding_local != null) s += ` &middot; net local taxpayer cost ${usdShort(v.funding_local)}`;
+        else s += ` &middot; <span style="color:var(--muted)">net local cost not classified in the record</span>`;
+        return s;
+      };
+
+      host.innerHTML = items.map(v => `
+        <div class="card" style="margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:baseline">
+            <h3 style="margin:0;font-size:17px;flex:1;min-width:240px">${v.title}</h3>
+            <div style="white-space:nowrap;color:var(--muted);font-size:13.5px">${fmtDate(v.vote_date)}</div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px">
+            ${v.category_name ? `<span class="badge-cat">${v.category_name}</span>` : ""}
+            ${v.result ? `<span class="badge-cat">${v.result}</span>` : ""}
+          </div>
+          <p style="margin:0 0 10px">${spend(v)}</p>
+          ${v.plain_summary ? `<p class="sub" style="margin:0 0 8px">${v.plain_summary}</p>` : ""}
+          ${v.notes ? `<p style="margin:0 0 8px;color:var(--muted);font-size:13px;font-style:italic">${v.notes}</p>` : ""}
+          ${v.source_url ? `<p class="source-link" style="margin:0">Source: <a href="${v.source_url}" target="_blank" rel="noopener">official minutes</a></p>` : ""}
+        </div>`).join("");
+    } catch (e) {
+      host.innerHTML = `<div class="banner warn"><span class="ic">!</span><div>This view is temporarily unavailable. You can read the underlying records on the <a href="https://www.lynnma.gov/city_government/citycouncil/meeting" target="_blank" rel="noopener">city's meeting page</a>.</div></div>`;
+    }
+  }
+
   /* ---------- predictive search (suggests after 3 characters) ---------- */
   function highlight(text, q) {
     const esc = s => s.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
@@ -570,6 +646,7 @@
     renderVotes();
     renderMeetings();
     renderUnaccounted();
+    renderImmigration();
     setupSearch();
     // prefill votes search from query
     const qparam = new URLSearchParams(location.search).get("q");

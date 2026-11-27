@@ -64,3 +64,25 @@ VALUES
    'https://www.lynnma.gov/city_government/departments/comptrollers/financial_statements',
    'high', 'open')
 ON CONFLICT (fiscal_year, item) DO NOTHING;
+
+-- FY2026 column of the FY2027 budget document (checked 2026-11-26).
+INSERT INTO unaccounted_funds
+  (fiscal_year, item, amount, what_records_show, what_records_do_not_show, records_reviewed, source_url, confidence, status, logged_date)
+VALUES
+  (2026,
+   'Non-Departmental subtotal larger than its listed lines',
+   799650,
+   'In the FY2027 budget summary (p.8), the FY2026 "Final" column lists five Non-Departmental lines — Insurance (All) $2,895,969, Health Insurance $56,502,755, Life Insurance $301,500, Reserve Fund $1,644,500, and FICA (Med Match) $4,220,674 — which add up to $65,565,398. The printed "Total Non-Departmental" is $66,365,048, which is $799,650 more. $799,650 is also the FY2026 "Capital-Free Cash" amount shown separately on p.9.',
+   'The document does not show which line the extra $799,650 belongs to, or whether the Free Cash capital amount is counted both inside the Non-Departmental total and again on its own line. The FY2027 column adds up correctly.',
+   'City of Lynn, Annual Municipal Budget FY2027 (Mayor''s submitted budget, May 9, 2026), Budget Summary pp.7-9.',
+   'https://www.lynnma.gov/common/pages/GetFile.ashx?key=iukEAHEW',
+   'medium', 'open', '2026-11-26'),
+  (2026,
+   'Reserve Fund: summary and line-item detail differ by $200,000',
+   200000,
+   'The FY2027 budget summary (p.8) shows the FY2026 Reserve Fund as $1,644,500. The line-item detail in the same document (p.10, General Reserves, account 0113252-578000 "Otherwise Unclassified") shows $1,444,500 for FY2026. The FY2027 figures match ($1,250,000 in both places).',
+   'The document does not explain the $200,000 difference between the two FY2026 Reserve Fund figures.',
+   'City of Lynn, Annual Municipal Budget FY2027, Budget Summary p.8 and Budget Detail p.10.',
+   'https://www.lynnma.gov/common/pages/GetFile.ashx?key=iukEAHEW',
+   'high', 'open', '2026-11-26')
+ON CONFLICT (fiscal_year, item) DO NOTHING;

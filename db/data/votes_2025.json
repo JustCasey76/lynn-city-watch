@@ -235,7 +235,7 @@
     "result": "Motion carried",
     "tally_yes": 11,
     "tally_no": 0,
-    "summary": "Motion by Councilor Dr. Meaney, seconded by Councilor Net, to appoint Daphnee Puryear, 572 Walnut Street, to the Lynn Human Rights Commission effective immediately, with a term expiring December 30, 2026. Carried 11 YES 0 NO.",
+    "summary": "Motion by Councilor Dr. Meaney, seconded by Councilor Net, to appoint Daphnee Puryear of Lynn (Lynn address assumed) to the Lynn Human Rights Commission effective immediately, with a term expiring December 30, 2026. Carried 11 YES 0 NO.",
     "category": "appointments",
     "item_type": "appointment",
     "department": "Lynn Human Rights Commission",
@@ -844,7 +844,7 @@
    {
     "title": "Mayoral appointments to Public Library Board of Trustees and Human Rights Commission",
     "item_type": "appointments",
-    "summary": "Communication from Mayor Jared C. Nicholson appointing Julissa Hernandez (18 Waverly Street) and Rachel Ramierez (2 Mosher Road) to the Public Library Board of Trustees (terms expiring April 1, 2027), and Tim Potter (14 Hovey Terrace) to the Human Rights Commission (term expiring December 21, 2026). Motion by Councilor Hogan, seconded by Councilor McClain, to grant.",
+    "summary": "Communication from Mayor Jared C. Nicholson appointing Julissa Hernandez of Lynn (Lynn address assumed) and Rachel Ramierez of Lynn (Lynn address assumed) to the Public Library Board of Trustees (terms expiring April 1, 2027), and Tim Potter of Lynn (Lynn address assumed) to the Human Rights Commission (term expiring December 21, 2026). Motion by Councilor Hogan, seconded by Councilor McClain, to grant.",
     "result": "Granted",
     "tally_yes": 10,
     "tally_no": 0,
@@ -1329,7 +1329,7 @@
   "meeting_title": "City Council Meeting, March 25, 2025 (Council President John M. Walsh)",
   "councilors_present_count": 11,
   "absent_names": [],
-  "transparency_notes": "Header states \"11 Councilors Present\"; no councilor is listed as absent. This is the prior (2025) council term, so names differ from the 2026 roster provided: the minutes name President John M. Walsh plus Councilors Field, Chakoutis, Net, Hogan, LaPierre, Matul, McClain, Meaney (printed as \"Dr. Meaney\"), Megie-Maddrey, and Alinsug. Names are transcribed exactly as printed. Scanned PDF (no text layer); read via rendered page images. Minor apparent typos in the original: on p.2 \"Councilor Filed\" almost certainly means Councilor Field, and \"Councilor Net\" appears throughout (roster spelling). On p.3 the R Cannon Rock Road parcel assessed value is printed ambiguously as \"$10,0000.00\" (unclear whether $10,000 or $100,000) — left out of spending_amount. Two \"Granted\" foyer-use orders (Librarian Theresa Hurley, and Health Department) and the report acceptances were recorded without individual roll-call tallies. The National Grid utility-rates item on p.7 was a presentation with no vote (report accepted) and is not listed as a vote. Executive Session on possible litigation was entered; President Walsh stated no votes were taken on any litigation.",
+  "transparency_notes": "Header states \"11 Councilors Present\"; no councilor is listed as absent. This is the prior (2025) council term, so names differ from the 2026 roster provided: the minutes name President John M. Walsh plus Councilors Field, Chakoutis, Net, Hogan, LaPierre, Matul, McClain, Meaney (printed as \"Dr. Meaney\"), Megie-Maddrey, and Alinsug. Names are transcribed exactly as printed. Scanned PDF (no text layer); read via rendered page images. Minor apparent typos in the original: on p.2 \"Councilor Filed\" almost certainly means Councilor Field, and \"Councilor Net\" appears throughout (roster spelling). On p.3 the R Cannon Rock Road parcel assessed value is printed ambiguously as \"$10,0000.00\" (unclear whether $10,000 or $100,000) — left out of spending_amount. Two \"Granted\" foyer-use orders (Librarian Theresa Hurley, and Health Department) and the report acceptances were recorded without individual roll-call tallies. The National Grid utility-rates item on p.7 was a presentation with no vote (report accepted) and is not listed as a vote. Executive Session on possible litigation was entered; President Walsh stated no votes were taken on any litigation. The city posted a second copy of these minutes (file key S1IEALCt); it covers the same meeting, so it is not loaded separately. The second copy omits the motion to enter executive session (8 YES 3 NO); this record follows the fuller copy.",
   "votes": [
    {
     "title": "Accept the Meeting Minutes of March 11, 2025",
@@ -1349,7 +1349,7 @@
     "item_type": "appointment",
     "category": "appointments",
     "department": "Public Library / Mayor's Office",
-    "summary": "Communication from Mayor Jared C. Nicholson appointing Alexandra Novakowski (10 Larch Road) to the Public Library Board of Trustees, effective immediately, term expiring April 1, 2028. Motion by Councilor Hogan, seconded by Councilor McClain, to grant.",
+    "summary": "Communication from Mayor Jared C. Nicholson appointing Alexandra Novakowski of Lynn (Lynn address assumed) to the Public Library Board of Trustees, effective immediately, term expiring April 1, 2028. Motion by Councilor Hogan, seconded by Councilor McClain, to grant.",
     "result": "Motion carried",
     "tally_yes": 11,
     "tally_no": 0,
@@ -1743,385 +1743,6 @@
   "_key": "PVUEAMaq"
  },
  {
-  "meeting_date": "2025-03-25",
-  "councilors_present_count": 11,
-  "absent_names": [],
-  "meeting_title": "City Council Meeting, March 25, 2025 (Council President John M. Walsh)",
-  "transparency_notes": "This meeting is from the prior (2025) council term, so several names printed do not match the 2026 roster provided: Council President John M. Walsh, and Councilors \"Field,\" \"Chakoutis,\" and \"Net\" are transcribed exactly as printed. On page 2 the mover of one item is printed \"Councilor Filed,\" which appears to be a typo for Councilor Field. The minutes record \"11 Councilors Present\" but do not list individual names in an attendance roll; the 11 councilors named somewhere in the document are Walsh, Field, McClain, Hogan, Chakoutis, Net, LaPierre, Matul, Meaney, Megie-Maddrey, and Alinsug. No councilor is recorded as absent. The Cannon Rock Road property assessed value is printed as \"$10,0000.00\" (extra digit as written; likely $10,000). \"Shelbourne Police Department\" spelled as printed. The two emergency transfers each recorded two separate 11-0 votes (Emergency Preamble, then Emergency Order). The Committee on Utilities item was a National Grid presentation with a report accepted but no motion or tally recorded, so it is not listed as a vote. Adjournment motion (Net/Hogan) carried no tally and is omitted.",
-  "votes": [
-   {
-    "title": "Accept meeting minutes of March 11, 2025",
-    "item_type": "minutes",
-    "summary": "Motion by Councilor Field, seconded by Councilor McClain, to accept the meeting minutes of March 11, 2025. Motion carried.",
-    "result": "Motion carried (no tally recorded)",
-    "tally_yes": null,
-    "tally_no": null,
-    "category": "transparency",
-    "department": "City Council",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": []
-   },
-   {
-    "title": "Appointment of Alexandra Novakowski to Public Library Board of Trustees",
-    "item_type": "appointment",
-    "summary": "Mayor Jared C. Nicholson's communication appointing Alexandra Novakowski, 10 Larch Road, to the Public Library Board of Trustees, term expiring April 1, 2028. Motion by Councilor Hogan, seconded by Councilor McClain, to grant.",
-    "result": "Passed",
-    "tally_yes": 11,
-    "tally_no": 0,
-    "category": "appointments",
-    "department": "Public Library Board of Trustees",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": []
-   },
-   {
-    "title": "Authorization to execute services agreement for Michael J. Donovan as Director of Capital Projects",
-    "item_type": "appointment",
-    "summary": "Mayor's communication designating Michael J. Donovan to perform the duties of Director of Capital Projects and requesting authorization to execute a services agreement effective April 7, 2025 through June 30, 2026. Motion by Councilor Chakoutis, seconded by Councilor Net, to grant. Motion failed.",
-    "result": "Failed",
-    "tally_yes": 5,
-    "tally_no": 6,
-    "category": "appointments",
-    "department": "Capital Projects",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": [
-     {
-      "name": "Hogan",
-      "position": "no"
-     },
-     {
-      "name": "LaPierre",
-      "position": "no"
-     },
-     {
-      "name": "Matul",
-      "position": "no"
-     },
-     {
-      "name": "McClain",
-      "position": "no"
-     },
-     {
-      "name": "Meaney",
-      "position": "no"
-     },
-     {
-      "name": "Megie-Maddrey",
-      "position": "no"
-     }
-    ]
-   },
-   {
-    "title": "Authorization to execute services agreement following appointment of Bret Bennett, Jr.",
-    "item_type": "appointment",
-    "summary": "Mayor's communication following up on the appointment of Bret Bennett, Jr. (confirmed March 11, 2025) and requesting authorization to execute a services agreement effective April 7, 2025 through April 6, 2028. Motion by Councilor Field (printed 'Filed'), seconded by Councilor Dr. Meaney, to grant.",
-    "result": "Passed",
-    "tally_yes": 11,
-    "tally_no": 0,
-    "category": "appointments",
-    "department": "",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": []
-   },
-   {
-    "title": "Confirmation of Michael Kwiatek as Director of Information Technology (CFO communication)",
-    "item_type": "appointment",
-    "summary": "CFO Michael Bertino's communication appointing Michael Kwiatek as Director of Information Technology effective April 14, 2025 and requesting Council confirmation. Motion by Councilor LaPierre, seconded by Councilor Field, to grant.",
-    "result": "Passed",
-    "tally_yes": 11,
-    "tally_no": 0,
-    "category": "appointments",
-    "department": "Information Technology",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": []
-   },
-   {
-    "title": "Set proposed Charter Amendments down for public hearing",
-    "item_type": "motion",
-    "summary": "Following a presentation by Stephen McGoldrick and James Tarr of the Collins Center regarding proposed Charter Amendments, motion by Councilor Field, seconded by Councilor LaPierre, to set the matter down for a public hearing on April 8, 2025. Motion carried.",
-    "result": "Motion carried (no tally recorded)",
-    "tally_yes": null,
-    "tally_no": null,
-    "category": "transparency",
-    "department": "City Council",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": []
-   },
-   {
-    "title": "Ordinance amending the ordinance creating the position of Director of Information and Technology",
-    "item_type": "ordinance",
-    "summary": "Public hearing on an ordinance amending the ordinance creating the position of Director of Information and Technology in the City of Lynn; Mayor Jared C. Nicholson appeared in favor and no one appeared in opposition. Motion by Councilor Net, seconded by Councilor Hogan, to grant.",
-    "result": "Passed",
-    "tally_yes": 10,
-    "tally_no": 0,
-    "category": "legal",
-    "department": "Information Technology",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": [
-     {
-      "name": "Meaney",
-      "position": "present"
-     }
-    ]
-   },
-   {
-    "title": "Petition of the Lynn Fireworks Fund for Fiesta Shows to hold a carnival",
-    "item_type": "petition",
-    "summary": "Public hearing on a petition of the Lynn Fireworks Fund for Fiesta Shows to hold a carnival on the open lot between Federal Street and Centre Street (behind the Western Ave Fire House) on specified dates in April, June, July/August and September 2025. Motion by Councilor Hogan, seconded by Councilor Dr. Meaney, to grant.",
-    "result": "Passed",
-    "tally_yes": 11,
-    "tally_no": 0,
-    "category": "city-services",
-    "department": "",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": []
-   },
-   {
-    "title": "Request for Proposals to sell R Cannon Rock Road property to direct abutters",
-    "item_type": "order",
-    "summary": "Committee on Public Property and Parks order directing the Law Department and Purchasing Department to issue a Request for Proposals to sell the property at R Cannon Rock Road (Parcel ID 077-062-081) to direct abutters only, limited to landscaping and parking use; the parcel contains 43,117 square feet, lacks frontage on a public way, and is assessed at $10,0000.00 (as printed). Motion by Councilor Chakoutis, seconded by Councilor Matul, to grant.",
-    "result": "Passed",
-    "tally_yes": 11,
-    "tally_no": 0,
-    "category": "city-services",
-    "department": "Law Department / Purchasing Department",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": []
-   },
-   {
-    "title": "Donation of five surplus tasers from Lynn Police Department to Shelbourne Police Department",
-    "item_type": "order",
-    "summary": "Committee on Public Property and Parks order allowing the Lynn Police Department to donate five surplus older-model tasers to the Shelbourne Police Department, with the Law Department to draft a release and waiver of liability. Motion by Councilor Chakoutis, seconded by Councilor Matul, to grant.",
-    "result": "Passed",
-    "tally_yes": 11,
-    "tally_no": 0,
-    "category": "police",
-    "department": "Lynn Police Department",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": []
-   },
-   {
-    "title": "Use of City Hall Foyer by Lynn Public Library for National Library Week",
-    "item_type": "order",
-    "summary": "Committee on Public Property and Parks order allowing Lynn Public Librarian Theresa Hurley to use the City Hall Foyer on Tuesday, April 8, 2025 from 4:00 pm to 7:00 pm for National Library Week (library card sign-ups and displaying resources). Granted; report accepted.",
-    "result": "Granted (report accepted; no tally recorded)",
-    "tally_yes": null,
-    "tally_no": null,
-    "category": "city-services",
-    "department": "Lynn Public Library",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": []
-   },
-   {
-    "title": "Use of City Hall Foyer by Health Department for Public Health Week",
-    "item_type": "order",
-    "summary": "Committee on Public Property and Parks order allowing the Health Department to use the City Hall Foyer on Wednesday, April 9, 2025 from 10:00 am to 2:00 pm for a Public Health Week event. Granted; report accepted.",
-    "result": "Granted (report accepted; no tally recorded)",
-    "tally_yes": null,
-    "tally_no": null,
-    "category": "city-services",
-    "department": "Health Department",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": []
-   },
-   {
-    "title": "Transfer of $50.17 to fund Bill of Prior Year (Mayor)",
-    "item_type": "transfer",
-    "summary": "Committee on Ways and Means transfer (laid over from March 11, 2025) of $50.17 from account 11115-4900 Mayor-Exp to account 98025-1111 Mayor-Bill of PY Exp to fund a Bill of Prior Year. Motion by Councilor Net, seconded by Councilor Walsh, to grant.",
-    "result": "Passed",
-    "tally_yes": 11,
-    "tally_no": 0,
-    "category": "budget",
-    "department": "Mayor",
-    "funding_source": "Mayor-Exp (account 11115-4900)",
-    "spending_amount": 50.17,
-    "named_positions": []
-   },
-   {
-    "title": "Transfer of $150,000.00 from Reserve to Information Technology",
-    "item_type": "transfer",
-    "summary": "Committee on Ways and Means transfer of $150,000.00 from account 98035-7800 Reserve to account 11725-3000 IT-Exp to fund operational needs of the department. Motion by Councilor Net, seconded by Councilor Walsh, to grant.",
-    "result": "Passed",
-    "tally_yes": 11,
-    "tally_no": 0,
-    "category": "budget",
-    "department": "Information Technology",
-    "funding_source": "Reserve (account 98035-7800)",
-    "spending_amount": 150000,
-    "named_positions": []
-   },
-   {
-    "title": "Transfer of $24,300.00 within Planning Department",
-    "item_type": "transfer",
-    "summary": "Committee on Ways and Means transfer of $24,300.00 from account 17105-3000 Planning-Exp to account 17104-1000 Planning-PR to fund an employee from the General Fund due to loss of Federal Grant Funds for a period of 14 weeks. Motion by Councilor Net, seconded by Councilor Walsh, to grant.",
-    "result": "Passed",
-    "tally_yes": 11,
-    "tally_no": 0,
-    "category": "budget",
-    "department": "Planning",
-    "funding_source": "Planning-Exp (account 17105-3000); to fund employee from General Fund due to loss of Federal Grant Funds",
-    "spending_amount": 24300,
-    "named_positions": []
-   },
-   {
-    "title": "Transfer of $3,370.00 to fund Bill of Prior Year (ISD)",
-    "item_type": "transfer",
-    "summary": "Committee on Ways and Means transfer of $3,370.00 from account 11935-2412 ISD-Exp to account 98025-1193 ISD-Bill of PY Exp to fund a Bill of Prior Year. Motion by Councilor Net, seconded by Councilor Walsh, to grant.",
-    "result": "Passed",
-    "tally_yes": 11,
-    "tally_no": 0,
-    "category": "budget",
-    "department": "ISD",
-    "funding_source": "ISD-Exp (account 11935-2412)",
-    "spending_amount": 3370,
-    "named_positions": []
-   },
-   {
-    "title": "Transfer of $1,629.32 to fund Bill of Prior Year (ISD)",
-    "item_type": "transfer",
-    "summary": "Committee on Ways and Means transfer of $1,629.32 from account 11935-2700 ISD-Exp to account 98025-1193 ISD-Bill of PY Exp to fund a Bill of Prior Year. Motion by Councilor Net, seconded by Councilor Walsh, to grant.",
-    "result": "Passed",
-    "tally_yes": 11,
-    "tally_no": 0,
-    "category": "budget",
-    "department": "ISD",
-    "funding_source": "ISD-Exp (account 11935-2700)",
-    "spending_amount": 1629.32,
-    "named_positions": []
-   },
-   {
-    "title": "Emergency transfer of $50,000.00 from Reserve to Mayor",
-    "item_type": "transfer",
-    "summary": "Committee on Ways and Means emergency transfer of $50,000.00 from account 98035-7800 Reserve to account 11115-7300 Mayor-Exp to fund operating needs of the department. Councilor Net attached an Emergency Preamble, which was adopted 11-0; the Emergency Order was then adopted 11-0.",
-    "result": "Passed (Emergency Preamble 11-0; Emergency Order 11-0)",
-    "tally_yes": 11,
-    "tally_no": 0,
-    "category": "budget",
-    "department": "Mayor",
-    "funding_source": "Reserve (account 98035-7800)",
-    "spending_amount": 50000,
-    "named_positions": []
-   },
-   {
-    "title": "Emergency transfer of $40,000.00 from Reserve to DPW for LPD car repairs",
-    "item_type": "transfer",
-    "summary": "Committee on Ways and Means emergency transfer of $40,000.00 from account 98035-7800 Reserve to account 44045-2409P DPW-Exp to fund outsourced work for car repairs for the Lynn Police Department. Councilor Net attached an Emergency Preamble, which was adopted 11-0; the Emergency Order was then adopted 11-0.",
-    "result": "Passed (Emergency Preamble 11-0; Emergency Order 11-0)",
-    "tally_yes": 11,
-    "tally_no": 0,
-    "category": "budget",
-    "department": "Department of Public Works",
-    "funding_source": "Reserve (account 98035-7800)",
-    "spending_amount": 40000,
-    "named_positions": []
-   },
-   {
-    "title": "Certify $2,000,000.00 Available Fund for School Department (Eastern Bank Foundation)",
-    "item_type": "grant",
-    "summary": "Committee on Ways and Means certification of $2,000,000.00 as an 'Available Fund' allotted to the City of Lynn School Department by the Eastern Bank Foundation for outfitting the 195 Market Street, Lynn building with equipment and technology for student programming. Grant period 03/25/25 until the money is spent. Motion by Councilor Net, seconded by Councilor Walsh, to grant.",
-    "result": "Passed",
-    "tally_yes": 11,
-    "tally_no": 0,
-    "category": "grants",
-    "department": "School Department",
-    "funding_source": "Eastern Bank Foundation",
-    "spending_amount": 2000000,
-    "named_positions": []
-   },
-   {
-    "title": "Certify $200,000.00 Available Fund for Community Development (Massachusetts Cultural Council ART)",
-    "item_type": "grant",
-    "summary": "Committee on Ways and Means certification of $200,000.00 as an 'Available Fund' allotted to the City of Lynn Community Development Department by the Massachusetts Cultural Council (ART) for financial assistance to mitigate a direct threat to the sustainability of nonprofit and/or municipal performing art centers in Massachusetts. Grant period 03/11/25-06/30/25. Motion by Councilor Net, seconded by Councilor Walsh, to grant.",
-    "result": "Passed",
-    "tally_yes": 11,
-    "tally_no": 0,
-    "category": "grants",
-    "department": "Community Development",
-    "funding_source": "Massachusetts Cultural Council (ART)",
-    "spending_amount": 200000,
-    "named_positions": []
-   },
-   {
-    "title": "Certify $50,000.00 Available Fund for Mayor's Office (EPS Gun Violence Prevention grant)",
-    "item_type": "grant",
-    "summary": "Committee on Ways and Means certification of $50,000.00 as an 'Available Fund' allotted to the City of Lynn Mayor's Office by the Massachusetts Executive Office of Public Safety & Security (EPS) for a Gun Violence Prevention & Community Programming Grant, described as an earmark awarded on behalf of the local delegation. Grant period 03/25/25-06/30/25. Motion by Councilor Net, seconded by Councilor Walsh, to grant.",
-    "result": "Passed",
-    "tally_yes": 11,
-    "tally_no": 0,
-    "category": "grants",
-    "department": "Mayor's Office",
-    "funding_source": "Massachusetts Executive Office of Public Safety & Security (EPS)",
-    "spending_amount": 50000,
-    "named_positions": []
-   },
-   {
-    "title": "Certify $15,000.00 Available Fund for Planning Department (FY25 Lynn Cultural Council grant)",
-    "item_type": "grant",
-    "summary": "Committee on Ways and Means certification of $15,000.00 as an 'Available Fund' allotted to the City of Lynn Planning Department by the Mass Cultural Council (MCC) for the FY25 Lynn Cultural Council Annual Grant Award. Grant period 03/25/25-06/30/25. Motion by Councilor Net, seconded by Councilor Walsh, to grant. Report accepted.",
-    "result": "Passed",
-    "tally_yes": 11,
-    "tally_no": 0,
-    "category": "grants",
-    "department": "Planning",
-    "funding_source": "Mass Cultural Council (MCC)",
-    "spending_amount": 15000,
-    "named_positions": []
-   },
-   {
-    "title": "Approve appointment of Michael Kwiatek as Information and Technology Director (Committee on Personnel)",
-    "item_type": "appointment",
-    "summary": "Committee on Personnel report recommending approval of the appointment of Michael Kwiatek for the position of Information and Technology Director in the City of Lynn. Motion by Councilor LaPierre, seconded by Councilor Alinsug, to grant. Report accepted.",
-    "result": "Passed",
-    "tally_yes": 11,
-    "tally_no": 0,
-    "category": "appointments",
-    "department": "Information Technology",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": []
-   },
-   {
-    "title": "Disclosure allowing Russell Gokas to work roadside details for Lynn Police Department",
-    "item_type": "motion",
-    "summary": "New business disclosure that Russell Gokas, a retired Lynn Police Officer and part-time employee in the City of Lynn Parking Department, is requesting to work roadside details for the Lynn Police Department. Motion by Councilor Field, seconded by Councilor Hogan, to grant.",
-    "result": "Passed",
-    "tally_yes": 11,
-    "tally_no": 0,
-    "category": "ethics",
-    "department": "Lynn Police Department",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": []
-   },
-   {
-    "title": "Recommend City Solicitor draft correspondence on additional storm drains near Lake View Place and Park Road",
-    "item_type": "motion",
-    "summary": "New business motion by Councilor Dr. Meaney, seconded by Councilor Alinsug, to recommend that the City Solicitor's Office draft correspondence to the Lynn Water and Sewer Commission to look into the feasibility of installing additional storm drains in the vicinity of Lake View Place and Park Road to address longstanding flooding issues.",
-    "result": "Passed",
-    "tally_yes": 11,
-    "tally_no": 0,
-    "category": "infrastructure",
-    "department": "Lynn Water and Sewer Commission / City Solicitor",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": []
-   }
-  ],
-  "_slug": "y25m0325b",
-  "_key": "S1IEALCt"
- },
- {
   "meeting_date": "2025-03-28",
   "councilors_present_count": 11,
   "absent_names": [],
@@ -2282,7 +1903,7 @@
     "item_type": "committee report / appointments",
     "category": "appointments",
     "department": "Committee on Public Safety",
-    "summary": "The Committee on Public Safety report was accepted. Constable appointment of Robert A. Capano (8 Peary Avenue, Lynn) was tabled; constable re-appointment of Christopher P. Chigas (5 Tammie Lane, Peabody) was granted.",
+    "summary": "The Committee on Public Safety report was accepted. Constable appointment of Robert A. Capano of Lynn was tabled; constable re-appointment of Christopher P. Chigas of Peabody was granted.",
     "tally_yes": null,
     "tally_no": null,
     "spending_amount": null,
@@ -2474,7 +2095,7 @@
     "department": "Committee on Public Safety and Public Health",
     "spending_amount": null,
     "funding_source": "",
-    "summary": "The Committee on Public Safety and Public Health report was accepted. It recommended granting the constable appointment of Robert Capano, 8 Peary Avenue, Lynn (tabled April 8, 2025). Report accepted with no roll-call tally recorded.",
+    "summary": "The Committee on Public Safety and Public Health report was accepted. It recommended granting the constable appointment of Robert Capano of Lynn (tabled April 8, 2025). Report accepted with no roll-call tally recorded.",
     "named_positions": []
    },
    {
@@ -3080,367 +2701,12 @@
  },
  {
   "meeting_date": "2025-05-27",
-  "meeting_title": "City of Lynn City Council Meeting, May 27, 2025",
-  "councilors_present_count": 10,
-  "absent_names": [
-   "Brian P. LaPierre"
-  ],
-  "transparency_notes": "Scanned PDF with no text layer; transcribed from rendered page images (170 dpi). Council President listed as John M. Walsh, Jr. (2025 term differs from the 2026 roster provided). Councilor \"Net\" appears throughout attaching Emergency Preambles; matched to roster member Hong L. Net. Councilor \"Megie-Maddrey\" (roster: Natasha S. Megie-Maddrey) is spelled \"Megie-Maddrey\" in the minutes. Minutes repeatedly note \"(Councilor LaPierre absent)\"; roster has Brian P. LaPierre (At-Large). Many committee-report items and procedural motions carried without a recorded numeric tally; these are marked with null tallies. The set-down of multiple public hearings was voted as a single grouped motion (Hogan/Field). Two committee items (Multi-Service Center RFP; Wyoma Square MOU) and one constable re-appointment (Kenneth Grady) were tabled. On the Clause 54 personal-property exemption vote, Council President Walsh is recorded as ABSTAINED. Minor OCR-visible typos in the original (\"REPPORT\", \"Opening Meeting Complaint\", \"any vote\") noted but not corrected.",
-  "votes": [
-   {
-    "title": "Acceptance of Meeting Minutes of May 13, 2025",
-    "result": "Motion carried (no tally recorded)",
-    "tally_yes": null,
-    "tally_no": null,
-    "summary": "The Council voted to accept the meeting minutes of May 13, 2025. Motion made by Councilor Field and seconded by Councilor McClain.",
-    "item_type": "minutes",
-    "category": "transparency",
-    "department": "City Council",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": []
-   },
-   {
-    "title": "Appointment of John Marzec as Director of Buildings and Grounds, Inspectional Services Department",
-    "result": "Motion carried (no tally recorded)",
-    "tally_yes": null,
-    "tally_no": null,
-    "summary": "The Council voted to confirm Mayor Jared C. Nicholson's appointment of John Marzec to the position of Director of Buildings and Grounds in the Inspectional Services Department, effective June 11, 2025. Motion made by Councilor Alinsug and seconded by Councilor Field.",
-    "item_type": "appointment",
-    "category": "appointments",
-    "department": "Inspectional Services Department",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": []
-   },
-   {
-    "title": "Set down multiple public hearings",
-    "result": "Motion carried (no tally recorded)",
-    "tally_yes": null,
-    "tally_no": null,
-    "summary": "The Council voted to set down for public hearings a group of petitions and matters, including National Grid underground facilities on Pleasant St and conduit to new switchgear at 44-54 State Street, a Comcast PVC conduit at 597 Essex St, abandonment of a portion of Franklin Street near the Boys and Girls Club, a proposed Zone Recodification, all Extended Hour renewal licenses, a petition of Ruben Ramierez at 53 Commercial St, and a petition of Chintan Patel to open a Dairy Queen at 414 Broadway. Motion made by Councilor Hogan and seconded by Councilor Field.",
-    "item_type": "procedural",
-    "category": "city-services",
-    "department": "City Council",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": []
-   },
-   {
-    "title": "Appropriate $640,000.00 from Free-Cash to ISD Repairs to purchase additional barrels",
-    "result": "Passed",
-    "tally_yes": 10,
-    "tally_no": 0,
-    "summary": "On the Report of the March 27, 2025 Committee on Ways and Means, the Council appropriated $640,000.00 from the Free-Cash account to account 44105-2905 ISD Repairs-Exp to purchase additional barrels. An Emergency Preamble attached by Councilor Net was adopted; both the Emergency Preamble and Emergency Order passed 10 YES 0 NO.",
-    "item_type": "appropriation",
-    "category": "public-works",
-    "department": "Inspectional Services Department",
-    "funding_source": "FREE-CASH",
-    "spending_amount": 640000,
-    "named_positions": [
-     {
-      "name": "Brian P. LaPierre",
-      "position": "absent"
-     }
-    ]
-   },
-   {
-    "title": "Transfer $50,000.00 from Reserve to IT",
-    "result": "Passed",
-    "tally_yes": 10,
-    "tally_no": 0,
-    "summary": "The Council voted to transfer $50,000.00 from account 98035-7800 Reserve-Exp to account 11725-3000 IT-Exp. An Emergency Preamble attached by Councilor Net was adopted; both the Emergency Preamble and Emergency Order passed 10 YES 0 NO.",
-    "item_type": "transfer",
-    "category": "budget",
-    "department": "Information Technology",
-    "funding_source": "98035-7800 Reserve-Exp",
-    "spending_amount": 50000,
-    "named_positions": [
-     {
-      "name": "Brian P. LaPierre",
-      "position": "absent"
-     }
-    ]
-   },
-   {
-    "title": "Transfer $50,000.00 from Council on Aging Revolving to Council on Aging Personnel",
-    "result": "Passed",
-    "tally_yes": 10,
-    "tally_no": 0,
-    "summary": "The Council voted to transfer $50,000.00 from account 221500-7800 COA-Revolving Exp to account 65324-1000 COA-PR to fund operations for the rest of FY25. An Emergency Preamble attached by Councilor Net was adopted; both the Emergency Preamble and Emergency Order passed 10 YES 0 NO.",
-    "item_type": "transfer",
-    "category": "budget",
-    "department": "Council on Aging",
-    "funding_source": "221500-7800 COA-Revolving Exp",
-    "spending_amount": 50000,
-    "named_positions": [
-     {
-      "name": "Brian P. LaPierre",
-      "position": "absent"
-     }
-    ]
-   },
-   {
-    "title": "Transfer $858.00 within Inspectional Services to fund Bill of Prior Year",
-    "result": "Passed",
-    "tally_yes": 10,
-    "tally_no": 0,
-    "summary": "The Council voted to transfer $858.00 from account 11935-2412S ISD-Exp to account 98025-1193 ISD-Bill of PY Exp to fund a Bill of Prior Year. An Emergency Preamble attached by Councilor Net was adopted; both the Emergency Preamble and Emergency Order passed 10 YES 0 NO.",
-    "item_type": "transfer",
-    "category": "budget",
-    "department": "Inspectional Services Department",
-    "funding_source": "11935-2412S ISD-Exp",
-    "spending_amount": 858,
-    "named_positions": [
-     {
-      "name": "Brian P. LaPierre",
-      "position": "absent"
-     }
-    ]
-   },
-   {
-    "title": "Transfer $251,000.00 within Inspectional Services from Personnel to Expense accounts",
-    "result": "Passed",
-    "tally_yes": 10,
-    "tally_no": 0,
-    "summary": "The Council voted to transfer a total of $251,000.00 within Inspectional Services: $154,000.00 from 11934-1000 ISD-PR to 11935-2412 ISD-Exp, and $97,000.00 from 11934-1000S ISD-PR to 11935-8200S ISD-Exp. An Emergency Preamble attached by Councilor Net was adopted; both the Emergency Preamble and Emergency Order passed 10 YES 0 NO.",
-    "item_type": "transfer",
-    "category": "budget",
-    "department": "Inspectional Services Department",
-    "funding_source": "11934-1000 ISD-PR and 11934-1000S ISD-PR",
-    "spending_amount": 251000,
-    "named_positions": [
-     {
-      "name": "Brian P. LaPierre",
-      "position": "absent"
-     }
-    ]
-   },
-   {
-    "title": "Certify $355,828.00 Available Fund for Summer YouthWorks Jobs grant",
-    "result": "Passed",
-    "tally_yes": 10,
-    "tally_no": 0,
-    "summary": "The Council voted to certify as an Available Fund the amount of $355,828.00 allotted to the City of Lynn Office of Economic & Community Development by the North Shore Workforce Investment Board for 2025 (FY26) Summer YouthWorks Jobs, grant period 06/01/2025-09/30/2025. An Emergency Preamble attached by Councilor Net was adopted; both the Emergency Preamble and Emergency Order passed 10 YES 0 NO.",
-    "item_type": "grant acceptance",
-    "category": "grants",
-    "department": "Office of Economic & Community Development",
-    "funding_source": "North Shore Workforce Investment Board 2025 (FY26) Summer YouthWorks Jobs",
-    "spending_amount": 355828,
-    "named_positions": [
-     {
-      "name": "Brian P. LaPierre",
-      "position": "absent"
-     }
-    ]
-   },
-   {
-    "title": "Certify $30,000.00 Available Fund for FC221 FY25 Teacher Apprenticeship 221 Grant",
-    "result": "Passed",
-    "tally_yes": 10,
-    "tally_no": 0,
-    "summary": "The Council voted to certify as an Available Fund the amount of $30,000.00 allotted to the City of Lynn School Department by the Department of Early and Secondary Education (DESE) for the FC221 FY25 Teacher Apprenticeship 221 Grant Program, grant period 04/25/25-06/30/25. An Emergency Preamble attached by Councilor Net was adopted; both the Emergency Preamble and Emergency Order passed 10 YES 0 NO.",
-    "item_type": "grant acceptance",
-    "category": "grants",
-    "department": "School Department",
-    "funding_source": "Department of Early and Secondary Education (DESE) FC221 FY25 Teacher Apprenticeship 221 Grant",
-    "spending_amount": 30000,
-    "named_positions": [
-     {
-      "name": "Brian P. LaPierre",
-      "position": "absent"
-     }
-    ]
-   },
-   {
-    "title": "Certify $30,000.00 Available Fund for FY25 Mass Alliance for Early College Grant",
-    "result": "Passed",
-    "tally_yes": 10,
-    "tally_no": 0,
-    "summary": "The Council voted to certify as an Available Fund the amount of $30,000.00 allotted to the City of Lynn School Department by the Massachusetts Alliance for College for the FY25 Mass Alliance for Early College Grant Program, grant period 03/11/25-08/31/25. An Emergency Preamble attached by Councilor Net was adopted; both the Emergency Preamble and Emergency Order passed 10 YES 0 NO.",
-    "item_type": "grant acceptance",
-    "category": "grants",
-    "department": "School Department",
-    "funding_source": "Massachusetts Alliance for College, FY25 Mass Alliance for Early College Grant",
-    "spending_amount": 30000,
-    "named_positions": [
-     {
-      "name": "Brian P. LaPierre",
-      "position": "absent"
-     }
-    ]
-   },
-   {
-    "title": "Report of the May 27, 2025 Committee on Public Property and Parks",
-    "result": "Report accepted (no tally recorded)",
-    "tally_yes": null,
-    "tally_no": null,
-    "summary": "The Council accepted the Committee on Public Property and Parks report. Within it, an order authorizing the Purchasing Department to issue an RFP to sell the Multi-Service Center at 100 Willow Street and the parking lot at 57-61 Liberty Street was Tabled; an order authorizing the Mayor to execute an Assignment of a Memorandum of Understanding for the future sale of a portion of the Wyoma Square Municipal Parking Lot to the new owners of 312-316 Broadway was Tabled; and an order granting the Mayor's Office use of the Foyer on June 3, 2025 from 5pm to 6pm for the Lynn Calm Team Launch was Granted.",
-    "item_type": "committee report",
-    "category": "city-services",
-    "department": "Public Property and Parks",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": []
-   },
-   {
-    "title": "Report of the May 27, 2025 Committee on Public Safety and Health",
-    "result": "Report accepted (no tally recorded)",
-    "tally_yes": null,
-    "tally_no": null,
-    "summary": "The Council accepted the Committee on Public Safety and Health report. The constable re-appointment of Kenneth Grady, 271 Walnut St, Lynn, MA 01905 was Tabled.",
-    "item_type": "committee report",
-    "category": "public-safety",
-    "department": "Public Safety and Health",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": []
-   },
-   {
-    "title": "Report of the May 27, 2025 Committee on Licensing",
-    "result": "Report accepted (no tally recorded)",
-    "tally_yes": null,
-    "tally_no": null,
-    "summary": "The Council accepted the Committee on Licensing report. New livery driver licenses were Granted to Jelame Garcia, Jeremy Garcia, and Rita Sanchez (all 3 Circuit Ave). Sign-license renewals were Granted for 229 Broadway (Fardin Inc / Richdale), 263 Lynnfield Street (Lynnfield Street Market), 381 Summer (Jed Wireless), and 57 Washington Street (Angelina Sub Shop).",
-    "item_type": "committee report",
-    "category": "city-services",
-    "department": "Licensing",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": []
-   },
-   {
-    "title": "Report of the May 27, 2025 Committee on Personnel",
-    "result": "Report accepted (no tally recorded)",
-    "tally_yes": null,
-    "tally_no": null,
-    "summary": "The Council accepted the Committee on Personnel report. The interview with John Marzec for the position of Inspectional Services Department / Director of Buildings and Grounds was Granted and forwarded to the Full Council for Vote.",
-    "item_type": "committee report",
-    "category": "appointments",
-    "department": "Personnel",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": []
-   },
-   {
-    "title": "Report of the May 27, 2025 Committee on Veterans",
-    "result": "Report accepted (no tally recorded)",
-    "tally_yes": null,
-    "tally_no": null,
-    "summary": "The Council accepted the Committee on Veterans report, which included an update from the Director of Veterans Services, Michael Sweeney, and the Veterans Council regarding future events and initiatives.",
-    "item_type": "committee report",
-    "category": "social",
-    "department": "Veterans Services",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": []
-   },
-   {
-    "title": "Increase maximum base of COLA to $16,000.00",
-    "result": "Passed",
-    "tally_yes": 10,
-    "tally_no": 0,
-    "summary": "Pursuant to Section 19 of Chapter 188 of the Acts of 2010, the Council approved increasing the maximum base of COLA (Cost-of-Living Adjustments) to $16,000.00 from the previously approved maximum of $15,000.00. Motion made by Councilor Field and seconded by Councilor Hogan.",
-    "item_type": "order",
-    "category": "taxes",
-    "department": "Assessing",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": [
-     {
-      "name": "Brian P. LaPierre",
-      "position": "absent"
-     }
-    ]
-   },
-   {
-    "title": "Accept MGL Chapter 59, Section 5, Clause 54 personal property exemption",
-    "result": "Passed",
-    "tally_yes": 9,
-    "tally_no": 0,
-    "summary": "The Council voted to accept the provisions of Massachusetts General Laws Chapter 59, Section 5, Clause 54, exempting $10,000.00 of the fair cash value on personal property accounts to be taxed commencing in Fiscal Year 2026. Motion made by Councilor Field and seconded by Councilor Hogan. Council President Walsh abstained.",
-    "item_type": "order",
-    "category": "taxes",
-    "department": "Assessing",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": [
-     {
-      "name": "Brian P. LaPierre",
-      "position": "absent"
-     },
-     {
-      "name": "John M. Walsh, Jr.",
-      "position": "abstain"
-     }
-    ]
-   },
-   {
-    "title": "Accept MGL Chapter 59, Section 5, Clause 22I (Hero Acts)",
-    "result": "Passed",
-    "tally_yes": 10,
-    "tally_no": 0,
-    "summary": "The Council voted to accept General Laws Chapter 59, Section 5, Clause 22I, authorizing an annual increase in veterans' exemptions granted under Clauses 22, 22A, 22B, 22C, 22E and 22F by the percentage increase in the U.S. Bureau of Labor Statistics Consumer Price Index for the previous year, effective for fiscal years beginning on or after July 1, 2025. Motion made by Councilor McClain and seconded by Councilor Dr. Meaney.",
-    "item_type": "order",
-    "category": "taxes",
-    "department": "Assessing",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": [
-     {
-      "name": "Brian P. LaPierre",
-      "position": "absent"
-     }
-    ]
-   },
-   {
-    "title": "Accept MGL Chapter 59, Section 5, Clause 22J (Hero Acts)",
-    "result": "Passed",
-    "tally_yes": 10,
-    "tally_no": 0,
-    "summary": "The Council voted to accept General Laws Chapter 59, Section 5, Clause 22J, authorizing an annual increase in veterans' exemptions granted under Clauses 22, 22A, 22B, 22C, 22E and 22F by 100% of the personal exemption amount, subject to the conditions in Clause 22J, effective for fiscal years beginning on or after July 1, 2025. Motion made by Councilor McClain and seconded by Councilor Dr. Meaney.",
-    "item_type": "order",
-    "category": "taxes",
-    "department": "Assessing",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": [
-     {
-      "name": "Brian P. LaPierre",
-      "position": "absent"
-     }
-    ]
-   },
-   {
-    "title": "Authorize Law Department to respond to Open Meeting Complaint filed by Joseph Negri",
-    "result": "Passed",
-    "tally_yes": 10,
-    "tally_no": 0,
-    "summary": "The Council voted to authorize the Law Department to respond to an Open Meeting Complaint filed by Mr. Joseph Negri, the minutes stating there was no open meeting violation in that the City Council voted to accept a grant of $2.2 million from the DEP in May 2024. Motion made by Councilor Hogan and seconded by Councilor Field.",
-    "item_type": "order",
-    "category": "legal",
-    "department": "Law Department",
-    "funding_source": "",
-    "spending_amount": null,
-    "named_positions": [
-     {
-      "name": "Brian P. LaPierre",
-      "position": "absent"
-     }
-    ]
-   }
-  ],
-  "_slug": "y25m0527a",
-  "_key": "63QEABCL"
- },
- {
-  "meeting_date": "2025-05-27",
   "meeting_title": "City of Lynn — City Council Meeting, May 27, 2025 (Council President John M. Walsh, Jr.)",
   "councilors_present_count": 10,
   "absent_names": [
    "Councilor LaPierre (Brian P. LaPierre)"
   ],
-  "transparency_notes": "See notes field above.",
+  "transparency_notes": "See notes field above. The city posted a second copy of these minutes (file key 63QEABCL); it covers the same meeting, so it is not loaded separately. Both copies show the same seven pages.",
   "votes": [
    {
     "title": "Accept Meeting Minutes of May 13, 2025",
@@ -3665,7 +2931,7 @@
     "named_positions": []
    },
    {
-    "title": "Constable Re-Appointment — Kenneth Grady, 271 Walnut St, Lynn, MA 01905",
+    "title": "Constable Re-Appointment — Kenneth Grady of Lynn",
     "result": "Tabled",
     "tally_yes": null,
     "tally_no": null,
@@ -3674,7 +2940,7 @@
     "department": "City Council (Public Safety and Health)",
     "funding_source": "",
     "spending_amount": null,
-    "summary": "Within the May 27, 2025 Committee on Public Safety and Health report, the constable re-appointment of Kenneth Grady (271 Walnut St) was marked Tabled. The overall committee report was accepted; no roll-call tally was recorded.",
+    "summary": "Within the May 27, 2025 Committee on Public Safety and Health report, the constable re-appointment of Kenneth Grady of Lynn (Lynn address assumed) was marked Tabled. The overall committee report was accepted; no roll-call tally was recorded.",
     "named_positions": []
    },
    {
@@ -4709,9 +3975,9 @@
     "item_type": "set down public hearing",
     "category": "schools",
     "department": "City of Lynn",
-    "funding_source": "Bond Order",
-    "spending_amount": 9000000,
-    "summary": "The Council voted to set down a public hearing for a $9,000,000.00 New Pickering Middle School Bond Order. Motion made by Councilor Chakoutis and seconded by Councilor Hogan; 11 YES 0 NO.",
+    "funding_source": "",
+    "spending_amount": null,
+    "summary": "The Council voted to set down a public hearing for a $9,000,000.00 New Pickering Middle School Bond Order. Motion made by Councilor Chakoutis and seconded by Councilor Hogan; 11 YES 0 NO. This motion only scheduled the public hearing; it did not approve any spending, so the bond amount is not counted as spending on this vote.",
     "named_positions": []
    },
    {
@@ -5597,7 +4863,7 @@
    {
     "title": "Mayoral appointment of Michael Celona to the Water and Sewer Commission",
     "item_type": "Mayoral appointment",
-    "summary": "The Mayor appointed Michael Celona of 139 Woodlawn St to the Water and Sewer Commission, term expiring June 30, 2028. Motion to grant made by Councilor Alinsug and seconded by Councilor Chakoutis.",
+    "summary": "The Mayor appointed Michael Celona of Lynn (Lynn address assumed) to the Water and Sewer Commission, term expiring June 30, 2028. Motion to grant made by Councilor Alinsug and seconded by Councilor Chakoutis.",
     "result": "Motion carried",
     "tally_yes": 6,
     "tally_no": 3,
@@ -6046,7 +5312,7 @@
     "department": "Disability Commission",
     "funding_source": "",
     "spending_amount": null,
-    "summary": "The Council granted the mayoral new appointment of Tracie Lindsey, 26 Burdett Rd., to the Disability Commission (term expires July 3, 2027). Motion made by Councilor Field and seconded by Councilor Dr. Meaney; motion carried.",
+    "summary": "The Council granted the mayoral new appointment of Tracie Lindsey of Lynn (Lynn address assumed) to the Disability Commission (term expires July 3, 2027). Motion made by Councilor Field and seconded by Councilor Dr. Meaney; motion carried.",
     "named_positions": []
    },
    {
@@ -6293,7 +5559,7 @@
     "department": "Pine Grove Cemetery",
     "funding_source": "",
     "spending_amount": null,
-    "summary": "The Council granted the council appointment of Stephen T. Spencer, 7 William St., to the Pine Grove Cemetery, effective immediately (term expires September 30, 2026). Motion made by Councilor Dr. Meaney and seconded by Councilor Chakoutis; carried 10 YES 0 NO, with Councilor Field voting PRESENT.",
+    "summary": "The Council granted the council appointment of Stephen T. Spencer of Lynn (Lynn address assumed) to the Pine Grove Cemetery, effective immediately (term expires September 30, 2026). Motion made by Councilor Dr. Meaney and seconded by Councilor Chakoutis; carried 10 YES 0 NO, with Councilor Field voting PRESENT.",
     "named_positions": [
      {
       "name": "Councilor Field",
@@ -6896,7 +6162,7 @@
   "absent_names": [
    "Dr. Peter D. Meaney (printed as \"Councilor Dr. Meaney\")"
   ],
-  "transparency_notes": "Header prints \"10 Councilors Present (Councilor Dr. Meaney Absent)\". Named participants in the minutes: Council President John M. Walsh, and Councilors Hogan, Alinsug, Matul, LaPierre, Net, Chakoutis, Field, and McClain. NOTE ON ROSTER: this is the prior (2025) council term. Several printed names — Walsh (President), Hogan, and Chakoutis — do not appear on the 2026 roster provided; names are transcribed exactly as printed and not mapped to 2026 members. First names/wards were not printed for most councilors, so only surnames are recorded. The three Ways-and-Means grant certifications and the two gift acceptances each recorded an explicit \"10 YES 0 NO (Councilor Dr. Meaney absent)\" tally; committee-report sub-items (tabled/denied/granted recommendations) were adopted via \"REPORT ACCEPTED\" with no individual tally recorded. Items with no vote and therefore excluded: New Business ARPA funding update from Joseph Hustins (informational); Councilor McClain's Union Street string-lights / streetlight-reporting discussion with Danya Smith of the Mayor's Office (discussion only); and the motion to adjourn. The $2,000 gift for two park benches at Goldfish Pond does not name the donor in the minutes. One name is spelled \"Chakoutis\" in the minutes. The gift order on page 2 reads \"a gift from Mr. The Paone Charitable Trust\" (apparent typo in source).",
+  "transparency_notes": "Header prints \"10 Councilors Present (Councilor Dr. Meaney Absent)\". Named participants in the minutes: Council President John M. Walsh, and Councilors Hogan, Alinsug, Matul, LaPierre, Net, Chakoutis, Field, and McClain. NOTE ON ROSTER: this is the prior (2025) council term. Several printed names — Walsh (President), Hogan, and Chakoutis — do not appear on the 2026 roster provided; names are transcribed exactly as printed and not mapped to 2026 members. First names/wards were not printed for most councilors, so only surnames are recorded. The three Ways-and-Means grant certifications and the two gift acceptances each recorded an explicit \"10 YES 0 NO (Councilor Dr. Meaney absent)\" tally; committee-report sub-items (tabled/denied/granted recommendations) were adopted via \"REPORT ACCEPTED\" with no individual tally recorded. Items with no vote and therefore excluded: New Business ARPA funding update from Joseph Hustins (informational); Councilor McClain's Union Street string-lights / streetlight-reporting discussion with Danya Smith of the Mayor's Office (discussion only); and the motion to adjourn. The $2,000 gift for two park benches at Goldfish Pond does not name the donor in the minutes. One name is spelled \"Chakoutis\" in the minutes. The gift order on page 2 reads \"a gift from Mr. The Paone Charitable Trust\" (apparent typo in source). The city posted a second copy of these minutes (file key Da4EAPZR); it covers the same meeting, so it is not loaded separately. The two copies are identical page for page.",
   "votes": [
    {
     "title": "License for Lynn Auto Repair, 860 Western Ave. (Daniel Melo, Owner)",
@@ -7162,267 +6428,6 @@
   ],
   "_slug": "y25m1125a",
   "_key": "KccEANI4"
- },
- {
-  "votes": [
-   {
-    "title": "Auto Repair/Flammable license — Committee on Licensing",
-    "result": "Tabled",
-    "summary": "Under the Committee on Licensing report, an Auto Repair/Flammable license item was listed as TABLED. No mover, seconder, or tally was recorded for this item; the committee report as a whole was accepted.",
-    "category": "city-services",
-    "item_type": "license",
-    "department": "",
-    "funding_source": "",
-    "spending_amount": null,
-    "tally_yes": null,
-    "tally_no": null,
-    "named_positions": []
-   },
-   {
-    "title": "860 Western Ave., Lynn Auto Repair (Daniel Melo, Owner) — license",
-    "result": "Denied",
-    "summary": "Under the Committee on Licensing report, the license for 860 Western Ave., Lynn Auto Repair, Daniel Melo, Owner, was DENIED. No individual mover, seconder, or tally was recorded; the committee report was accepted.",
-    "category": "city-services",
-    "item_type": "license",
-    "department": "",
-    "funding_source": "",
-    "spending_amount": null,
-    "tally_yes": null,
-    "tally_no": null,
-    "named_positions": []
-   },
-   {
-    "title": "Papa Johns, 597 Essex Street — Extended Hours license (set down for public hearing)",
-    "result": "Motion carried (no tally recorded)",
-    "summary": "The Committee on Licensing recommended setting down a public hearing for a new Extended License for Papa Johns at 597 Essex Street (dining room to close at midnight; delivery orders only between 12 midnight and 3am). Motion by Councilor Hogan, seconded by Councilor Alinsug, to set down for a public hearing; motion carried. No numeric tally was recorded.",
-    "category": "city-services",
-    "item_type": "public hearing order",
-    "department": "",
-    "funding_source": "",
-    "spending_amount": null,
-    "tally_yes": null,
-    "tally_no": null,
-    "named_positions": []
-   },
-   {
-    "title": "Lynn English Boys Basketball (Adults Only) canning permit — December 13, 2025",
-    "result": "Granted",
-    "summary": "Under the Committee on Licensing report (Other Business / Canning), a canning permit for Lynn English Boys Basketball (Adults Only) on December 13, 2025 was granted. No individual mover, seconder, or tally was recorded; the committee report was accepted.",
-    "category": "city-services",
-    "item_type": "canning permit",
-    "department": "",
-    "funding_source": "",
-    "spending_amount": null,
-    "tally_yes": null,
-    "tally_no": null,
-    "named_positions": []
-   },
-   {
-    "title": "34A Essex Street — RFP re-bid (Public Property and Parks)",
-    "result": "Motion carried (no tally recorded)",
-    "summary": "Following an RFP update from Attorney James Lamanna regarding 34A Essex Street and 78 Rockdale Street, a motion was made by Councilor Alinsug and seconded by Councilor Matul to rebid 34A Essex Street; motion carried. No numeric tally was recorded.",
-    "category": "city-services",
-    "item_type": "RFP / property",
-    "department": "",
-    "funding_source": "",
-    "spending_amount": null,
-    "tally_yes": null,
-    "tally_no": null,
-    "named_positions": []
-   },
-   {
-    "title": "78 Rockdale Street — RFP re-bid (Public Property and Parks)",
-    "result": "Motion made to rebid (carried status not printed)",
-    "summary": "A motion was made by Councilor LaPierre and seconded by Councilor Matul to rebid 78 Rockdale Street. The minutes do not explicitly print a 'motion carried' line or tally for this motion; the committee report as a whole was accepted.",
-    "category": "city-services",
-    "item_type": "RFP / property",
-    "department": "",
-    "funding_source": "",
-    "spending_amount": null,
-    "tally_yes": null,
-    "tally_no": null,
-    "named_positions": []
-   },
-   {
-    "title": "Toys for Tots donation box in City Hall foyer (request from Daniel Dean)",
-    "result": "Granted",
-    "summary": "Under the Committee on Public Property and Parks report, a request from Daniel Dean to place a Toys for Tots box in the foyer for the next three weeks was granted. No individual mover, seconder, or tally was recorded; the committee report was accepted.",
-    "category": "social",
-    "item_type": "request",
-    "department": "",
-    "funding_source": "",
-    "spending_amount": null,
-    "tally_yes": null,
-    "tally_no": null,
-    "named_positions": []
-   },
-   {
-    "title": "Multi-Service Center RFP — discussion",
-    "result": "Tabled",
-    "summary": "Under the Committee on Public Property and Parks report, discussion regarding the Multi-Service Center RFP was tabled. No mover, seconder, or tally was recorded; the committee report was accepted.",
-    "category": "city-services",
-    "item_type": "RFP / discussion",
-    "department": "",
-    "funding_source": "",
-    "spending_amount": null,
-    "tally_yes": null,
-    "tally_no": null,
-    "named_positions": []
-   },
-   {
-    "title": "Certify $20,000.00 available fund — Police Department, Byrne JAG crowd control equipment",
-    "result": "Passed 10-0",
-    "summary": "The Committee on Ways and Means recommended certifying as an 'Available Fund' $20,000.00 allotted to the City of Lynn Police Department by the Executive Office of Public Safety and Security (EPS) to fund the Edward J. Byrne Memorial JAG Program for crowd control equipment. Motion by Councilor Net, seconded by Councilor Chakoutis, to grant; motion carried 10 YES, 0 NO with Councilor Dr. Meaney absent.",
-    "category": "grants",
-    "item_type": "fund certification",
-    "department": "Police Department",
-    "funding_source": "Executive Office of Public Safety and Security (EPS); federally funded pass through from the State; Grant Period 11/06/25-08/31/26; CFDA # is 16.738",
-    "spending_amount": 20000,
-    "tally_yes": 10,
-    "tally_no": 0,
-    "named_positions": [
-     {
-      "name": "Dr. Meaney",
-      "position": "absent"
-     }
-    ]
-   },
-   {
-    "title": "Certify $25,565.40 available fund — School Department, MASSHIRE youth work experience",
-    "result": "Passed 10-0",
-    "summary": "The Committee on Ways and Means recommended certifying as an 'Available Fund' $25,565.40 allotted to the City of Lynn School Department by MASSHIRE, North Shore Workforce Board to expose North Shore youth to gain work experience. Motion by Councilor Net, seconded by Councilor Hogan, to grant; motion carried 10 YES, 0 NO with Councilor Dr. Meaney absent.",
-    "category": "grants",
-    "item_type": "fund certification",
-    "department": "School Department",
-    "funding_source": "MASSHIRE, North Shore Workforce Board; state funded passed through a local not for profit; Grant Period 10/20/25-04/30/26",
-    "spending_amount": 25565.4,
-    "tally_yes": 10,
-    "tally_no": 0,
-    "named_positions": [
-     {
-      "name": "Dr. Meaney",
-      "position": "absent"
-     }
-    ]
-   },
-   {
-    "title": "Certify $268,088.43 available fund — School Department, NSCC FY26 HVAC & heat pump training at LVTI",
-    "result": "Passed 10-0",
-    "summary": "The Committee on Ways and Means recommended certifying as an 'Available Fund' $268,088.43 allotted to the City of Lynn School Department by North Shore Community College (NSC) for FY26 HVAC & heat pump training at LVTI. Motion by Councilor Net, seconded by Councilor Walsh, to grant; motion carried 10 YES, 0 NO with Councilor Dr. Meaney absent.",
-    "category": "grants",
-    "item_type": "fund certification",
-    "department": "School Department",
-    "funding_source": "North Shore Community College (NSC); Grant Period 09/12/25-12/31/26",
-    "spending_amount": 268088.43,
-    "tally_yes": 10,
-    "tally_no": 0,
-    "named_positions": [
-     {
-      "name": "Dr. Meaney",
-      "position": "absent"
-     }
-    ]
-   },
-   {
-    "title": "Accept $300.00 gift — Police Department, Paone Charitable Trust for Community Holiday Party",
-    "result": "Passed 10-0",
-    "summary": "Ordered pursuant to MGL Chapter 44, Section 53A, that the City of Lynn Police Department accepts a $300.00 gift from the Paone Charitable Trust, intended for the upcoming Community Holiday Party, with the Comptroller authorized to effectuate the gift. Motion by Councilor Net, seconded by Councilor Field, to grant; motion carried 10 YES, 0 NO with Councilor Dr. Meaney absent.",
-    "category": "police",
-    "item_type": "gift acceptance",
-    "department": "Police Department",
-    "funding_source": "Gift from 'Mr. The Paone Charitable Trust' (as printed); MGL Chapter 44, Section 53A",
-    "spending_amount": 300,
-    "tally_yes": 10,
-    "tally_no": 0,
-    "named_positions": [
-     {
-      "name": "Dr. Meaney",
-      "position": "absent"
-     }
-    ]
-   },
-   {
-    "title": "Accept $2,000.00 gift — 2 park benches at Goldfish Pond",
-    "result": "Passed 10-0",
-    "summary": "Ordered pursuant to MGL Chapter 44, Section 53A, that the City of Lynn accepts a $2,000.00 gift to purchase 2 park benches at Goldfish Pond, with the Comptroller's Office authorized to effectuate the gift. Motion by Councilor Net, seconded by Councilor Hogan, to grant; motion carried 10 YES, 0 NO with Councilor Dr. Meaney absent.",
-    "category": "city-services",
-    "item_type": "gift acceptance",
-    "department": "",
-    "funding_source": "Gift (donor not named in minutes); MGL Chapter 44, Section 53A",
-    "spending_amount": 2000,
-    "tally_yes": 10,
-    "tally_no": 0,
-    "named_positions": [
-     {
-      "name": "Dr. Meaney",
-      "position": "absent"
-     }
-    ]
-   },
-   {
-    "title": "Take Special Permit re: 11 Vieira Drive, Peabody off the table (Old Business)",
-    "result": "Passed 10-0",
-    "summary": "Motion by Councilor Chakoutis, seconded by Councilor Field, to take the Special Permit re: 11 Vieira Drive, Peabody off the table from the November 18, 2025 meeting; motion carried 10 YES, 0 NO with Councilor Dr. Meaney absent.",
-    "category": "zoning",
-    "item_type": "procedural motion",
-    "department": "",
-    "funding_source": "",
-    "spending_amount": null,
-    "tally_yes": 10,
-    "tally_no": 0,
-    "named_positions": [
-     {
-      "name": "Dr. Meaney",
-      "position": "absent"
-     }
-    ]
-   },
-   {
-    "title": "Special Permit — John Marshall, 11 Vieira Drive, Peabody (accessory structure partially in Lynn)",
-    "result": "Passed 10-0",
-    "summary": "Motion by Councilor Chakoutis, seconded by Councilor Field, to grant the petition of John Marshall, 11 Vieira Drive, Peabody, for permission to build an accessory structure on his property that is partially in Lynn; motion carried 10 YES, 0 NO with Councilor Dr. Meaney absent.",
-    "category": "zoning",
-    "item_type": "special permit",
-    "department": "",
-    "funding_source": "",
-    "spending_amount": null,
-    "tally_yes": 10,
-    "tally_no": 0,
-    "named_positions": [
-     {
-      "name": "Dr. Meaney",
-      "position": "absent"
-     }
-    ]
-   },
-   {
-    "title": "Order re: City of Lynn Redevelopment Authority established (MGL Ch. 121B)",
-    "result": "Passed 10-0",
-    "summary": "An Order established the City of Lynn Redevelopment Authority pursuant to MGL Chapter 121B, Section 4, citing blighted areas near the waterfront abutting the Lynnway, directing the City Solicitor to request a Certificate of Organization, and providing that the Authority delegate its powers for specific urban renewal projects to the Lynn Economic Development and Industrial Corporation. Motion by Councilor Chakoutis, seconded by Councilor LaPierre, to grant; motion carried 10 YES, 0 NO with Councilor Dr. Meaney absent.",
-    "category": "infrastructure",
-    "item_type": "order",
-    "department": "City Solicitor's Office",
-    "funding_source": "",
-    "spending_amount": null,
-    "tally_yes": 10,
-    "tally_no": 0,
-    "named_positions": [
-     {
-      "name": "Dr. Meaney",
-      "position": "absent"
-     }
-    ]
-   }
-  ],
-  "meeting_date": "2025-11-25",
-  "meeting_title": "City of Lynn City Council Meeting",
-  "councilors_present_count": 10,
-  "absent_names": [
-   "Dr. Peter D. Meaney (Ward 1) — printed in minutes as 'Councilor Dr. Meaney'"
-  ],
-  "transparency_notes": "Source: scanned PDF (no text layer), 4 pages (numbered 332-335), rendered at 170 dpi and read by image. Header: 'City Council Meeting, November 25, 2025 — Council President John M. Walsh; 10 Councilors Present (Councilor Dr. Meaney Absent).' TERM CAVEAT: this is the prior (2025) council term; the minutes name a Council President John M. Walsh and Councilors Walsh and Chakoutis, who do not appear in the 2026 roster provided. All names are transcribed exactly as printed and not mapped to the 2026 roster. AMBIGUITY: Under Licensing, the heading 'AUTO REPAIR/FLAMMABLE – TABLED' and the line '860 Western Ave., Lynn Auto Repair, Daniel Melo, Owner - DENIED' are recorded as two separate outcomes; it is not fully clear from the scan whether these are one item or two, so both are listed. The 78 Rockdale Street rebid motion (LaPierre/Matul) has no explicit 'motion carried' line or tally printed, unlike the 34A Essex Street motion; the committee report as a whole was accepted. The Ways and Means gift order reads 'a gift from Mr. The Paone Charitable Trust' — this appears to contain a typographical error in the original; transcribed as printed. The $2,000 Goldfish Pond bench gift does not name a donor. NOT VOTED (excluded): New Business 'Update from Joseph Hustins re: the status of the American Rescue Plan Act (ARPA) Funding' (informational); Councilor McClain's discussion with Danya Smith (Mayor's Office) re: Union Street string lights and reporting out street lights (discussion, no vote); the motion to adjourn (Net/Field) — no tally recorded. Committee reports (Licensing; Public Property and Parks; Ways and Means) were each 'REPORT ACCEPTED.' Attested 'A True Copy' by City Clerk Janet L. Rowe; notice posted at least 48 hours in advance.",
-  "_slug": "y25m1125b",
-  "_key": "Da4EAPZR"
  },
  {
   "meeting_date": "2025-12-09",
@@ -7777,7 +6782,7 @@
     "result": "Granted; report accepted (no tally recorded)",
     "tally_yes": null,
     "tally_no": null,
-    "summary": "Committee on Public Safety and Public Health recommended and the Council granted the items for Lauren D'Avella (7 Lucia Avenue, Revere, MA) and Crittenden Thornton, Jr. (31 Burchstead Place, Lynn, MA). Report accepted. The nature of the approvals is not further specified in the minutes.",
+    "summary": "Committee on Public Safety and Public Health recommended and the Council granted the items for Lauren D'Avella of Revere and Crittenden Thornton, Jr. of Lynn. Report accepted. The nature of the approvals is not further specified in the minutes.",
     "category": "public-safety",
     "item_type": "committee report / grant",
     "department": "Public Safety and Public Health",

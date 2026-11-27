@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Lynn City Watch — Public records, made auditable</title>
+  <meta name="description" content="Lynn City Watch: every Lynn, MA City Council vote, the city budget, and missing public records, sourced to official documents.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/app.css">
 </head>
 <body>
@@ -13,21 +15,49 @@
   <div class="hero">
     <div class="wrap">
       <span class="pill">● Fact-based · Source-linked · Non-partisan</span>
-      <h1>See what Lynn City Hall is actually doing.</h1>
+      <h1>Lynn City Hall, from the public record.</h1>
       <p class="lede">Every council vote, every dollar, every document — organized, searchable, and traced back to the official public record. When the record is missing, we say so.</p>
       <form class="searchbar" id="home-search">
         <input type="text" placeholder="Search a councilor, a vote, a topic, or a dollar figure…" aria-label="Search">
         <button type="submit">Search</button>
       </form>
       <div class="stats" id="council-facts"></div>
+      <div class="fresh" id="data-fresh" aria-live="polite"></div>
     </div>
   </div>
 
-  <section class="block" id="sections">
+  <section class="block" id="watch">
+    <div class="wrap">
+      <span class="eyebrow">2026 at City Hall</span>
+      <h2 class="h">What happened — the good and what's worth a closer look</h2>
+      <p class="sub">Notable actions from the 2026 council minutes, the FY2027 budget and the FY2025 audit. Every line is taken from an official record, with a link. When the record doesn't give a reason, we say so. We don't guess.</p>
+
+      <div class="watch-stats" id="watch-stats" aria-live="polite"></div>
+
+      <div class="watch-bar">
+        <div class="seg" role="group" aria-label="Show">
+          <button type="button" data-kind="all" aria-pressed="true">All</button>
+          <button type="button" data-kind="closer" aria-pressed="false"><span class="dot closer"></span>Worth a closer look</button>
+          <button type="button" data-kind="good" aria-pressed="false"><span class="dot good"></span>Good news</button>
+          <button type="button" data-kind="decision" aria-pressed="false"><span class="dot decision"></span>Key decisions</button>
+        </div>
+        <select id="watch-topic" aria-label="Topic"><option value="all">All topics</option></select>
+      </div>
+
+      <div class="watch-list" id="watch-list"></div>
+
+      <details class="card watch-rules">
+        <summary>How we decide what to flag</summary>
+        <div id="watch-rules"></div>
+      </details>
+    </div>
+  </section>
+
+  <section class="block" id="sections" style="padding-top:0">
     <div class="wrap">
       <span class="eyebrow">The platform</span>
-      <h2 class="h">Ten ways to hold City Hall accountable</h2>
-      <p class="sub">Built in layers. Councilor profiles and the voting database are live in this prototype; the rest are planned and mapped in the build plan.</p>
+      <h2 class="h">What's on this site</h2>
+      <p class="sub">Every section is built from official records, with a link to each source.</p>
       <div class="grid cols-3" id="section-grid"></div>
     </div>
   </section>
@@ -38,8 +68,8 @@
         <div class="grid cols-2" style="align-items:center;gap:26px">
           <div>
             <span class="eyebrow">Our standard</span>
-            <h2 class="h">Aggressive on transparency. Disciplined on accuracy.</h2>
-            <p class="sub" style="margin-bottom:16px">We don't call anyone "corrupt." We show measurable, sourced facts: how someone voted, whether they showed up, where the money went — and let residents judge.</p>
+            <h2 class="h">Facts from the record, presented neutrally.</h2>
+            <p class="sub" style="margin-bottom:16px">We don't describe anyone's motives or character. We show sourced facts — how each member voted, whether they were present, where the money went — and leave the judgment to residents.</p>
             <ul class="answers" style="padding-left:18px;margin:0">
               <li>Official records first, with a link on every claim.</li>
               <li>Facts kept separate from opinion; estimates clearly labeled.</li>
@@ -50,7 +80,7 @@
           <div>
             <div class="banner warn">
               <span class="ic">!</span>
-              <div><b>Every figure is sourced.</b> The roster and meeting schedule come from lynnma.gov; the 2024–2026 voting record from official council minutes; spending and revenue from the city's audited financial statements; meeting videos from Lynn Community TV. Each item links to its original record.</div>
+              <div><b>Every figure is sourced.</b> The roster and meeting schedule come from lynnma.gov; the 2024–2026 voting record from official council minutes; the FY2027 budget and FY2025 audited financial statements; committee assignments from lynnma.gov; meeting videos from Lynn Community TV. Each item links to its original record.</div>
             </div>
             <a class="btn-ghost" style="margin-top:16px;display:inline-block" href="councilors.html">Explore councilor profiles →</a>
           </div>

@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Voting Record Database — Lynn City Watch</title>
+  <meta name="description" content="Search every recorded Lynn City Council vote from 2024 to 2026, with how each member voted and the money involved.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/app.css">
 </head>
 <body>
@@ -12,9 +14,9 @@
   <main id="main" tabindex="-1">
   <section class="block">
     <div class="wrap">
-      <span class="eyebrow">Section 2</span>
+      <span class="eyebrow">Voting record</span>
       <h2 class="h">Voting Record Database</h2>
-      <p class="sub">Every recorded 2026 Lynn City Council vote, transcribed from the official meeting minutes. Search and filter by topic, money involved, and outcome. Each vote links to its source minutes, shows the spending and net local cost where documented, and can be expanded to show how each member voted.</p>
+      <p class="sub">Every recorded Lynn City Council vote from January 2024 through October 2026, transcribed from the official meeting minutes. Search and filter by topic, money involved, and outcome. Each vote links to its source minutes, shows the spending and net local cost where documented, and can be expanded to show how each member voted.</p>
 
       <div class="banner warn" style="margin-bottom:22px">
         <span class="ic">§</span>
@@ -29,7 +31,10 @@
       <p class="count" id="vote-count"></p>
 
       <div class="tablewrap" tabindex="0" role="region" aria-label="Council votes table">
-        <table class="responsive">
+        <table class="responsive votes-table">
+          <colgroup>
+            <col class="c-date"><col class="c-item"><col class="c-cat"><col class="c-spend"><col class="c-result">
+          </colgroup>
           <thead>
             <tr><th scope="col">Date</th><th scope="col">Item &amp; summary</th><th scope="col">Category</th><th scope="col">Spending / net local</th><th scope="col">Result</th></tr>
           </thead>

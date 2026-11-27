@@ -9,6 +9,7 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const { syncVotes } = require("./db/sync");
 
 const ROOT = path.join(__dirname, "prototype");
 const PORT = process.env.PORT || 3000;
@@ -19,6 +20,7 @@ const TYPES = {
   ".js": "text/javascript; charset=utf-8", ".json": "application/json; charset=utf-8",
   ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg",
   ".ico": "image/x-icon", ".woff2": "font/woff2",
+  ".xml": "application/xml; charset=utf-8", ".txt": "text/plain; charset=utf-8",
 };
 
 /* ---------------- database ---------------- */
@@ -45,6 +47,10 @@ async function initDb() {
     }
     dbReady = true;
     console.log("Database ready.");
+    // Load any new or corrected vote files from db/data (only files that changed).
+    // Runs in the background; each file loads in one transaction, so visitors keep
+    // seeing the previous data until the new data is complete.
+    syncVotes(pool, { log: (m) => console.log(m) }).catch(e => console.error("Vote sync failed:", e.message));
     refreshMeetings(true).catch(e => console.error("Meetings refresh failed:", e.message));
   } catch (err) {
     console.error("Database init failed (serving static only):", err.message);
@@ -104,12 +110,15 @@ const send = (res, code, obj) => {
   res.end(JSON.stringify(obj));
 };
 
-// derive net local cost when explicit local funding isn't stored
+// Derive net local cost only when the outside (state/federal) share is actually
+// recorded. If nothing about the funding is known, leave it unknown (null) —
+// never assume an item is 100% locally funded.
 function withLocal(row) {
   const t = row.spending_amount, f = row.funding_federal, s = row.funding_state;
   let local = row.funding_local;
-  if (local == null && t != null) local = Number(t) - Number(f || 0) - Number(s || 0);
-  return { ...row, funding_local: local };
+  if (local == null && t != null && (f != null || s != null)) local = Number(t) - Number(f || 0) - Number(s || 0);
+  const num = (x) => (x == null ? null : Number(x)); // Postgres NUMERIC arrives as text
+  return { ...row, spending_amount: num(t), funding_local: num(local) };
 }
 
 /* ---------------- API ---------------- */
@@ -119,6 +128,18 @@ async function handleApi(req, res, url) {
   const q = url.searchParams;
 
   if (p === "/api/health") return send(res, 200, { ok: true, db: dbReady });
+
+  // How current the data is: latest meeting with recorded votes, totals, last loads.
+  if (p === "/api/status") {
+    const v = await pool.query(
+      `SELECT COUNT(*)::int AS votes, COUNT(DISTINCT vote_date)::int AS meetings,
+              MIN(vote_date) AS first_date, MAX(vote_date) AS latest_date,
+              COALESCE(SUM(spending_amount),0)::float AS spending
+         FROM votes WHERE NOT is_sample`);
+    const loads = await pool.query("SELECT file, summary, loaded_at FROM data_loads ORDER BY file")
+      .catch(() => ({ rows: [] }));
+    return send(res, 200, { ...v.rows[0], loads: loads.rows });
+  }
 
   if (p === "/api/meetings") {
     refreshMeetings(false).catch(e => console.error("Meetings refresh:", e.message)); // fire-and-forget
@@ -165,7 +186,9 @@ async function handleApi(req, res, url) {
     if (q.get("councilor")) { params.push(q.get("councilor")); where.push(`v.id IN (SELECT vote_id FROM vote_positions WHERE councilor_id = $${params.length})`); }
     if (/^\d{4}$/.test(q.get("year") || "")) { params.push(q.get("year")); where.push(`EXTRACT(YEAR FROM v.vote_date) = $${params.length}`); }
     const sql = `SELECT v.*, cat.name AS category_name, cat.slug AS category_slug,
-                        m.minutes_url, m.meeting_date
+                        m.minutes_url, m.meeting_date,
+                        (SELECT COUNT(*) FROM vote_positions vp
+                          WHERE vp.vote_id = v.id AND vp.position IN ('no','abstain','present'))::int AS dissent_count
                    FROM votes v
                    LEFT JOIN categories cat ON cat.id = v.category_id
                    LEFT JOIN meetings m ON m.id = v.meeting_id

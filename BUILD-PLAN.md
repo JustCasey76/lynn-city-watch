@@ -2,7 +2,7 @@
 
 *A plain-English plan for turning Lynn's public records into a searchable, fact-based accountability website.*
 
-Last updated: 2026-07-11
+Last updated: 2026-11-26
 
 ---
 

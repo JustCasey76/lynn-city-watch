@@ -108,6 +108,38 @@ const CITY_REVENUE = {
 };
 
 /*
+ * REAL: what each council title means. Quoted/paraphrased from the Lynn City
+ * Charter, Article 2 (Sections 2-1 and 2-2), as posted by the city's Charter
+ * Review Committee (January 2025 text). The city has not posted the final
+ * adopted charter, but the section numbers cited in the 2026 council minutes
+ * (2-8, 3-3, 3-4, 6-1) match this text. Composition and 2-year terms are also
+ * stated on the city's City Council page.
+ */
+const CHARTER_SOURCE = "https://www.lynnma.gov/city_government/boards_and_commissions/charter_review_committee";
+const COUNCIL_PAGE = "https://www.lynnma.gov/city_government/citycouncil";
+const TITLE_DEFS = {
+  ward: { label: "Ward Councilor",
+    text: "Represents one of Lynn's 7 wards (neighborhood districts). Only voters who live in that ward elect this seat. One councilor is elected from each ward.",
+    cite: "Charter §2-1(a)" },
+  atlarge: { label: "Councilor At-Large",
+    text: "Represents the whole city. All Lynn voters, in every ward, vote for the 4 at-large seats.",
+    cite: "Charter §2-1(a)" },
+  term: { label: "Term",
+    text: "Every councilor serves a 2-year term starting the first business day of January after the election. Elections are held in odd-numbered years.",
+    cite: "Charter §2-1(c); City Council page" },
+  president: { label: "Council President",
+    text: "Chosen by the full council from among its members each January (roll call; a majority of all 11 councilors is needed). The President runs council meetings, keeps order, and rules on questions of procedure, and votes like any other councilor.",
+    cite: "Charter §2-2" },
+  vp: { label: "Council Vice President",
+    text: "Chosen by the full council from among its members each January, by a separate roll call. Acts as President when the President is absent.",
+    cite: "Charter §2-2" },
+  chair: { label: "Committee Chair / Co-chair",
+    text: "The councilor the city lists as leading that council committee.",
+    cite: "City Council committees page" },
+};
+const WARD_MAP = (n) => `https://www.lynnma.gov/UserFiles/Servers/Server_109726/File/CityGovernment/City%20Council/WardMaps/Ward${n}.pdf`;
+
+/*
  * REAL: Council committee assignments for the 2026-2027 term.
  * Source: lynnma.gov "Committees" page, checked 2026-11-26. Ids match COUNCILORS.
  */
@@ -227,7 +259,7 @@ const BUDGET_FY27 = {
  * city's document list shows for the file; it reflects the latest upload, so
  * it can be later than the first posting (e.g. a corrected file).
  */
-const RECORDS_CHECKED = "2026-11-26";
+const RECORDS_CHECKED = "2026-11-27";
 const MINUTES_SOURCE = "https://www.lynnma.gov/city_government/citycouncil/meeting";
 const MINUTES_2026 = [
   { date: "2026-01-05", label: "Inaugural meeting", key: "JccEAN44", listed: "2026-01-28" },
@@ -255,7 +287,7 @@ const MINUTES_2026 = [
 const RECORDS_FINDINGS = [
   { title: "June 9, 2026 council minutes are not posted",
     status: "missing",
-    detail: "The Mayor's FY2027 budget ($577,017,037) was set down for a public hearing at the June 9, 2026 meeting. The Council accepted the June 9 minutes on June 23, 2026, but no June 9 minutes file appears in the city's 2026 minutes list. Until it is posted, the Council's recorded action on the FY2027 budget is not available in the public record we reviewed.",
+    detail: "The Mayor's FY2027 budget ($577,017,037) was set down for a public hearing at the June 9, 2026 meeting. The Council accepted the June 9 minutes on June 23, 2026, but no June 9 minutes file appears in the city's 2026 minutes list. Until it is posted, the Council's recorded action on the FY2027 budget is not available in the public record we reviewed. This is unusual: it is the only 2026 meeting whose minutes the Council approved that are not on the list, while other 2026 minutes have usually appeared within a day or two of approval.",
     url: MINUTES_SOURCE },
   { title: "Adopted (final) budgets are not posted for FY2022–FY2027",
     status: "missing",
@@ -448,7 +480,7 @@ const HIGHLIGHTS = [
   /* ---------- Records & process ---------- */
   { date: "2026-06-09", topic: "Records & process", kind: "closer", rule: "record",
     title: "June 9 minutes (FY2027 budget hearing) are not on the city's website",
-    facts: "The FY2027 budget hearing was set for June 9, 2026. The Council accepted the June 9 minutes on June 23, but the file is not on the city's 2026 minutes list. Minutes for Oct 27, Nov 10 and Nov 24 are also not posted yet.",
+    facts: "The FY2027 budget hearing was set for June 9, 2026. The Council accepted the June 9 minutes on June 23, but the file is not on the city's 2026 minutes list. That is unusual: other 2026 minutes have usually appeared on the list within a day or two of the Council approving them. (Minutes for the most recent meetings, Oct 27, Nov 10 and Nov 24, are not posted yet either, but those are still inside or near the usual wait for approval.)",
     reason: null,
     src: [{ d: "2026-06-23", k: "Bv0EAP0C" }, { d: "City minutes list", u: "https://www.lynnma.gov/city_government/citycouncil/meeting" }], link: "records.html" },
   { date: "2026-09-22", topic: "Records & process", kind: "closer", rule: "record",

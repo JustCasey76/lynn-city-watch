@@ -325,3 +325,14 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
 .watch-rules ul{margin:0;padding-left:18px;font-size:14px}
 .watch-rules li{margin:4px 0}
 .feat .go{display:inline-block;margin-top:12px;font-size:13px;font-weight:600;color:var(--accent)}
+td .chip{white-space:normal;line-height:1.35;flex:0 1 auto;min-width:0}
+
+/* council title definitions */
+.defs{margin:0;display:grid;gap:10px}
+.defs>div{display:grid;grid-template-columns:200px 1fr;gap:12px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.defs>div:last-child{border-bottom:0;padding-bottom:0}
+.defs dt{font-weight:700;color:var(--ink)}
+.defs dd{margin:0;font-size:14px;line-height:1.55}
+.defs .cite{color:var(--muted);font-size:12px;white-space:nowrap}
+aside .defs>div{grid-template-columns:1fr;gap:2px}
+@media(max-width:640px){.defs>div{grid-template-columns:1fr;gap:2px}}

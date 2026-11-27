@@ -288,6 +288,24 @@
 
     host.innerHTML = `
       <div class="wrap">
+        <div class="card seat-card" style="margin-bottom:18px">
+          <h2 class="h" style="font-size:20px;margin:0 0 4px">About this seat</h2>
+          <p class="sub" style="font-size:14px;margin:0 0 12px">What this councilor's roles on the Lynn City Council mean.</p>
+          ${titleDefsHtml([c.type === "atlarge" ? "atlarge" : "ward"]
+            .concat(c.title.includes("Vice") ? ["vp"] : c.title.includes("President") ? ["president"] : [])
+            .concat(typeof COMMITTEES !== "undefined" && COMMITTEES.some(k => k.chairs.includes(c.id)) ? ["chair"] : [])
+            .concat(["term"]))}
+          ${(() => {
+            if (typeof COMMITTEES === "undefined") return "";
+            const led = COMMITTEES.filter(k => k.chairs.includes(c.id));
+            if (!led.length) return "";
+            const solo = led.filter(k => k.chairs.length === 1).map(k => k.name);
+            const co = led.filter(k => k.chairs.length > 1).map(k => k.name);
+            return `<p style="margin:12px 0 0;font-size:14px"><b>Leads:</b> ${solo.length ? "chair of " + solo.join(" · ") : ""}${solo.length && co.length ? "; " : ""}${co.length ? "co-chair of " + co.join(" · ") : ""}.</p>`;
+          })()}
+          <p class="source-link" style="margin:12px 0 0">${c.type === "ward" ? `<a href="${WARD_MAP(c.seat.replace(/\D/g, ""))}" target="_blank" rel="noopener">See the ${c.seat} map</a> (city PDF) · ` : ""}Source: <a href="${CHARTER_SOURCE}" target="_blank" rel="noopener">Lynn City Charter, Article 2</a> · <a href="councilors.html#title-defs">All council titles</a></p>
+        </div>
+
         <div class="kpis" id="pf-kpis">
           <div class="kpi"><b>…</b><span>Attendance</span></div>
           <div class="kpi"><b>…</b><span>Recorded votes</span></div>
@@ -317,14 +335,6 @@
                 <li><span class="k">Email</span><span><a href="${SOURCES.councilRoster}" target="_blank" rel="noopener">via city page</a></span></li>
               </ul>
               <p class="source-link" style="margin-top:14px">Source: <a href="${SOURCES.councilRoster}" target="_blank" rel="noopener">Official council roster</a></p>
-            </div>
-            <div class="card" style="margin-top:16px">
-              <h3 style="margin:0 0 8px">About this seat</h3>
-              ${titleDefsHtml([c.type === "atlarge" ? "atlarge" : "ward"]
-                .concat(c.title.includes("Vice") ? ["vp"] : c.title.includes("President") ? ["president"] : [])
-                .concat(["term"]))}
-              ${c.type === "ward" ? `<p class="source-link" style="margin:10px 0 0"><a href="${WARD_MAP(c.seat.replace(/\D/g, ""))}" target="_blank" rel="noopener">See the ${c.seat} map</a> (city PDF)</p>` : ""}
-              <p class="source-link" style="margin:6px 0 0">Source: <a href="${CHARTER_SOURCE}" target="_blank" rel="noopener">Lynn City Charter, Article 2</a></p>
             </div>
             <div class="card" style="margin-top:16px">
               <h3 style="margin:0 0 8px">Committee assignments</h3>

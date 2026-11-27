@@ -215,10 +215,24 @@
     })();
   }
 
+  /* ---------- What the council titles mean (from the City Charter) ---------- */
+  function titleDefsHtml(keys) {
+    return `<dl class="defs">${keys.map(k => {
+      const d = TITLE_DEFS[k];
+      return `<div><dt>${d.label}</dt><dd>${d.text} <span class="cite">${d.cite}</span></dd></div>`;
+    }).join("")}</dl>`;
+  }
+
   /* ---------- Councilor grid ---------- */
   function renderCouncilors() {
     const grid = $("#councilor-grid");
     if (!grid) return;
+    const defs = $("#title-defs");
+    if (defs && typeof TITLE_DEFS !== "undefined") defs.innerHTML = `
+      <h3 style="margin:0 0 4px">What the titles mean</h3>
+      <p class="sub" style="font-size:14px;margin:0 0 12px">Lynn's council has 11 members: 7 ward councilors and 4 at-large councilors.</p>
+      ${titleDefsHtml(["ward", "atlarge", "term", "president", "vp", "chair"])}
+      <p class="source-link" style="margin:12px 0 0">Sources: <a href="${CHARTER_SOURCE}" target="_blank" rel="noopener">Lynn City Charter, Article 2</a> (text posted by the city's Charter Review Committee; the final adopted version is not posted, but the section numbers cited in 2026 council minutes match it) · <a href="${COUNCIL_PAGE}" target="_blank" rel="noopener">City Council page</a>.</p>`;
     const draw = (list) => grid.innerHTML = list.map(c => {
       let tag = c.type === "atlarge"
         ? `<span class="tag atlarge">At-Large</span>`
@@ -303,6 +317,14 @@
                 <li><span class="k">Email</span><span><a href="${SOURCES.councilRoster}" target="_blank" rel="noopener">via city page</a></span></li>
               </ul>
               <p class="source-link" style="margin-top:14px">Source: <a href="${SOURCES.councilRoster}" target="_blank" rel="noopener">Official council roster</a></p>
+            </div>
+            <div class="card" style="margin-top:16px">
+              <h3 style="margin:0 0 8px">About this seat</h3>
+              ${titleDefsHtml([c.type === "atlarge" ? "atlarge" : "ward"]
+                .concat(c.title.includes("Vice") ? ["vp"] : c.title.includes("President") ? ["president"] : [])
+                .concat(["term"]))}
+              ${c.type === "ward" ? `<p class="source-link" style="margin:10px 0 0"><a href="${WARD_MAP(c.seat.replace(/\D/g, ""))}" target="_blank" rel="noopener">See the ${c.seat} map</a> (city PDF)</p>` : ""}
+              <p class="source-link" style="margin:6px 0 0">Source: <a href="${CHARTER_SOURCE}" target="_blank" rel="noopener">Lynn City Charter, Article 2</a></p>
             </div>
             <div class="card" style="margin-top:16px">
               <h3 style="margin:0 0 8px">Committee assignments</h3>

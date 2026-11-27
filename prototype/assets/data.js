@@ -108,6 +108,38 @@ const CITY_REVENUE = {
 };
 
 /*
+ * REAL: what each council title means. Quoted/paraphrased from the Lynn City
+ * Charter, Article 2 (Sections 2-1 and 2-2), as posted by the city's Charter
+ * Review Committee (January 2025 text). The city has not posted the final
+ * adopted charter, but the section numbers cited in the 2026 council minutes
+ * (2-8, 3-3, 3-4, 6-1) match this text. Composition and 2-year terms are also
+ * stated on the city's City Council page.
+ */
+const CHARTER_SOURCE = "https://www.lynnma.gov/city_government/boards_and_commissions/charter_review_committee";
+const COUNCIL_PAGE = "https://www.lynnma.gov/city_government/citycouncil";
+const TITLE_DEFS = {
+  ward: { label: "Ward Councilor",
+    text: "Represents one of Lynn's 7 wards (neighborhood districts). Only voters who live in that ward elect this seat. One councilor is elected from each ward.",
+    cite: "Charter §2-1(a)" },
+  atlarge: { label: "Councilor At-Large",
+    text: "Represents the whole city. All Lynn voters, in every ward, vote for the 4 at-large seats.",
+    cite: "Charter §2-1(a)" },
+  term: { label: "Term",
+    text: "Every councilor serves a 2-year term starting the first business day of January after the election. Elections are held in odd-numbered years.",
+    cite: "Charter §2-1(c); City Council page" },
+  president: { label: "Council President",
+    text: "Chosen by the full council from among its members each January (roll call; a majority of all 11 councilors is needed). The President runs council meetings, keeps order, and rules on questions of procedure, and votes like any other councilor.",
+    cite: "Charter §2-2" },
+  vp: { label: "Council Vice President",
+    text: "Chosen by the full council from among its members each January, by a separate roll call. Acts as President when the President is absent.",
+    cite: "Charter §2-2" },
+  chair: { label: "Committee Chair / Co-chair",
+    text: "The councilor the city lists as leading that council committee.",
+    cite: "City Council committees page" },
+};
+const WARD_MAP = (n) => `https://www.lynnma.gov/UserFiles/Servers/Server_109726/File/CityGovernment/City%20Council/WardMaps/Ward${n}.pdf`;
+
+/*
  * REAL: Council committee assignments for the 2026-2027 term.
  * Source: lynnma.gov "Committees" page, checked 2026-11-26. Ids match COUNCILORS.
  */

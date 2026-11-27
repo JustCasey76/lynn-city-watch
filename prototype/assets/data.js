@@ -227,7 +227,7 @@ const BUDGET_FY27 = {
  * city's document list shows for the file; it reflects the latest upload, so
  * it can be later than the first posting (e.g. a corrected file).
  */
-const RECORDS_CHECKED = "2026-11-26";
+const RECORDS_CHECKED = "2026-11-27";
 const MINUTES_SOURCE = "https://www.lynnma.gov/city_government/citycouncil/meeting";
 const MINUTES_2026 = [
   { date: "2026-01-05", label: "Inaugural meeting", key: "JccEAN44", listed: "2026-01-28" },
@@ -255,7 +255,7 @@ const MINUTES_2026 = [
 const RECORDS_FINDINGS = [
   { title: "June 9, 2026 council minutes are not posted",
     status: "missing",
-    detail: "The Mayor's FY2027 budget ($577,017,037) was set down for a public hearing at the June 9, 2026 meeting. The Council accepted the June 9 minutes on June 23, 2026, but no June 9 minutes file appears in the city's 2026 minutes list. Until it is posted, the Council's recorded action on the FY2027 budget is not available in the public record we reviewed.",
+    detail: "The Mayor's FY2027 budget ($577,017,037) was set down for a public hearing at the June 9, 2026 meeting. The Council accepted the June 9 minutes on June 23, 2026, but no June 9 minutes file appears in the city's 2026 minutes list. Until it is posted, the Council's recorded action on the FY2027 budget is not available in the public record we reviewed. This is unusual: it is the only 2026 meeting whose minutes the Council approved that are not on the list, while other 2026 minutes have usually appeared within a day or two of approval.",
     url: MINUTES_SOURCE },
   { title: "Adopted (final) budgets are not posted for FY2022–FY2027",
     status: "missing",
@@ -448,7 +448,7 @@ const HIGHLIGHTS = [
   /* ---------- Records & process ---------- */
   { date: "2026-06-09", topic: "Records & process", kind: "closer", rule: "record",
     title: "June 9 minutes (FY2027 budget hearing) are not on the city's website",
-    facts: "The FY2027 budget hearing was set for June 9, 2026. The Council accepted the June 9 minutes on June 23, but the file is not on the city's 2026 minutes list. Minutes for Oct 27, Nov 10 and Nov 24 are also not posted yet.",
+    facts: "The FY2027 budget hearing was set for June 9, 2026. The Council accepted the June 9 minutes on June 23, but the file is not on the city's 2026 minutes list. That is unusual: other 2026 minutes have usually appeared on the list within a day or two of the Council approving them. (Minutes for the most recent meetings, Oct 27, Nov 10 and Nov 24, are not posted yet either, but those are still inside or near the usual wait for approval.)",
     reason: null,
     src: [{ d: "2026-06-23", k: "Bv0EAP0C" }, { d: "City minutes list", u: "https://www.lynnma.gov/city_government/citycouncil/meeting" }], link: "records.html" },
   { date: "2026-09-22", topic: "Records & process", kind: "closer", rule: "record",

@@ -325,3 +325,4 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
 .watch-rules ul{margin:0;padding-left:18px;font-size:14px}
 .watch-rules li{margin:4px 0}
 .feat .go{display:inline-block;margin-top:12px;font-size:13px;font-weight:600;color:var(--accent)}
+td .chip{white-space:normal;line-height:1.35;flex:0 1 auto;min-width:0}

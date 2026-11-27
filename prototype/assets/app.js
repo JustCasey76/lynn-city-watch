@@ -121,12 +121,13 @@
         const r = await fetch("/api/status");
         if (!r.ok) throw new Error("api");
         const st = await r.json();
-        const missing = MINUTES_2026.filter(m => !m.key).length;
+        const approvedNotPosted = MINUTES_2026.filter(m => !m.key && m.approved).length;
+        const recentNotPosted = MINUTES_2026.filter(m => !m.key && !m.approved).length;
         fresh.innerHTML = `
           <span><b>${Number(st.votes).toLocaleString("en-US")}</b> recorded votes from <b>${st.meetings}</b> meetings</span>
           <span>Votes current through <b>${fmtDate(String(st.latest_date))}</b></span>
           <span>Budget: <b>FY${BUDGET_FY27.fiscalYear}</b></span>
-          <span><a href="records.html" style="color:#ffd9a8">${missing} council minutes not yet posted by the city →</a></span>`;
+          <span><a href="records.html" style="color:#ffd9a8">${approvedNotPosted} approved set of minutes not posted · ${recentNotPosted} recent sets not posted yet →</a></span>`;
       } catch (e) { fresh.remove(); }
     })();
   }
@@ -496,26 +497,45 @@
     if (!host) return;
     const today = new Date(RECORDS_CHECKED + "T00:00:00Z");
     const days = (a, b) => Math.round((new Date(b + "T00:00:00Z") - new Date(a + "T00:00:00Z")) / 864e5);
-    const posted = MINUTES_2026.filter(m => m.key).length;
-    const missing = MINUTES_2026.filter(m => !m.key);
+    const posted = MINUTES_2026.filter(m => m.key);
+    const approvedNotPosted = MINUTES_2026.filter(m => !m.key && m.approved);
+    const recent = MINUTES_2026.filter(m => !m.key && !m.approved);
+    // Observed timing, computed from the city's own list (not a legal deadline).
+    const lags = posted.map(m => days(m.date, m.listed)).sort((a, b) => a - b);
+    const usual = lags[Math.floor(lags.length / 2)];                       // median days, meeting -> on the list
+    const quick = lags.filter(d => d <= usual).length;
+    const afterApproval = posted.filter(m => m.approved).map(m => days(m.approved, m.listed));
+    const nextDay = afterApproval.filter(d => d <= 2).length;
     $("#rec-topline").innerHTML = `
-      <div class="s"><b>${MINUTES_2026.length}</b><span>2026 council meetings held so far</span></div>
-      <div class="s"><b>${posted}</b><span>with minutes posted</span></div>
-      <div class="s" style="color:#ffd9a8"><b>${missing.length}</b><span>minutes not posted</span></div>
-      <div class="s"><b>${RECORDS_FINDINGS.filter(f => f.status === "missing").length}</b><span>key documents missing</span></div>`;
+      <div class="s"><b>${posted.length} of ${MINUTES_2026.length}</b><span>2026 meetings with minutes posted</span></div>
+      <div class="s" style="color:#ffd9a8"><b>${approvedNotPosted.length}</b><span>approved by the Council but not posted</span></div>
+      <div class="s"><b>${recent.length}</b><span>recent meetings, minutes not posted yet</span></div>
+      <div class="s"><b>${RECORDS_FINDINGS.filter(f => f.status === "missing").length}</b><span>other key documents not posted</span></div>`;
+    const pat = $("#rec-pattern");
+    if (pat) pat.innerHTML = `
+      <h3 style="margin:0 0 6px">Are missing minutes unusual?</h3>
+      <p style="margin:0 0 8px">Usually, no — a short wait is normal. The Council approves each meeting's minutes at a <b>later</b> meeting, and in 2026 the city has put them on its list soon after: in ${nextDay} of the ${afterApproval.length} cases where we can see both dates, within 2 days of approval. Counting from the meeting itself, half of the 2026 minutes appeared within <b>${usual} days</b> (${quick} of ${posted.length}).</p>
+      <p style="margin:0;color:var(--muted);font-size:13.5px">So the most recent meetings showing "not posted yet" are mostly waiting on that normal approval step. The exception is <b>June 9</b>: the Council approved those minutes on June 23, and they still are not on the list. These timings are what we observed on the city's list; they are not a legal deadline. State law requires minutes to be approved "in a timely manner" and given to anyone who asks within 10 days.</p>`;
     host.innerHTML = MINUTES_2026.map(m => {
       const since = days(m.date, RECORDS_CHECKED);
       let status;
+      let auto = "";
       if (m.key) status = `<span class="chip ok">Posted</span>`;
       else if (m.approved) status = `<span class="chip miss">Approved, not posted</span>`;
-      else if (since <= 30) status = `<span class="chip wait">Not yet posted</span>`;
-      else status = `<span class="chip miss">Not posted</span>`;
+      else {
+        status = since <= usual ? `<span class="chip info">Not posted yet — within the usual wait</span>`
+                                : `<span class="chip wait">Not posted yet — longer than usual</span>`;
+        const laterMeeting = MINUTES_2026.some(x => x.date > m.date);
+        auto = laterMeeting
+          ? `Minutes usually go up after the Council approves them at a later meeting. We can't yet see whether these were approved, because the minutes of the meetings that would show it are not posted either.`
+          : `Minutes usually go up after the Council approves them at a later meeting; no regular meeting has been held since this one yet (next scheduled: Dec 8, 2026).`;
+      }
       return `<tr>
         <td data-label="Meeting" style="white-space:nowrap;font-weight:600">${fmtDate(m.date)}${m.label ? `<div style="font-weight:400;font-size:12.5px;color:var(--muted)">${m.label}</div>` : ""}</td>
         <td data-label="Status">${status}</td>
         <td data-label="On city list">${m.listed ? fmtDate(m.listed) : (m.key ? "—" : `${since} days since meeting`)}</td>
         <td data-label="Approved by Council">${m.approved ? fmtDate(m.approved) : "—"}</td>
-        <td class="cell-primary" data-label="Notes" style="font-size:13.5px">${m.key ? `<a href="https://www.lynnma.gov/common/pages/GetFile.ashx?key=${m.key}" target="_blank" rel="noopener">Open minutes</a> · <a href="votes.html?date=${m.date}">See votes</a>` : ""}${m.note ? `<div style="color:var(--muted);margin-top:3px">${m.note}</div>` : ""}</td>
+        <td class="cell-primary" data-label="Notes" style="font-size:13.5px">${m.key ? `<a href="https://www.lynnma.gov/common/pages/GetFile.ashx?key=${m.key}" target="_blank" rel="noopener">Open minutes</a> · <a href="votes.html?date=${m.date}">See votes</a>` : ""}${m.note || auto ? `<div style="color:var(--muted);margin-top:3px">${m.note || auto}</div>` : ""}</td>
       </tr>`;
     }).join("");
     const chip = { missing: `<span class="chip miss">Missing</span>`, access: `<span class="chip wait">Access problem</span>`, pending: `<span class="chip info">Promised, not yet posted</span>` };

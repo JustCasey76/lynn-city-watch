@@ -459,7 +459,7 @@ const HIGHLIGHTS = [
 ];
 
 const SECTIONS = [
-  { n: 1,  title: "Councilor Profiles",        blurb: "How each of the 11 members votes, attends, and sponsors.", href: "councilors.html", ready: true },
+  { n: 1,  title: "Councilor Profiles",        blurb: "How each of the 11 members votes, their attendance, and their committees.", href: "councilors.html", ready: true },
   { n: 2,  title: "Voting Record Database",    blurb: "Every vote, searchable by member, date, topic, and money.", href: "votes.html", ready: true },
   { n: 3,  title: "Spending Dashboard",        blurb: "The FY2027 budget, audited FY2025 spending, and how much is paid locally vs. by state aid.", href: "spending.html", ready: true },
   { n: "$", title: "Immigration-Related Spending", blurb: "Every council-recorded item on immigration, with funding source and local cost.", href: "immigration.html", ready: true },
@@ -468,6 +468,7 @@ const SECTIONS = [
   { n: 4,  title: "Hot Topic Issue Pages",     blurb: "All the facts on one issue, in one place.", href: "#", ready: false },
   { n: 5,  title: "Transparency Scorecards",   blurb: "Measurable, documented records only.", href: "#", ready: false },
   { n: 6,  title: "Public Records Tracker",    blurb: "Which minutes, budgets, and audits the city has posted, and which are missing.", href: "records.html", ready: true },
+  { n: "✎", title: "Corrections & Updates",   blurb: "Every change to the site's data, logged in public. Report an error here.", href: "corrections.html", ready: true },
   { n: 7,  title: "Document Library",          blurb: "The underlying records, organized and linked.", href: "#", ready: false },
   { n: 8,  title: "Compare Priorities Tool",   blurb: "Side-by-side: e.g. police funding vs. legal services.", href: "#", ready: false },
   { n: 9,  title: "Search Everything",         blurb: "One search across votes, money, docs, and people.", href: "#", ready: false },

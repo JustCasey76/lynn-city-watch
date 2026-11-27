@@ -100,12 +100,12 @@
   /* ---------- Home ---------- */
   function renderHome() {
     const s = $("#section-grid");
-    if (s) s.innerHTML = SECTIONS.map(x => `
+    // Only sections that exist are shown; unbuilt ideas stay in the build plan, not on the page.
+    if (s) s.innerHTML = SECTIONS.filter(x => x.ready).map(x => `
       <a class="card link feat" href="${x.href}">
-        <div class="n">${x.n}</div>
         <h3>${x.title}</h3>
         <p>${x.blurb}</p>
-        <span class="soon ${x.ready ? "ready" : ""}">${x.ready ? "Live" : "Planned"}</span>
+        <span class="go">Open →</span>
       </a>`).join("");
 
     const cf = $("#council-facts");

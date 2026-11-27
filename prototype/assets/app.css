@@ -324,3 +324,4 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
 .watch-rules h4{margin:14px 0 6px;font-size:14px}
 .watch-rules ul{margin:0;padding-left:18px;font-size:14px}
 .watch-rules li{margin:4px 0}
+.feat .go{display:inline-block;margin-top:12px;font-size:13px;font-weight:600;color:var(--accent)}
